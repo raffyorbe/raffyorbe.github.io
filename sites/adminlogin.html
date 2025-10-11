@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Jobs@Tandon_UGA</title>
+
+    <!-- Bootstrap CSS (via Content Delivery Network) -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../styles/styles.css" rel="stylesheet">
+
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <a class="navbar-brand" href="../sites/nyuindex.html">
+            <img src="../images/tandon_long_color.png" width="200" height="31" style="margin-right:16px" class="d-inline-block align-top" alt="">
+             Office of Undergraduate Academics
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../sites/undergraduatejobs.html">Undergraduate Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../sites/graduatejobs.html">Graduate Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../sites/aboutus.html">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../sites/adminlogin.html">Admin Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="container d-flex align-items-center justify-content-center min-vh-100">
+        <div class="card p-4" style="width: 100%; max-width: 400px;">
+          <h3 class="text-left mb-3">Admin Login</h3>
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="netid" class="form-label">NetID</label>
+              <input type="text" class="form-control" id="netid" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="alert mt-3 d-none" id="errorAlert" role="alert" style="padding: 0; color: red;">
+                Invalid NetID or password
+              </div>
+            <div class="alert mt-3 d-none" id="successAlert" role="alert" style="padding: 0; color: green;">
+            Logging in...
+            </div>
+            <div class="d-grid" style="padding-top: 40px;">
+              <button type="submit" class="btn btn-primary">Log in</button>
+            </div>
+          </form>
+          <p class="text-left mt-3">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#popupModal">Forgot password?</a>
+          </p>
+        </div>
+      </div>
+      
+    <!-- Forgot Password Modal -->
+    <div class="modal fade" id="popupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Forgot password?</h5>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+            For the purpose of this project, your NetID is <span class="bold-text">admin</span> and your password is <span class="bold-text">default</span>.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Login Validation -->
+    <script src="../scripts/loginvalidation.js"></script>
+
+    <!-- Forgot Password Popup -->
+    <script src="../scripts/passwordpopup.js"></script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Raffy Orbe. MASY1-GC 1240-106</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies (via Content Delivery Network) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
