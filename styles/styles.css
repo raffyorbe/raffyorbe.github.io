@@ -1,0 +1,208 @@
+/* Index Styles */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.split {
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    padding: 0;
+}
+
+.overlay {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 1;
+}
+
+.cta-wrapper {
+position: absolute;
+bottom: 0;
+right: 16px;
+z-index: 2;
+width: 100%;
+max-width: 300px;
+
+}
+
+.cta-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    max-width: 300px;
+    background-color: rgba(15, 98, 254, 1);
+    color: #fff;
+    padding: 20px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.cta-button:hover {
+    background-color: rgba(0, 67, 206, 1);
+    color: #fff;
+    text-decoration: none;
+}
+
+.cta-button h5 {
+    margin: 0 0 5px;
+    font-size: 1.2rem;
+}
+
+.cta-button p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .row {
+    flex-direction: column;
+    }
+
+    .split {
+    height: 50vh;
+    }
+
+    .cta-button {
+    width: 100%;
+    max-width: none;
+    }
+}
+
+/*Figma iframe*/
+iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+/*NYU Index Styles*/
+.navbar {
+    background-color: rgb(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Drop Shadow */
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.navbar .navbar-brand {
+    color: black; /* Brand text color */
+}
+.navbar-nav .nav-item {
+    display: flex;
+    align-items: center;  
+}
+.navbar-nav .nav-item .nav-link {
+    color: #8900e1; /* Link color */
+    padding: 24px 24px;
+    transition: background-color 0.3s ease;
+}
+.navbar-nav .nav-item:hover .nav-link {
+    background-color: #57068c;  /* Nav item hover color */
+    color: white;
+    height: 100%;
+}
+.jumbotron {
+    color: #ffffff;
+    background-image: url(../images/17-0097_NYU_487-1-scaled.jpg);
+    background-color: rgba(0, 0, 0, 0.4);
+    background-blend-mode: overlay;
+    background-size: cover;
+    height: 480px;
+    width: 100%;
+    padding-top: 180px;
+    padding-right: 80px;
+    padding-bottom: 100px;
+    padding-left: 80px;
+}
+.jumbotronabout {
+    color: #ffffff;
+    background-image: url(../images/Screenshot\ 2024-12-08\ at\ 3.00.29\ AM.png);
+    background-color: rgba(0, 0, 0, 0.4);
+    background-blend-mode: overlay;
+    background-size: cover;
+    height: 480px;
+    width: 100%;
+    padding-top: 180px;
+    padding-right: 80px;
+    padding-bottom: 100px;
+    padding-left: 80px;
+}
+.jumbotronug {
+    color: #ffffff;
+    background-image: url(../images/NYUBrand_Academics_22.jpg);
+    background-color: rgba(0, 0, 0, 0.4);
+    background-blend-mode: overlay;
+    background-size: cover;
+    height: 480px;
+    width: 100%;
+    padding-top: 180px;
+    padding-right: 80px;
+    padding-bottom: 100px;
+    padding-left: 80px;
+}
+.jumbotronga {
+    color: #ffffff;
+    background-image: url(../images/NYUBrand_Academics_03.jpg);
+    background-color: rgba(0, 0, 0, 0.4);
+    background-blend-mode: overlay;
+    background-size: cover;
+    height: 480px;
+    width: 100%;
+    padding-top: 180px;
+    padding-right: 80px;
+    padding-bottom: 100px;
+    padding-left: 80px;
+}
+.btn {
+    background-color: rgb(137, 0, 225) !important; /* Button color */
+    border: 0px;
+}
+.btn:hover {
+    background-color: #57068c !important; /* Button Hover color */
+    border: 0px;
+}
+/* h2 {
+    color: #57068c;
+}
+h3 {
+    color: #57068c;
+} */
+.bold-text {
+    font-weight: bold;
+}
+a{
+    color: #8900e1;
+}
+a:hover{
+    color: #57068c;
+}
+.tablehead{
+    background-color: #000000;
+    color: #ffffff;
+}
+.container{
+    padding-top: 16px !important;
+    padding-bottom: 40px !important;
+}
+/* .col{
+   
+    padding-right: 100px !important;
+} */
+.footer{
+    color: #ffffff;
+    background-color: black;
+    text-align: center;
+    padding: 16px 0;
+}
