@@ -67,6 +67,7 @@ max-width: 300px;
 @media (max-width: 768px) {
     .row {
     flex-direction: column;
+    flex-wrap: nowrap;
     }
 
     .split {
