@@ -1,0 +1,295 @@
+/* Base Styles */
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background-color: #ffffff;
+  color: #161616;
+}
+
+/* Hero Section */
+.hero {
+  background-color: #f2f4f8;
+  /* padding: 40px 0; */
+  text-align: center;
+}
+
+.hero-cell {
+  background-image: url(../images/MS_EMOJI_380_v002_4k_1035.jpg); 
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 36px;
+  height: 400px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, box-shadow;
+}
+
+.contact-cell {
+  background-image: url(../images/MS_EMOJI_210_v002_4k_1065.jpg); 
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 36px;
+  height: 400px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, box-shadow;
+}
+
+.hero-overlay {
+  background-color: rgba(15, 98, 254, 0.15); 
+  padding: 3rem 1rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+h1 {
+  text-shadow: 0 0 10px rgba(242, 244, 248, 0.7);
+}
+
+.btn-primary {
+  background-color: #0f62fe;
+  /* border-color: #0f62fe; */
+  border-radius: 999px;
+}
+
+.btn-secondary{
+  background-color: #262626;
+  border-color: #262626;
+  border-radius: 999px;
+}
+
+/* General Section Styling */
+.section {
+  padding: 60px 0;
+}
+
+/* Project Cards */
+.project-card {
+  background: #f2f4f8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 36px;
+  height: 300px;
+}
+
+/* Project Cards with Background Image */
+.project-card.bg-image1 {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-image: url(../images/fluid_textures_11.png);
+  color: white;
+  overflow: hidden;
+  height: 300px; /* Adjust as needed */
+  display: flex;
+  align-items: end; /* Position content at bottom */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.project-card.bg-image2 {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-image: url(../images/NOTREAL_MS_CREATORS-HUB_WALLPAPER_05.jpg);
+  color: white;
+  overflow: hidden;
+  height: 300px; /* Adjust as needed */
+  display: flex;
+  align-items: end; /* Position content at bottom */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.project-card.bg-image3 {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-image: url(../images/NOTREAL_MS_CREATORS-HUB_WALLPAPER_01.jpg);
+  color: white;
+  overflow: hidden;
+  height: 300px; /* Adjust as needed */
+  display: flex;
+  align-items: end; /* Position content at bottom */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.project-card.bg-image4 {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-image: url(../images/purple_1.png);
+  color: white;
+  overflow: hidden;
+  height: 300px; /* Adjust as needed */
+  display: flex;
+  align-items: end; /* Position content at bottom */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark overlay */
+.project-card.bg-image1::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(15, 98, 254, 0.1);
+  z-index: 1;
+}
+
+.project-card.bg-image2::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(15, 98, 254, 0.1);
+  z-index: 1;
+}
+
+.project-card.bg-image3::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(15, 98, 254, 0.1);
+  z-index: 1;
+}
+
+.project-card.bg-image4::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(15, 98, 254, 0.1);
+  z-index: 1;
+}
+
+/* XP Cards */
+.xp1-card {
+  border-color: #009d9a;
+  border-width: 2px;
+  border-style: solid;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 36px;
+  min-height: 300px;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.xp2-card {
+  border-color: #ee5396;
+  border-width: 2px;
+  border-style: solid;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 36px;
+  min-height: 300px;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.xp3-card {
+  border-color: #a56eff;
+  border-width: 2px;
+  border-style: solid;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 36px;
+  min-height: 300px;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Card content */
+.project-card .card-content {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
+/* XP Card content */
+.xp1-card .card-content {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  color: #161616;
+}
+
+.xp2-card .card-content {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  color: #161616;
+}
+
+.xp3-card .card-content {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  color: #161616;
+}
+
+.card-footer {
+  margin-top: auto;
+}
+
+p {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 300;
+}
+
+.logo-img {
+  max-width: 150px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+
+/* Hover effects */
+/* .hero-cell:hover {
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
+  will-change: transform, box-shadow;
+  box-shadow: 0 0 8px rgba(15, 98, 245, 0.6), 
+              0 0 16px rgba(15, 98, 245, 0.6), 
+              0 0 32px rgba(15, 98, 245, 0.6);
+} */
+
+.project-card,
+.project-card.bg-image1,
+.project-card.bg-image2,
+.project-card.bg-image3,
+.project-card.bg-image4 {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover,
+.project-card.bg-image1:hover,
+.project-card.bg-image2:hover,
+.project-card.bg-image3:hover,
+.project-card.bg-image4:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+
+
+/* Footer */
+footer {
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
