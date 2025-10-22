@@ -12,6 +12,14 @@ body {
   text-align: center;
 }
 
+.hero-border-wrapper {
+  position: relative;
+  border-radius: 40px; /* Outer border radius */
+  padding: 6px; /* How much border peeks through */
+  overflow: visible;
+  z-index: 0;
+}
+
 .hero-cell {
   background-image: url(../images/MS_EMOJI_380_v002_4k_1035.jpg); 
   background-size: cover;
@@ -23,20 +31,7 @@ body {
   border-radius: 36px;
   height: 560px;
   overflow: visible;
-  z-index: 0;
-}
-
-.contact-cell {
-  background-image: url(../images/MS_EMOJI_210_v002_4k_1065.jpg); 
-  background-size: cover;
-  background-position: center;
-  color: #ffffff;
-  position: relative;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  border-radius: 36px;
-  height: 400px;
-  overflow: hidden;
+  z-index: 2;
 }
 
 .hero-overlay {
@@ -57,40 +52,62 @@ body {
 }
 
 /* Glowing border animation */
-.hero-overlay::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 30;
-  box-shadow: 0 0 0 0 rgba(0,0,0,0);
-  animation: overlay-glow 6s ease-out forwards;
-  animation-delay: 1.5s;
+@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
 }
 
-@keyframes overlay-glow {
+.border-animator {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: inherit;
+  z-index: 1;
+  opacity: 0;
+  
+  --angle: 0deg;
+  background: conic-gradient(
+    from var(--angle),
+    rgba(0, 0, 0, 0),
+    #ee5396,
+    #a56eff,
+    #08bdba,
+    #4589ff,
+    rgba(0, 0, 0, 0)
+  );
+
+  animation: rotate-gradient 2s linear forwards;
+  animation-delay: 1s;
+}
+
+@keyframes rotate-gradient {
   0% {
-    box-shadow: 0 0 0 0 rgba(23, 107, 239, 0);
+    --angle: 0deg;
+    opacity: 0;
   }
   20% {
-    box-shadow: 0 0 20px 10px rgba(23, 107, 239, 0.5);
-  }
-  40% {
-    box-shadow: 0 0 20px 10px rgba(255, 62, 48, 0.5);
-  }
-  60% {
-    box-shadow: 0 0 20px 10px rgba(247, 181, 41, 0.5);
+    opacity: 1;
   }
   80% {
-    box-shadow: 0 0 20px 10px rgba(23, 156, 82, 0.5);
+    opacity: 1;
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(23, 156, 82, 0);
+    --angle: 360deg;
+    opacity: 0;
   }
+}
+
+.contact-cell {
+  background-image: url(../images/MS_EMOJI_210_v002_4k_1065.jpg); 
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 36px;
+  height: 400px;
+  overflow: hidden;
 }
 
 h1 {
@@ -127,7 +144,7 @@ h1 {
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image: url(../images/fluid_textures_11.png);
+  background-image: url(../images/fluid_textures_11.jpg);
   color: white;
   overflow: hidden;
   height: 300px; /* Adjust as needed */
@@ -166,7 +183,7 @@ h1 {
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image: url(../images/purple_1.png);
+  background-image: url(../images/purple_1.jpg);
   color: white;
   overflow: hidden;
   height: 300px; /* Adjust as needed */
