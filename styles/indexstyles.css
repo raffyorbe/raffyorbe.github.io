@@ -15,7 +15,7 @@ body {
 .hero-border-wrapper {
   position: relative;
   border-radius: 40px; /* Outer border radius */
-  padding: 6px; /* How much border peeks through */
+  padding: 4px; /* How much border peeks through */
   overflow: visible;
   z-index: 0;
 }
@@ -69,6 +69,8 @@ body {
   background: conic-gradient(
     from var(--angle),
     rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0),
     #ee5396,
     #a56eff,
     #08bdba,
@@ -76,7 +78,7 @@ body {
     rgba(0, 0, 0, 0)
   );
 
-  animation: rotate-gradient 2s linear forwards;
+  animation: rotate-gradient 3s linear forwards;
   animation-delay: 1s;
 }
 
@@ -92,7 +94,7 @@ body {
     opacity: 1;
   }
   100% {
-    --angle: 360deg;
+    --angle: 720deg;
     opacity: 0;
   }
 }
