@@ -395,7 +395,7 @@ p {
 
 @media (max-width: 576px) {
   .hero-border-wrapper {
-    padding: 2px; /* less padding on smaller screen */
+    padding: 3px; /* less padding on smaller screen */
     width: 95vw;  /* allow a bit more width so it fills better */
     max-width: none; /* remove max-width to fill screen nicely */
     min-width: unset; /* remove min-width so it can shrink naturally */
