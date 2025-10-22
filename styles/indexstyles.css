@@ -1,24 +1,77 @@
 /* Base Styles */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
   font-family: 'IBM Plex Sans', sans-serif;
   background-color: #f2f4f8;
   color: #161616;
 }
 
+/* Nav bar */
+.floating-navbar {
+  position: relative;
+  z-index: 2; /* ensures it's above .border-animator */
+  display: flex;
+  gap: 0.5rem;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+/* Base Button Style */
+.floating-navbar a {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem 0.5rem;
+  border-radius: 999px;
+  transition: all 0.3s ease;
+  color: #161616;
+  text-decoration: none;
+  will-change: background-color, backdrop-filter;
+}
+
+/* Subtle hover
+.floating-navbar a:hover {
+  background-color: rgba(22, 22, 22, 0.1);
+} */
+
+/* Active Pill Style */
+.floating-navbar a.active {
+  background-color: rgba(15, 98, 254, 1);  /* Dark frosted pill */
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-weight: 500;
+}
+
 /* Hero Section */
 .hero {
   background-color: #f2f4f8;
-  /* padding: 40px 0; */
   text-align: center;
 }
 
 .hero-border-wrapper {
-  position: relative;
-  border-radius: 40px; /* Outer border radius */
-  padding: 4px; /* How much border peeks through */
-  overflow: visible;
-  z-index: 0;
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  padding: 4px; /* this reveals the glow */
+  border-radius: 999px;
+  width: 90vw;
+  max-width: 500px;
+  min-width: 320px;
 }
+
 
 .hero-cell {
   background-image: url(../images/MS_EMOJI_380_v002_4k_1035.jpg); 
@@ -71,15 +124,15 @@ body {
     rgba(0, 0, 0, 0),
     rgba(0, 0, 0, 0),
     rgba(0, 0, 0, 0),
-    #ee5396,
-    #a56eff,
+    #ff7eb6,
+    #be95ff,
     #08bdba,
-    #4589ff,
+    #78a9ff,
     rgba(0, 0, 0, 0)
   );
 
-  animation: rotate-gradient 3s linear forwards;
-  animation-delay: 1s;
+  animation: rotate-gradient 4s linear forwards;
+  animation-delay: 1.5s;
 }
 
 @keyframes rotate-gradient {
@@ -112,6 +165,12 @@ body {
   overflow: hidden;
 }
 
+/* General Section Styling */
+.section {
+  padding-top: 100px;
+  padding-bottom: 64px;
+}
+
 h1 {
   text-shadow: 0 0 10px rgba(15, 98, 254, 0.5);
 }
@@ -126,11 +185,6 @@ h1 {
   background-color: #262626;
   border-color: #262626;
   border-radius: 999px;
-}
-
-/* General Section Styling */
-.section {
-  padding: 60px 0;
 }
 
 /* Project Cards */
@@ -312,7 +366,6 @@ p {
   display: block;
 }
 
-
 /* Hover effects */
 /* .hero-cell:hover {
   transform: scale(1.03);
@@ -340,7 +393,18 @@ p {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
+@media (max-width: 576px) {
+  .hero-border-wrapper {
+    padding: 2px; /* less padding on smaller screen */
+    width: 95vw;  /* allow a bit more width so it fills better */
+    max-width: none; /* remove max-width to fill screen nicely */
+    min-width: unset; /* remove min-width so it can shrink naturally */
+  }
 
+  .floating-navbar {
+    padding: 10px 14px; /* slightly reduce navbar padding on mobile */
+  }
+}
 
 /* Footer */
 footer {
