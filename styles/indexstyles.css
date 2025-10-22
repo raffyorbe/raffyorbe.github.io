@@ -168,7 +168,7 @@ body {
 /* General Section Styling */
 .section {
   padding-top: 100px;
-  padding-bottom: 64px;
+  padding-bottom: 40px;
 }
 
 h1 {
@@ -402,7 +402,12 @@ p {
   }
 
   .floating-navbar {
-    padding: 10px 14px; /* slightly reduce navbar padding on mobile */
+    padding: 4px 4px; /* slightly reduce navbar padding on mobile */
+    gap: 0.05rem;
+  }
+
+  .floating-navbar a {
+    font-size: 0.8rem; /* reduce font size on mobile */
   }
 }
 
