@@ -183,14 +183,15 @@ h1 {
 
 .btn-secondary{
   background-color: transparent;
-  border-color: #161616;
+  border-color: #0f62fe;
   border-radius: 999px;
-  color: #161616;
+  border-width: 1.5px;
+  color: #0f62fe;
 }
 
 .btn-secondary:hover {
-  background-color: #161616;
-  border-color: #161616;
+  background-color: #0f62fe;
+  border-color: #0f62fe;
   color: #ffffff;
 }
 
