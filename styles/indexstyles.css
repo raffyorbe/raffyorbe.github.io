@@ -46,7 +46,7 @@ body {
 
 /* Active Pill Style */
 .floating-navbar a.active {
-  background-color: rgba(15, 98, 254, 1);  /* Dark frosted pill */
+  background-color: rgba(22, 22, 22, 1);  /* Dark frosted pill */
   color: #ffffff;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
