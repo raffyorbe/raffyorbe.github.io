@@ -12,7 +12,7 @@ body {
 /* Nav bar */
 .floating-navbar {
   position: relative;
-  z-index: 2; /* ensures it's above .border-animator */
+  z-index: 2; 
   display: flex;
   gap: 0.5rem;
   padding-left: 8px;
@@ -46,7 +46,7 @@ body {
 
 /* Active Pill Style */
 .floating-navbar a.active {
-  background-color: rgba(22, 22, 22, 1);  /* Dark frosted pill */
+  background-color: rgba(22, 22, 22, 1);  
   color: #ffffff;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -65,7 +65,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
-  padding: 4px; /* this reveals the glow */
+  padding: 4px; /* glow edge */
   border-radius: 999px;
   width: 90vw;
   max-width: 500px;
@@ -182,7 +182,7 @@ h1 {
 }
 
 .btn-secondary{
-  background-color: #transparent;
+  background-color: transparent;
   border-color: #161616;
   border-radius: 999px;
   color: #161616;
@@ -210,9 +210,9 @@ h1 {
   background-image: url(../images/fluid_textures_11.jpg);
   color: white;
   overflow: hidden;
-  height: 300px; /* Adjust as needed */
+  height: 300px; 
   display: flex;
-  align-items: end; /* Position content at bottom */
+  align-items: end; 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -223,9 +223,9 @@ h1 {
   background-image: url(../images/NOTREAL_MS_CREATORS-HUB_WALLPAPER_05.jpg);
   color: white;
   overflow: hidden;
-  height: 300px; /* Adjust as needed */
+  height: 300px; 
   display: flex;
-  align-items: end; /* Position content at bottom */
+  align-items: end; 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -236,9 +236,9 @@ h1 {
   background-image: url(../images/NOTREAL_MS_CREATORS-HUB_WALLPAPER_01.jpg);
   color: white;
   overflow: hidden;
-  height: 300px; /* Adjust as needed */
+  height: 300px; 
   display: flex;
-  align-items: end; /* Position content at bottom */
+  align-items: end; 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -249,9 +249,9 @@ h1 {
   background-image: url(../images/purple_1.jpg);
   color: white;
   overflow: hidden;
-  height: 300px; /* Adjust as needed */
+  height: 300px; 
   display: flex;
-  align-items: end; /* Position content at bottom */
+  align-items: end; 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -409,7 +409,7 @@ p {
   }
 
   .floating-navbar {
-    padding: 4px 4px; /* slightly reduce navbar padding on mobile */
+    padding: 4px 4px; /* reduce navbar padding on mobile */
     gap: 0.05rem;
   }
 
