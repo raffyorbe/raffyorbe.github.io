@@ -182,9 +182,16 @@ h1 {
 }
 
 .btn-secondary{
-  background-color: #262626;
-  border-color: #262626;
+  background-color: #transparent;
+  border-color: #161616;
   border-radius: 999px;
+  color: #161616;
+}
+
+.btn-secondary:hover {
+  background-color: #161616;
+  border-color: #161616;
+  color: #ffffff;
 }
 
 /* Project Cards */
