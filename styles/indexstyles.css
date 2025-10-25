@@ -123,15 +123,14 @@ body {
     from var(--angle),
     rgba(0, 0, 0, 0),
     rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0),
-    #ff7eb6,
-    #be95ff,
-    #08bdba,
-    #78a9ff,
+    #32CC66,
+    #FFC345,
+    #FF45A8,
+    #4589FF,
     rgba(0, 0, 0, 0)
   );
 
-  animation: rotate-gradient 4s linear forwards;
+  animation: rotate-gradient 6s linear forwards;
   animation-delay: 1.5s;
 }
 
