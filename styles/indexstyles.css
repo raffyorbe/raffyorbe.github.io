@@ -130,8 +130,8 @@ body {
     rgba(0, 0, 0, 0)
   );
 
-  animation: rotate-gradient 6s linear forwards;
-  animation-delay: 1.5s;
+  animation: rotate-gradient 4s linear forwards;
+  animation-delay: 1s;
 }
 
 @keyframes rotate-gradient {
@@ -146,7 +146,7 @@ body {
     opacity: 1;
   }
   100% {
-    --angle: 720deg;
+    --angle: 360deg;
     opacity: 0;
   }
 }
