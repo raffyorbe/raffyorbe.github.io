@@ -40,8 +40,8 @@ I am legally eligible to work in the United States for up to 3 years after gradu
 I am legally eligible to work in the United Kingdom for up to 2 years after graduating from NYU through an HPI Visa. I fully understand and respect that the company may prioritize hiring British talent, but if there’s a place within the company where my background can create value, I’d be honored to contribute. Down the line, I’d also be open to transitioning to a Skilled Worker visa if it ever made sense for both sides.
 
 # Education
-**MS in Management and Systems**, New York University
-**BS in Computer Science, Major in Computer Systems Engineering**, De La Salle University
+**MS in Management and Systems**, New York University (Graduating May 2026)
+**BS in Computer Science, Major in Computer Systems Engineering**, De La Salle University (Graduated 2016)
 
 # Fun Facts
 - While I am not a master at programming in general, I do understand code and how it works to achieve my vision. This gives me the ability to work well with software engineers and determine if new features or product experiences can be successfully implemented or need to be modified given the technological limitations of the development platform.
