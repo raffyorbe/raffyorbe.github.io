@@ -14,9 +14,12 @@ const client = new OpenAI({
 });
 
 // Load markdown reference once at startup
-const referencePath = '../references/ai-raffy.md';
+import fs from 'fs';
+import path from 'path';
+
 let referenceText = '';
 try {
+  const referencePath = path.join(process.cwd(), 'references', 'ai-raffy.md');
   referenceText = fs.readFileSync(referencePath, 'utf8');
   console.log('Reference file loaded successfully!');
 } catch (err) {
