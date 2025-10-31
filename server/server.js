@@ -18,7 +18,7 @@ import path from 'path';
 
 let referenceText = '';
 try {
-  const referencePath = path.join(process.cwd(), 'references', 'ai-raffy.md');
+  const referencePath = path.join(process.cwd(), '..', 'references', 'ai-raffy.md');
   referenceText = fs.readFileSync(referencePath, 'utf8');
   console.log('Reference file loaded successfully!');
 } catch (err) {
