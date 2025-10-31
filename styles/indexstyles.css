@@ -455,7 +455,7 @@ p {
   overflow-wrap: break-word;
 }
 
-/* Show the bubble (floating up) */
+/* Show bubble (floating up) */
 .chat-overlay.show {
   opacity: 1;
   transform: translateY(0);  
@@ -464,6 +464,21 @@ p {
 .chat-overlay.hide {  
   opacity: 0;
   transform: translateY(12px);
+}
+
+@keyframes fadeUpNew {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-text.fade-in {
+  animation: fadeUpNew 0.35s ease;
 }
 
 /* Close button inside bubble */
