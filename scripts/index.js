@@ -47,4 +47,148 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.addEventListener("scroll", onScroll);
   onScroll(); // run on page load
+
+  // AI chat glow
+  const glow = document.querySelector('.hello-chat-border-wrapper .border-animator-chat');
+
+  if (glow) {
+  const target = document.querySelector('.hello-chat-border-wrapper');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          glow.classList.add('visible'); // start glow animation
+          observer.unobserve(entry.target); // optional: only trigger once
+        }
+      });
+    },
+    {
+      root: null, // use viewport as root
+      threshold: 0, // we’ll rely on rootMargin instead
+      rootMargin: '-30% 0px -30% 0px' 
+      // top and bottom margins shrink the "trigger zone" to the center 10% of the screen
+    }
+  );
+
+  observer.observe(target);
+  }
+
+  const inputWrapper = document.querySelector('.hello-chat-border-wrapper');
+
+  // create overlay container if not exists
+  let overlayContainer = inputWrapper.querySelector('#chat-overlay-container');
+  if (!overlayContainer) {
+    overlayContainer = document.createElement('div');
+    overlayContainer.id = 'chat-overlay-container';
+    inputWrapper.appendChild(overlayContainer);
+  }
+
+  // function to show bubble
+  function showBubble(message) {
+    // remove previous bubble if exists
+    const prev = overlayContainer.querySelector('.chat-overlay');
+    if (prev) prev.remove();
+
+    // create new bubble
+    const bubble = document.createElement('div');
+    bubble.classList.add('chat-overlay');
+    bubble.innerHTML = `
+      <span>${message}</span>
+      <button class="chat-close">&times;</button>
+    `;
+
+    overlayContainer.appendChild(bubble);
+
+    // small delay for CSS transition
+    setTimeout(() => bubble.classList.add('show'), 10);
+
+  }
+
+  // ChatGPT integration
+  // Elements
+  const userInput = document.getElementById("user-input");
+  const sendBtn = document.getElementById("send-btn");
+
+  // Function to add AI message bubble
+  function addAIBubble(message, isLoading = false) {
+  if (!overlayContainer) return; // stops errors if somehow undefined
+  overlayContainer.innerHTML = "";
+  const bubble = document.createElement("div");
+  bubble.className = "chat-overlay" + (isLoading ? " loading" : "");
+  bubble.textContent = message;
+
+  // Close button
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "chat-close";
+  closeBtn.textContent = "×"; // or &times;
+  bubble.appendChild(closeBtn);
+
+  // Attach click listener AFTER button exists
+  closeBtn.addEventListener('click', () => {
+    bubble.classList.add('hide'); // triggers fade-out
+    bubble.addEventListener('transitionend', () => {
+      bubble.remove();
+    }, { once: true });
+  });
+
+  overlayContainer.appendChild(bubble);
+  requestAnimationFrame(() => {
+    bubble.classList.add("show");
+  });
+}
+
+
+  // Function to remove loading bubble
+  function removeLoadingBubble() {
+    const loading = overlayContainer.querySelector(".chat-overlay");
+    if (loading) loading.remove();
+  }
+
+  // Function to send message to backend
+  async function sendMessage() {
+    const message = userInput.value.trim();
+    if (!message) return;
+
+    // Disable input while waiting
+    userInput.disabled = true;
+    sendBtn.disabled = true;
+
+    // Show loading bubble
+    addAIBubble("Raffy is typing...", true);
+
+    try {
+      const response = await fetch("https://raffyorbe-github-io.onrender.com/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await response.json();
+      const aiMessage = data.choices?.[0]?.message?.content || "Sorry, something went wrong. 😅";
+
+      removeLoadingBubble();
+      addAIBubble(aiMessage);
+    } catch (error) {
+      removeLoadingBubble();
+      addAIBubble("Error connecting to the server. 😵");
+      console.error(error);
+    } finally {
+      userInput.disabled = false;
+      sendBtn.disabled = false;
+      userInput.value = "";
+      userInput.focus();
+    }
+  }
+
+  // Event listeners
+  sendBtn.addEventListener("click", sendMessage);
+  userInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();  // stops new line
+    sendMessage();
+  }
+});
+
+
 });
