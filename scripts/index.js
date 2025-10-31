@@ -112,50 +112,64 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to add AI message bubble
   function addAIBubble(message, isLoading = false) {
-  if (!overlayContainer) return; // stops errors if somehow undefined
-  overlayContainer.innerHTML = "";
-  const bubble = document.createElement("div");
-  bubble.className = "chat-overlay" + (isLoading ? " loading" : "");
-  bubble.textContent = message;
+    if (!overlayContainer) return null; // return null if no container
+    overlayContainer.innerHTML = "";
 
-  // Close button
-  const closeBtn = document.createElement("button");
-  closeBtn.className = "chat-close";
-  closeBtn.textContent = "×"; // or &times;
-  bubble.appendChild(closeBtn);
+    const bubble = document.createElement("div");
+    bubble.className = "chat-overlay" + (isLoading ? " loading" : "");
 
-  // Attach click listener AFTER button exists
-  closeBtn.addEventListener('click', () => {
-    bubble.classList.add('hide'); // triggers fade-out
-    bubble.addEventListener('transitionend', () => {
-      bubble.remove();
-    }, { once: true });
-  });
+    // Create message container
+    const textElem = document.createElement("div");
+    textElem.className = "chat-text";
 
-  overlayContainer.appendChild(bubble);
-  requestAnimationFrame(() => {
-    bubble.classList.add("show");
-  });
-}
+    if (isLoading) {
+      // typing animation
+      textElem.innerHTML = `<span class="typing">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </span>`;
+    } else {
+      textElem.textContent = message;
+    }
+    bubble.appendChild(textElem);
 
+    // Close button
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "chat-close";
+    closeBtn.textContent = "×";
+    bubble.appendChild(closeBtn);
 
-  // Function to remove loading bubble
+    // Close fade-out
+    closeBtn.addEventListener("click", () => {
+      bubble.classList.add("hide");
+      bubble.addEventListener("transitionend", () => bubble.remove(), { once: true });
+    });
+
+    overlayContainer.appendChild(bubble);
+
+    // Trigger fade-in
+    requestAnimationFrame(() => bubble.classList.add("show"));
+
+    return bubble;
+  }
+
+  // Remove loading bubble
   function removeLoadingBubble() {
-    const loading = overlayContainer.querySelector(".chat-overlay");
+    const loading = overlayContainer.querySelector(".chat-overlay.loading");
     if (loading) loading.remove();
   }
 
-  // Function to send message to backend
+  // Send message
   async function sendMessage() {
     const message = userInput.value.trim();
     if (!message) return;
 
-    // Disable input while waiting
     userInput.disabled = true;
     sendBtn.disabled = true;
 
     // Show loading bubble
-    addAIBubble("Raffy is typing...", true);
+    const bubble = addAIBubble("", true);
 
     try {
       const response = await fetch("https://raffyorbe-github-io.onrender.com/api/chat", {
@@ -167,11 +181,14 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
       const aiMessage = data.choices?.[0]?.message?.content || "Sorry, something went wrong. 😅";
 
-      removeLoadingBubble();
-      addAIBubble(aiMessage);
+      // Replace text inside the same bubble
+      const textElem = bubble.querySelector(".chat-text");
+      if (textElem) textElem.textContent = aiMessage;
+
+      bubble.classList.remove("loading");
     } catch (error) {
-      removeLoadingBubble();
-      addAIBubble("Error connecting to the server. 😵");
+      const textElem = bubble.querySelector(".chat-text");
+      if (textElem) textElem.textContent = "Error connecting to the server. 😵";
       console.error(error);
     } finally {
       userInput.disabled = false;
@@ -184,11 +201,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Event listeners
   sendBtn.addEventListener("click", sendMessage);
   userInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();  // stops new line
-    sendMessage();
-  }
-});
-
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
 
 });
