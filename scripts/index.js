@@ -181,16 +181,33 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
       const aiMessage = data.choices?.[0]?.message?.content || "Sorry, something went wrong. 😅";
 
-      // Replace text inside the same bubble
       const textElem = bubble.querySelector(".chat-text");
-      if (textElem) textElem.textContent = aiMessage;
+      if (textElem) {
+        textElem.textContent = aiMessage;
+
+        // Fade animation for new message
+        textElem.classList.add("fade-in");
+        setTimeout(() => textElem.classList.remove("fade-in"), 400);
+      }
 
       bubble.classList.remove("loading");
-    } catch (error) {
+    } 
+    
+    catch (error) {
       const textElem = bubble.querySelector(".chat-text");
-      if (textElem) textElem.textContent = "Error connecting to the server. 😵";
+      if (textElem) {
+        textElem.textContent = "Error connecting to the server. 😵";
+
+        // Fade-in for the error
+        textElem.classList.add("fade-in");
+        setTimeout(() => textElem.classList.remove("fade-in"), 400);
+      }
+
       console.error(error);
-    } finally {
+
+    } 
+    
+    finally {
       userInput.disabled = false;
       sendBtn.disabled = false;
       userInput.value = "";
