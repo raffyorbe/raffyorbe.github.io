@@ -14,7 +14,6 @@ const client = new OpenAI({
 });
 
 // Load markdown reference once at startup
-import fs from 'fs';
 import path from 'path';
 
 let referenceText = '';
