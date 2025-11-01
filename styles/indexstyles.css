@@ -410,10 +410,12 @@ p {
 /* Input bar wrapper: anchor point for bubble */
 .hello-chat-border-wrapper {
   position: relative; /* important: overlay is absolute relative to this */
-  z-index: 2;
-  padding: 0;
+  z-index: 999;
+  padding: 4px;
+  border-radius: 999px;
   margin: 0 auto;
   width: 100%;
+  max-width: 640px;
 }
 
 /* Container anchored just above input bar */
@@ -566,16 +568,6 @@ p {
 
 #hello .row.justify-content-center .col-md-8 {
   padding-top: 40px;
-}
-
-.hello-chat-border-wrapper {
-  position: relative;
-  z-index: 999;
-  padding: 4px;
-  border-radius: 999px;
-  width: 100%;
-  max-width: 640px;
-  margin: 0 auto; 
 }
 
 .border-animator-chat {
