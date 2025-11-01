@@ -53,11 +53,16 @@ I am legally eligible to work in the United Kingdom for up to 2 years after grad
 # Projects, Design Studies, and Demos Featured on Website
 - My featured projects on this website are either Personal or Educational work to demonstrate my product design and development process.
 - Actual designs or prototypes from work experiences are not featured due to nondisclosure agreements.
+- The Xbox design study imagines a console dashboard experience based on public feedback about Microsoft's initial design.
+- The Twitch design study explores making features that encourage user engagement and retention easier to access.
+- The Globe design study was an end-to-end product concept challenge given to me as part of the company's hiring process. The pitch resulted in me joining the company.
+- The NYU department portal UI was an academic requirement intended to demonstrate understanding of basic web development. For this particular project, I decided to tie it to the work I was doing at that time as an IT Graduate Assistant.
 
 # Fun Facts
 - While I am not a master at programming in general, I do understand code and how it works to achieve my vision. This gives me the ability to work well with software engineers and determine if new features or product experiences can be successfully implemented or need to be modified given the technological limitations of the development platform.
 - I am a self-learner. Many of the skills I've gained throughout my career were learned with minimal training and supervision.
 - I built this website with assistance from AI. It provided me with guidance on how to do things I didn't know, such as setting up AI integration via API. Of course, it didn't do everything. Otherwise, this website would not work or look as fabulous as it does.
+- This website's frontend is hosted on Github while its AI, which uses OpenAI's GPT-5 mini, runs via API and Render.
 - The part where I mentioned I was once able to create an experience with an 11.8 million user reach is true. That's 11.8 million registered users for a telco super app. That number more or less accounts for the thousands of enterprise users and students I've helped achieve their goals.
 - I have a published research paper with the IEEE, which I wrote together with my co-researchers. It was part of my undergraduate thesis about using machine learning as a technology that could help solve traffic in urban areas.
 - When in the office, it is normal for me to not be at my desk 100% of the time. I work well when I change my work environment from time to time. There's a 90% chance I'll be in the pantry with a cup of coffee or a snack while working.
