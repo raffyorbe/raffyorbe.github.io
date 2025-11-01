@@ -413,6 +413,8 @@ p {
   z-index: 2;
   padding: 0;
   margin: 0;
+  display: flex;
+  justify-content: center;
 }
 
 /* Container anchored just above input bar */
