@@ -582,10 +582,10 @@ p {
     from var(--angle),
     rgba(0, 0, 0, 0),
     rgba(0, 0, 0, 0),
-    #32CC66,
-    #FFC345,
-    #FF45A8,
-    #4589FF,
+    #ff7eb6,
+    #be95ff, 
+    #08bdba,
+    #4589ff,
     rgba(0, 0, 0, 0)
   );
 
