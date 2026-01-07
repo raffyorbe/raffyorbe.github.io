@@ -377,6 +377,13 @@ p {
   display: block;
 }
 
+.logo-img-s {
+  max-width: 125px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
 /* Hover effects */
 /* .hello-cell:hover {
   transform: scale(1.03);
