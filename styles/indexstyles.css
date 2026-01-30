@@ -178,6 +178,15 @@ h1 {
   text-shadow: 0 0 10px rgba(15, 98, 254, 0.5);
 }
 
+h2.ai-welcome{
+  font-weight: 300;
+  text-align: center;
+  background: linear-gradient(90deg, #0f62fe, #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
 
 /* Buttons */
 .btn:active,
@@ -686,6 +695,14 @@ footer {
   .ai-disclaimer {
     font-size: 0.6rem;
     margin-top: 8px;
+  }
+
+  h2{
+    text-align: center;
+  }
+
+  p.subtitle{
+    text-align: center;
   }
 
 }
