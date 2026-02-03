@@ -188,6 +188,14 @@ h2.ai-welcome{
   color: transparent;
 }
 
+p.tag{
+  display:inline-block;
+  align-self:first baseline;
+  border: 2px solid #ffffff;
+  padding: 2px;
+  font-size: 12px;
+}
+
 /* Buttons */
 .btn:active,
 .btn.active,
