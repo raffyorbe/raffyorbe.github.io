@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-   <meta property="og:image" content="https://raffyorbe.github.io/images/MS_EMOJI_380_v002_4k_1035.jpg" />
+   <meta property="og:image" content="https://raffyorbe.github.io/images/favicon.png" />
   <title>Raffy Orbe</title>
 
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="images/favicon.png">
   
   <!-- Bootstrap CSS -->
   <link
@@ -29,9 +29,9 @@
     <div class="hello-border-wrapper">
       <!-- <div class="border-animator-nav"></div> -->
       <nav class="floating-navbar d-flex justify-content-between">
-        <a class="nav-link" href="#hello" data-targets="hello">😍 Hello</a>
-        <a class="nav-link" href="#projects">🎨 Projects</a>
-        <a class="nav-link" href="#profile" data-targets="profile,companies">📋 Profile</a>
+        <a class="nav-link" href="#hello">😍 Hello</a>
+        <a class="nav-link" href="#profile">📋 Profile</a>
+        <a class="nav-link" href="#projects" data-targets="projects,companies">🎨 Projects</a>
         <a class="nav-link" href="#contact">💌 Contact</a>
       </nav>
     </div>
@@ -44,10 +44,13 @@
           <!-- <div class="hello-border-wrapper"> -->
             <!-- <div class="border-animator"></div> -->
             <div class="hello-cell">
+              <video autoplay muted loop playsinline preload="auto" class="hello-video">
+                  <source src="images/heroclip.mp4" type="video/mp4">
+              </video>
               <div class="hello-overlay">
                   <h1>Hello, I'm Raffy Orbe</h1>
                   <p>Product Experience Design | Frontend Development | IT Systems Delivery</p>
-                  <!--<a href="#learn-more" class="btn btn-primary btn-lg">Learn More</a>-->
+                  <a href="#chat" class="btn btn-primary btn-md">Interview me</a>
               </div>
           </div>
           <!-- </div> -->
@@ -56,7 +59,7 @@
         </div>
         <div class="row justify-content-center mt-4">
           <div class="col-12 col-md-8 px-0">
-            <h2 class="ai-welcome">Get to know me a little bit more</h2><br>
+            <h2 class="ai-welcome" id="chat">Get to know me a little bit more</h2><br>
             <!-- Input layer -->
             <div class="hello-chat-border-wrapper">
               <div class="border-animator-chat"></div>
@@ -76,6 +79,43 @@
   </section>
 
 
+<!-- Profile Section -->
+  <section class="section" id="profile" style="background-color: #ffffff;">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <h2>Profile</h2><br>
+                <p class="subtitle">Cross-trained from Day One, a jack of all trades is oftentimes better than a master of one.</p>
+            </div>      
+            <div class="col-md-6 col-lg-3">
+                <div class="xp1-card">
+                    <div class="card-content">
+                        <h3 style="color: #ffffff">7+ years work experience</h3><br><br>
+                        <p class="card-footer">Experience across research and development, product design, and IT systems delivery in telco, technology consulting, and higher education.</p>
+                    </div>  
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="xp2-card">
+                    <div class="card-content">
+                        <h3 style="color: #ffffff">11.8 million users reached</h3><br><br>
+                        <p class="card-footer">Reached users through impactful web and mobile experiences that empowered them to achieve their goals while driving business growth.</p>
+                    </div>  
+                </div>  
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="xp3-card">
+                    <div class="card-content">
+                        <h3 style="color: #ffffff">2 degrees nimbler and wiser</h3><br><br>
+                        <p class="card-footer">Master's in Management and Systems (NYU 2026) and Bachelor's in Computer Science (DLSU 2016). Legal work eligibility included, subject to extension.</p>
+                    </div>  
+                </div>  
+            </div>
+        </div>
+    </div>
+  </section>
+
+
   <!-- Projects Section -->
   <section class="section" id="projects" style="background-color: #ffffff;">
     <div class="container">  
@@ -90,8 +130,8 @@
                     <div class="card-content">
                         <p class="tag"><strong>UI/UX</strong></p>
                         <h5>Xbox Design Study</h5>
-                        <p>Redesign of the Xbox Home Screen based on user feedback.</p>
-                        <a href="https://www.figma.com/proto/Wc2Qg2uSfxj2193lul5HP8/Demo?node-id=93-462&t=tmWWZU0HEyRNa4Gf-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=93%3A462" target="_blank" class="btn btn-sm btn-primary">View Demo</a>
+                        <p>Redesigned the Xbox Home Screen to reduce user frustration.</p>
+                        <a href="https://www.figma.com/proto/Wc2Qg2uSfxj2193lul5HP8/Demo?node-id=93-462&t=tmWWZU0HEyRNa4Gf-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=93%3A462" target="_blank" class="btn btn-sm btn-primary">View project</a>
                     </div>
                 </div>
             </div>
@@ -102,8 +142,8 @@
                     <div class="card-content">
                         <p class="tag"><strong>UI/UX</strong></p>
                         <h5>Twitch Design Study</h5>
-                        <p>Redesign of Twitch's mobile app UI based on use cases.</p>
-                        <a href="https://www.figma.com/proto/Wc2Qg2uSfxj2193lul5HP8/Demo?node-id=130-168&t=LWd3Dn2BN6sjIKAR-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=130%3A168" target="_blank" class="btn btn-sm btn-primary">View Demo</a>
+                        <p>Revamped the Twitch mobile app to boost retention and engagement.</p>
+                        <a href="https://www.figma.com/proto/Wc2Qg2uSfxj2193lul5HP8/Demo?node-id=130-168&t=LWd3Dn2BN6sjIKAR-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=130%3A168" target="_blank" class="btn btn-sm btn-primary">View project</a>
                     </div>
                 </div>
             </div>
@@ -114,8 +154,8 @@
                     <div class="card-content">
                         <p class="tag"><strong>UI/UX</strong></p>
                         <h5>Globe Design Study</h5>
-                        <p>Product experience pitch that got me a role at Globe Telecom.</p>
-                        <a href="https://www.figma.com/proto/Wc2Qg2uSfxj2193lul5HP8/Demo?node-id=2432-489&p=f&t=EGZNAw8BivoNKVUi-1&scaling=scale-down&content-scaling=fixed&page-id=359%3A489&starting-point-node-id=2432%3A489" target="_blank" class="btn btn-sm btn-primary">View Demo</a>
+                        <p>Crafted a new product experience that got me a role at Globe Telecom.</p>
+                        <a href="https://www.figma.com/proto/Wc2Qg2uSfxj2193lul5HP8/Demo?node-id=2432-489&p=f&t=EGZNAw8BivoNKVUi-1&scaling=scale-down&content-scaling=fixed&page-id=359%3A489&starting-point-node-id=2432%3A489" target="_blank" class="btn btn-sm btn-primary">View project</a>
                     </div>
                 </div>
             </div>
@@ -126,11 +166,27 @@
                 <div class="project-card bg-image4">
                     <div class="card-content">
                         <p class="tag"><strong>HTML/CSS/JS</strong></p>
-                        <h5>NYU Job Portal</h5>
-                        <p>Student worker hiring portal UI optimized for Web.</p>
-                        <a href="../sites/nyuindex.html" target="_blank" class="btn btn-sm btn-primary">View Demo</a>
+                        <h5>NYU Jobs Portal Prototype</h5>
+                        <p>Transformed a hiring spreadsheet into a web-based portal.</p>
+                        <a href="sites/nyuindex.html" target="_blank" class="btn btn-sm btn-primary">View project</a>
                     </div>
                 </div>
+            </div>
+        
+      </div>
+      <div class="col-md-6 col-lg-3 d-none d-md-block">
+            <div class="project-card-empty">
+                    <div class="card-content">
+                    </div>
+                
+            </div>
+        
+      </div>
+      <div class="col-md-6 col-lg-3 d-none d-md-block">
+            <div class="project-card-empty">
+                    <div class="card-content">
+                    </div>
+                
             </div>
         
       </div>
@@ -139,41 +195,6 @@
     </div>
   </section>
 
-  <!-- Profile Section -->
-  <section class="section" id="profile" style="background-color: #ffffff;">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <h2>Profile</h2><br>
-                <p class="subtitle">Cross-trained from Day One, a jack of all trades is oftentimes better than a master of one.</p>
-            </div>      
-            <div class="col-md-6 col-lg-3">
-                <div class="xp1-card">
-                    <div class="card-content">
-                        <h3 style="color: #009d9a">7+ years work experience</h3><br><br>
-                        <p class="card-footer">Experience across research and development, product design, and IT systems delivery in telco, technology consulting, and higher education.</p>
-                    </div>  
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="xp2-card">
-                    <div class="card-content">
-                        <h3 style="color: #ee5396">11.8 million users reached</h3><br><br>
-                        <p class="card-footer">Reached users through impactful web and mobile experiences that empowered them to achieve their goals while driving business growth.</p>
-                    </div>  
-                </div>  
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="xp3-card">
-                    <div class="card-content">
-                        <h3 style="color: #a56eff">2 degrees nimbler and wiser</h3><br><br>
-                        <p class="card-footer">Master's in Management and Systems (NYU 2026) and Bachelor's in Computer Science (DLSU 2016). Legal work eligibility included, subject to extension.</p>
-                    </div>  
-                </div>  
-            </div>
-        </div>
-    </div>
-  </section>
 
 <section class="section" id="companies" style="background-color: #ffffff;">
   <div class="container text-center">
@@ -182,22 +203,22 @@
     <div class="row justify-content-center align-items-center g-4">
       <div class="col-6 col-md-3">
         <a href="https://www.nokia.com" target="_blank" rel="noopener noreferrer">
-        <img src="../images/Nokia-Logo-New.png" alt="Logo 1" class="img-fluid logo-img">
+        <img src="images/Nokia-Logo-New.png" alt="Logo 1" class="img-fluid logo-img">
         </a>
       </div>
       <div class="col-6 col-md-3">
         <a href="https://www.ibm.com" target="_blank" rel="noopener noreferrer">
-        <img src="../images/ibm-logo.png" alt="Logo 2" class="img-fluid logo-img-s">
+        <img src="images/ibm-logo.png" alt="Logo 2" class="img-fluid logo-img-s">
         </a>
       </div>
       <div class="col-6 col-md-3">
         <a href="https://www.globe.com.ph" target="_blank" rel="noopener noreferrer">
-        <img src="../images/Globe_Telecom_logo.png" alt="Logo 3" class="img-fluid logo-img">
+        <img src="images/Globe_Telecom_logo.png" alt="Logo 3" class="img-fluid logo-img">
         </a>
       </div>
       <div class="col-6 col-md-3">
         <a href="https://www.nyu.edu" target="_blank" rel="noopener noreferrer">
-        <img src="../images/Nyu_short_color.png" alt="Logo 4" class="img-fluid logo-img">
+        <img src="images/Nyu_short_color.png" alt="Logo 4" class="img-fluid logo-img">
         </a>
       </div>
     </div>
@@ -214,7 +235,7 @@
             <h1>Contact me, and we'll see.</h1>
             <p>Let's create with pure imagination.</p>
             <div class="d-flex flex-column flex-md-row gap-3 mt-4">
-              <a href="mailto:raffyorbe@nyu.edu" class="btn btn-primary btn-md">Send Email</a>
+              <a href="mailto:raffyorbe@nyu.edu" class="btn btn-primary btn-md">Send email</a>
               <a href="https://www.linkedin.com/in/raffyorbe" target="_blank" class="btn btn-secondary btn-md">Connect on LinkedIn</a>
             </div>
           </div>
@@ -228,13 +249,14 @@
 
   <!-- Footer -->
   <footer class="text-center py-4">
-    <p class="mb-0">© 2026 Raffy Orbe. All rights reserved. Image credits: Microsoft, NYU, and other sources.</p>
+    <p class="mb-0">© 2026 Raffy Orbe. Visual assets are property of their respective owners.</p>
+    <!-- <p>Visual assets are property of their respective owners.</p> -->
   </footer>
 
   <!-- JS -->
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
   ></script>
-  <script src="../scripts/index.js"></script>
+  <script src="scripts/index.js"></script>
 </body>
 </html>
