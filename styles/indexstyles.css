@@ -688,12 +688,15 @@ footer {
   }
 
   #user-input {
-    font-size: 0.9rem;
+    font-size: 16px;
     padding: 0.35rem 0.4rem;
+    transform: scale(0.9); /* scale back down visually - fix for mobile auto zoom behavior*/
+    transform-origin: left center; /* scale back down visually - fix for mobile auto zoom behavior*/
+    width: 111.11%; /* scale back down visually - fix for mobile auto zoom behavior*/
   }
 
   #user-input::placeholder {
-    font-size: 0.9rem;
+    font-size: 16px;
   }
 
   #send-btn {
