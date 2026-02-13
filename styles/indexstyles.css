@@ -54,10 +54,10 @@ body {
 }
 
 /* Hello Section */
-.hello {
+/* .hello {
   background-color: #f2f4f8;
   text-align: center;
-}
+} */
 
 .hello-border-wrapper {
   position: fixed;
@@ -76,6 +76,7 @@ body {
   /* background-image: url(../images/MS_EMOJI_380_v002_4k_1035.jpg);  */
   background-size: cover;
   background-position: center;
+  background-color: #f2f4f8;
   color: #ffffff;
   position: relative;
   text-align: center;
@@ -113,7 +114,7 @@ body {
   border-radius: 36px;
 }
 
-.section#hello {
+#hello {
   position: relative;
   z-index: 1; /* lower than chat overlay */
 }
@@ -189,7 +190,7 @@ h1 {
 }
 
 h2.ai-welcome{
-  scroll-margin-top: 96px;
+  scroll-margin-top: 148px;
   font-weight: 300;
   text-align: center;
   background: linear-gradient(90deg, #0f62fe, #22d3ee);
@@ -475,10 +476,10 @@ p {
 
 /* Floating bubble */
 .chat-overlay {
-  background-color: rgba(0, 45, 156, 1);
+  background: linear-gradient(to bottom, #f2f4f8 0%, #f2f4f8 40%, #edf5ff 60%, #d0e2ff 100%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  color: #ffffff;       
+  color: #161616;       
   padding: 16px 16px;
   border-radius: 24px;
   pointer-events: auto;      
@@ -494,7 +495,7 @@ p {
   width: 100%;
   box-shadow: 0 2px 12px rgba(15, 98, 254, 0.7);
   font-size: small;
-  font-weight: 300;
+  font-weight: 400;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -529,7 +530,7 @@ p {
 .chat-close {
   background: transparent;
   border: none;
-  color: #ffffff;
+  color: #161616;
   font-size: 1.1rem;
   margin-left: 12px;
   cursor: pointer;
@@ -546,7 +547,7 @@ p {
   width: 6px;
   height: 6px;
   margin: 0 2px;
-  background-color: currentColor;
+  background-color: #0f62fe;
   border-radius: 50%;
   opacity: 0.3;
   animation: blink 1.4s infinite;
@@ -586,6 +587,7 @@ p {
   background: transparent;
   font-size: 1rem;
   padding: 0.6rem 0.5rem;
+  color: #161616;
 }
 
 #user-input::placeholder {
@@ -724,6 +726,10 @@ footer {
 
   h2{
     text-align: center;
+  }
+
+  h2.ai-welcome{
+    scroll-margin-top: 264px;
   }
 
   p.subtitle{
