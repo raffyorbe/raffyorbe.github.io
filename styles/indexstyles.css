@@ -736,33 +736,16 @@ footer {
     font-size: 0.8rem; /* reduced font size on mobile */
   }
 
+  .hello-cell{
+    min-height: 120vh;
+  }
+    
   .hello-border-wrapper {
     padding: 3px; 
     width: 95vw;  
     max-width: none; 
     min-width: unset; 
   }
-
-   .hero-stats {
-    bottom: 16px;
-    left: auto;
-    transform: none;
-    margin-top: 1.5rem;
-    padding: 0 1rem;
-  }
-
-  .stat-card {
-    padding: 0.5rem;
-    border-radius: 16px;
-  }
-
-  .stat-card h5 {
-    font-size: 14px;
-  }
-
-  .stat-card p {
-    font-size: 12px;
-  } 
 
   .hello-chat-border-wrapper {
     position: relative;
