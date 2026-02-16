@@ -808,8 +808,21 @@ footer {
 }
 
 @media (max-height: 500px) {
-  .hello-cell {
-    min-height: 200vh;
+   .hero-stats {
+    bottom: 16px; /* reduce spacing from bottom */
+  }
+
+  .stat-card {
+    padding: 0.5rem;
+    border-radius: 16px;
+  }
+
+  .stat-card h5 {
+    font-size: 14px;
+  }
+
+  .stat-card p {
+    font-size: 12px;
   }
 }
 
