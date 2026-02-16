@@ -743,6 +743,28 @@ footer {
     min-width: unset; 
   }
 
+   .hero-stats {
+    position: relative;       /* Prevent overlap issues on small screens */
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .stat-card {
+    padding: 0.75rem;
+    border-radius: 16px;
+  }
+
+  .stat-card h5 {
+    font-size: 16px;
+  }
+
+  .stat-card p {
+    font-size: 14px;
+  } 
+
   .hello-chat-border-wrapper {
     position: relative;
     z-index: 9999; /* above all page sections on mobile */
@@ -778,6 +800,7 @@ footer {
     max-width: 100%; 
     z-index: 10000; /* ensure overlay is above the wrapper */
   }
+    
   .chat-overlay {
     font-size: 0.85rem;
     padding: 12px 12px;
