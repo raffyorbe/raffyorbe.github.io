@@ -109,14 +109,11 @@ body::before {
   /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25); */
   /* border-radius: 36px; */
   /* height: 560px; */
-  min-height: 100svh;
+  height: 100vh;
   width: 100%;
   overflow: hidden;
   z-index: 2;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .hello-video {
@@ -809,3 +806,10 @@ footer {
   }
 
 }
+
+@media (max-height: 500px) {
+  .hello-cell {
+    min-height: 120vh;
+  }
+}
+
