@@ -725,7 +725,7 @@ footer {
 
 /* Responsive CSS */
 
-@media (max-width: 576px) {
+@media (max-width: 576px) and (orientation: landscape) {
   
   .floating-navbar {
     padding: 4px 4px; /* reduced navbar padding on mobile */
@@ -744,8 +744,7 @@ footer {
   }
 
    .hero-stats {
-    position: relative;       /* Prevent overlap issues on small screens */
-    bottom: auto;
+    bottom: 16px;
     left: auto;
     transform: none;
     margin-top: 1.5rem;
@@ -753,16 +752,16 @@ footer {
   }
 
   .stat-card {
-    padding: 0.75rem;
+    padding: 0.5rem;
     border-radius: 16px;
   }
 
   .stat-card h5 {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .stat-card p {
-    font-size: 14px;
+    font-size: 12px;
   } 
 
   .hello-chat-border-wrapper {
