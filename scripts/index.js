@@ -2,15 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll(".floating-navbar a");
 
-  // Raise viewport on initial mobile load
-  const isiOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-  const isPortrait = window.innerHeight > window.innerWidth;
-
-  if (isiOS && isPortrait) {
-    const safeTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sat')) || 44;
-    window.scrollTo(0, safeTop);
-  }
-
   //Scroll listener
 
   function getCurrentSectionId() {
