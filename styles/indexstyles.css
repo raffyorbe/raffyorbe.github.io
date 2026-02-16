@@ -11,19 +11,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Mobile top bar */
-body::before { 
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: env(safe-area-inset-top, 20px); /* uses notch height or fallback */
-  background-color: #ffffff;
-  z-index: 1000;
-  pointer-events: none;
-}
-
 /* Nav bar */
 .floating-navbar {
   position: relative;
@@ -35,7 +22,7 @@ body::before {
   padding-top: 8px;
   padding-bottom: 8px;
   border-radius: 999px;
-  background-color: rgba(255, 255, 255, .5);
+  background-color: rgba(255, 255, 255, .6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
@@ -114,6 +101,10 @@ body::before {
   overflow: hidden;
   z-index: 2;
   margin: 0;
+  /* The following expands viewport on mobile to take whole screen */
+  min-height: 100dvh; 
+  padding-top: env(safe-area-inset-top); 
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .hello-video {
@@ -127,7 +118,8 @@ body::before {
 }
 
 .hello-overlay {
-  background-color: rgba(15, 98, 254, 0.15); 
+  /* background-color: rgba(15, 98, 254, 0.15);  */
+  background: linear-gradient(to bottom, rgba(15, 98, 254, 0.15) 0%, rgba(15, 98, 254, 0.15) 60%, rgba(15, 98, 254, 0.4) 100%);
   padding: 3rem 1rem;
   position: absolute;
   top: 0;
@@ -244,6 +236,22 @@ body::before {
   overflow: hidden;
 }
 
+.contact-overlay {
+  background-color: rgba(15, 98, 254, 0.15); 
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 20;
+  /* border-radius: 36px; */
+}
+
 /* General Section Styling */
 .section {
   padding-top: 100px;
@@ -255,7 +263,6 @@ h1 {
 }
 
 h2.ai-welcome{
-  scroll-margin-top: 280px;
   font-weight: 300;
   text-align: center;
   background: linear-gradient(90deg, #0f62fe, #22d3ee);
@@ -263,6 +270,10 @@ h2.ai-welcome{
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+}
+
+#chat{
+  scroll-margin-top: 88px;
 }
 
 p.tag{
@@ -735,12 +746,16 @@ footer {
   .floating-navbar a {
     font-size: 0.8rem; /* reduced font size on mobile */
   }
-    
+
   .hello-border-wrapper {
     padding: 3px; 
     width: 95vw;  
     max-width: none; 
     min-width: unset; 
+  }
+
+  #chat{
+  scroll-margin-top: 80px;
   }
 
   .stat-card {
@@ -791,7 +806,6 @@ footer {
     max-width: 100%; 
     z-index: 10000; /* ensure overlay is above the wrapper */
   }
-    
   .chat-overlay {
     font-size: 0.85rem;
     padding: 12px 12px;
@@ -810,19 +824,31 @@ footer {
     text-align: center;
   }
 
-  h2.ai-welcome{
-    scroll-margin-top: 360px;
-  }
-
   p.subtitle{
     text-align: center;
   }
 
 }
 
+@media (max-width: 768px){
+  h2{
+    text-align: center;
+  }
+
+  p.subtitle{
+    text-align: center;
+  }
+}
+
 @media (max-height: 500px) {
-   .hero-stats {
-    bottom: 16px;
+
+  .hello-cell {
+    height: auto;
+    min-height: 160vh;
+  }
+
+  #chat{
+  scroll-margin-top: 0;
   }
 
   .stat-card {
@@ -834,8 +860,12 @@ footer {
     font-size: 14px;
   }
 
+  h3 {
+    font-size: 20px;
+  }
+
   .stat-card p {
     font-size: 12px;
   }
-}
 
+}
