@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const isPortrait = window.innerHeight > window.innerWidth;
 
   if (isiOS && isPortrait) {
-    const safeTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sat')) || 44; // fallback ~44px for notch
+    const safeTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sat')) || 44;
     window.scrollTo(0, safeTop);
   }
 
