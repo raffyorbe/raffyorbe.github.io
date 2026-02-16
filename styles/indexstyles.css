@@ -743,6 +743,20 @@ footer {
     min-width: unset; 
   }
 
+  .stat-card {
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border-radius: 16px;
+  }
+
+  .stat-card h5 {
+    font-size: 14px;
+  }
+
+  .stat-card p {
+    font-size: 12px;
+  }
+
   .hello-chat-border-wrapper {
     position: relative;
     z-index: 9999; /* above all page sections on mobile */
@@ -809,11 +823,12 @@ footer {
 
 @media (max-height: 500px) {
    .hero-stats {
-    bottom: 16px; /* reduce spacing from bottom */
+    bottom: 16px;
   }
 
   .stat-card {
     padding: 0.5rem;
+    margin: 0.5rem;
     border-radius: 16px;
   }
 
