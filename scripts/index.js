@@ -2,6 +2,20 @@ document.addEventListener("DOMContentLoaded", function () {
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll(".floating-navbar a");
 
+  // Set mobile hero to full viewport
+  function setHeroFullHeight() {
+    const hero = document.querySelector('.hello-cell');
+    if (hero) {
+      hero.style.height = `${window.innerHeight}px`;
+    }
+  }
+
+  setHeroFullHeight();
+
+  window.addEventListener('resize', setHeroFullHeight);
+
+  //Scroll listener
+
   function getCurrentSectionId() {
     let scrollPos = window.scrollY + window.innerHeight / 3;
 
@@ -185,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (textElem) {
         textElem.textContent = aiMessage;
 
-        // Fade animation for new message
+        // Add fade animation for new message
         textElem.classList.add("fade-in");
         setTimeout(() => textElem.classList.remove("fade-in"), 400);
       }
@@ -198,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (textElem) {
         textElem.textContent = "Error connecting to the server. 😵";
 
-        // Fade-in for the error
+        // Fade-in for the error as well
         textElem.classList.add("fade-in");
         setTimeout(() => textElem.classList.remove("fade-in"), 400);
       }
@@ -213,6 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
       userInput.value = "";
       userInput.focus();
     }
+
   }
 
   // Event listeners
