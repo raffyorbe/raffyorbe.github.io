@@ -2,17 +2,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll(".floating-navbar a");
 
-  // Set mobile hero to full viewport
-  function setHeroFullHeight() {
-    const hero = document.querySelector('.hello-cell');
-    if (hero) {
-      hero.style.height = `${window.innerHeight}px`;
-    }
+  // Raise viewport on initial mobile load
+  const isiOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  const isPortrait = window.innerHeight > window.innerWidth;
+
+  if (isiOS && isPortrait) {
+    const safeTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sat')) || 44; // fallback ~44px for notch
+    window.scrollTo(0, safeTop);
   }
-
-  setHeroFullHeight();
-
-  window.addEventListener('resize', setHeroFullHeight);
 
   //Scroll listener
 
