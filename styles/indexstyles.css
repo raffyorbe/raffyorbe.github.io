@@ -341,7 +341,7 @@ p.tag{
   background-image: url(../images/fluid_textures_11.jpg);
   color: white;
   overflow: hidden;
-  height: 300px; 
+  height: 100%; 
   display: flex;
   align-items: end; 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -386,6 +386,19 @@ p.tag{
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+.project-card.bg-image5 {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-image: url(../images/16-new-windows-dev-home-wallpapers-light-dark-versions-4k-v0-ozkpdpas4n6b1.jpg);
+  color: white;
+  overflow: hidden;
+  height: 300px; 
+  display: flex;
+  align-items: end; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
 /* Dark overlay */
 .project-card.bg-image1::before {
   content: '';
@@ -416,6 +429,14 @@ p.tag{
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   background-color: rgba(15, 98, 254, 0.1);
+  z-index: 1;
+}
+
+.project-card.bg-image5::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 45, 156, 0.2);
   z-index: 1;
 }
 
@@ -774,6 +795,15 @@ footer {
 
   .stat-card p {
     font-size: 12px;
+  }
+
+  .project-card,
+  .project-card.bg-image1,
+  .project-card.bg-image2,
+  .project-card.bg-image3,
+  .project-card.bg-image4,
+  .project-card.bg-image5 {
+    height: 100%;
   }
 
   .hello-chat-border-wrapper {
