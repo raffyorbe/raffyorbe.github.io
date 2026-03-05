@@ -5,7 +5,7 @@ html {
 }
 
 body {
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'Google Sans Flex', sans-serif;
   background-color: #ffffff;
   color: #161616;
   overflow-x: hidden;
@@ -270,7 +270,7 @@ h1 {
 h2.ai-welcome{
   font-weight: 300;
   text-align: center;
-  background: #0f62fe;
+  background: linear-gradient(to bottom, #0f62fe, #33b1ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -632,10 +632,11 @@ p {
 .chat-close {
   background: transparent;
   border: none;
-  color: #161616;
+  color: #78a9ff;
   font-size: 1.1rem;
-  font-weight: 200;
+  font-weight: 300;
   margin-left: 12px;
+  padding: 0px 0px 0px 8px;
   cursor: pointer;
 }
 
@@ -744,8 +745,7 @@ p {
   animation-delay: 0s;
 }
 
-.ai-disclaimer {
-  text-align: center;
+.disclaimer {
   font-size: 0.7rem;
   color: #161616;
   margin-top: 8px;
@@ -863,15 +863,31 @@ footer {
   p.subtitle{
     text-align: center;
   }
+  .disclaimer{
+    text-align: center;
+  }
 
 }
 
 @media (max-width: 768px){
+  .project-card,
+  .project-card.bg-image1,
+  .project-card.bg-image2,
+  .project-card.bg-image3,
+  .project-card.bg-image4,
+  .project-card.bg-image5 {
+    height: 100%;
+  }
+  
   h2{
     text-align: center;
   }
 
   p.subtitle{
+    text-align: center;
+  }
+
+  .disclaimer{
     text-align: center;
   }
 }
