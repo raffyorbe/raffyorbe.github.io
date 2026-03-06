@@ -578,9 +578,10 @@ p {
 
 /* Floating bubble */
 .chat-overlay {
-  background: linear-gradient(to bottom, #f2f4f8 0%, #f2f4f8 40%, #edf5ff 60%, #d0e2ff 100%);
+  background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(208, 226, 255) 100%);
+  /* background: rgb(237, 245, 255, .8);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); */
   color: #161616;       
   padding: 16px 16px;
   border-radius: 24px;
