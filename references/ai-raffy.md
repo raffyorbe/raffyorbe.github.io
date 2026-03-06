@@ -1,36 +1,76 @@
 # About Me
-I'm Raffy Orbe - a product guy who combines product vision, technical knowledge, and project execution to create delightful digital experiences that bring value to the business and its customers.  
+I'm Raffy Orbe - a product guy who combines product vision, technical knowledge, and project execution to create delightful digital experiences that bring value to the business and its customers.
 
-# Core Skills
-- Product Design (UI/UX, Interaction Design, Visual Design)
-- UI Prototyping (Figma)
-- Frontend Development (HTML, CSS, JavaScript, Bootstrap, Github)
-- IT Systems & Workflow Optimization (Automations, AI Integration, Data Management, System Security)
-- Cross-functional Collaboration (Product and Project Management, Design, Development, Testing)
+My full name is Raphael Angelo Orbe.
+
+# Skills
+- Product (Product Strategy, Stakeholder Management, End-to-End Product Design, Experimentation,
+Agile, Design Thinking, Growth Loops, Jobs-to-be-Done)
+- Design (UI/UX Design, Design Systems, Interaction Design, User-Centered Design, Wireframing,
+Prototyping, Frontend Development, Systems Design, Goal-Directed Design)
+- Technical (JavaScript, React, Python, SQL, HTML, CSS)
+- Tools (Figma, GitHub, OpenAI Platform, FastAPI, Atlassian, Adobe CC, Render, Bootstrap, SQLite)
+- Skills are continuously being acquired or honed as a commitment to personal growth and value creation.
 
 # Professional Summary
-With over seven years of experience in research and development, product experience design, and IT systems delivery, I bring a well-rounded blend of technical experience and user-focused thinking to my work. I’ve held roles at companies like Nokia and IBM, and currently, I’m supporting over 1,000 students across five programs at NYU as an IT Graduate Assistant while pursuing my Master's in Management and Systems. My approach to work is cognizant of all aspects of the product development lifecycle, being mindful of all the prerequisites and dependencies needed to make a product or service successful.
+With over seven years of experience across product experience design, research and development, and
+IT systems delivery, I bring a practical mix of technical depth and user-centered thinking to my work. I’ve
+held roles at companies like Nokia and IBM, and I currently support more than 1,000 students across five
+programs at NYU as an IT Graduate Assistant while pursuing my Master’s in Management and Systems.
+Across these roles, I design and deliver both internal and front-facing systems and experiences that help
+people achieve their goals more effectively while creating value for the organization. As an engineer by
+craft, I’m always looking for ways to make technology not only useful, but also delightful for the people
+using it. I am seeking for roles where I can bring together my product mindset, technical foundation, and
+user-centered approach to create experiences that truly make a difference for people.
+
+Throughout my career, I’ve intentionally pursued continuous reinvention by learning new tools, expanding
+into adjacent roles, and finding better ways to solve problems as technology and user expectations
+evolve. I know I don’t have all the answers, but working alongside highly capable engineers, designers,
+and leaders has consistently sharpened both my technical abilities and how I approach product decisions.
+Many of my most successful projects have come from thoughtful experimentation, guided by experienced
+mentors and sustained by personal resilience. I’m motivated by environments that reward curiosity,
+adaptability, and steady improvement, and I seek roles that provide the opportunity to keep building in that
+direction. I’m also someone who believes growth requires a degree of optimistic risk-taking by taking on
+new challenges, navigating uncertainty, and leaning into opportunities that stretch my comfort zone. I
+would welcome the chance to bring that mindset to my next role.
 
 # Experience
 **IT Graduate Assistant**, New York University (September 2024 – Present)  
--  Introduced over 20 new automations and AI-assisted functions to existing workflows and student information systems resulting in processing time savings of up to 50%.
-- Reduced IT costs by 14.7% annually by optimizing student information systems utilization and aligning functional requirements with long-term plans.
+-  Implement 20+ AI-assisted workflow automations across existing information systems, reducing
+processing time by up to 50%.
+- Reduce IT costs by 14.7% annually by optimizing information systems utilization and aligning cross-
+functional requirements with long-term program and operational strategy.
+- Increase program outreach and engagement to over 1,000 students by streamlining complex user
+workflows across the department’s 5 global and research programs.
 
 **Digital Growth UI/UX Expert**, Globe Telecom (March 2024 – July 2024)  
--  Led the early stage product experience development of a new mobile app that aims to enable more communities to get connected online, contributing to a 74% increase in prepaid fiber internet subscriptions by Q4 of 2024.
-- Developed an in-app product cross-sell experience that resulted in up to 4x increase in product activations through targeted engagements vs broad targeting at 0.05% over a period of 30 days.
+-  Led the end-to-end product experience for a new mobile app at the Philippines’ leading telecom
+company, enabling remote communities to get connected online and contributing to a 74% increase in
+subscriptions by Q4 2024.
+- Delivered and optimized an in-app cross-sell user journey that resulted in up to 4x increase in product
+activations through targeted engagements vs broad targeting at 0.05% over a period of 30 days.
+- Ran hypothesis-driven experiments on in-app gamification experiences aimed at increasing retention
+and revenue per user.
 
 **UI/UX Designer**, IBM (December 2020 – April 2023)  
--  Designed the Immerscio.bio learning platform, which earned distinction from the French government for enabling a 100% online learning and training experience for bioproduction professionals in response to the challenges of the COVID-19 pandemic.
-- Streamlined the core product offerings in collaboration with the design and development team, providing clients a selection of pre-configured solutions resulting to faster customization and an accelerated delivery timeline that saves up to two weeks for new clients.
+-  Led the design of the full user experience for the Immerscio.bio platform, which earned distinction
+from the government of France for enabling an online learning experience for bioproduction
+professionals during the COVID-19 pandemic.
+- Streamlined core product offerings through cross-functional collaboration with product, design, and
+engineering teams, delivering pre-configured solutions that accelerated implementation timelines by
+up to 2 weeks for new clients.
+- Ensured quality and WCAG-compliant accessibility through usability testing and high-fidelity
+prototyping, supported by hands-on frontend development.
 
-**R&D Tech Writer/UX Lead**, Nokia (December 2016 – March 2020)
-- Championed a multi-year user experience improvement plan to transform the entire product portfolio of separate network analytics tools into one user-friendly product experience, a first in the team’s history.
-- Created and transitioned multiple technical documents into a centralized knowledge base via XML, reducing mobile network operator dependence on technical support from Nokia engineers.
+**R&D Technical Writer and UX Lead**, Nokia (December 2016 – March 2020)
+- Spearheaded a multi-year UX strategy and large-scale workflow redesign to transform multiple legacy
+network analytics tools into an intuitive web-based dashboard to address customer pain points.
+- Created and transitioned multiple technical documents into a scalable, centralized knowledge
+platform, reducing dependence on support engineers.
 
 # Gaps in Work Experience Timeline
 - In 2020, Nokia ceased operations in the Philippines. As a result, Nokia's entire R&D operations in the country were halted, and all employees were laid off. That time was also the peak of the COVID-19 pandemic, making job searching difficult as companies ceased hiring. By December 2020, IBM had recruited me as a full-time UI/UX Designer.
-- In 2023, I decided to leave IBM to focus on searching for career advancement opportunities through graduate studies. By early 2024, Globe Telecom recruited me as a Digital Growth UI/UX Expert, wherein the only reason why I left the company with such a short tenure was that I was accepted at NYU a few months after I joined. My managers and teams at both IBM and Globe have been very supportive of me, and we remain well connected.
+- In 2023, I decided to leave IBM to focus on preparing for and applying to graduate studies opportunities. By early 2024, Globe Telecom recruited me as a Digital Growth UI/UX Expert, wherein the only reason I left the company with such a short tenure was that I was accepted into NYU a few months after I joined. My managers and teams at both IBM and Globe have been very supportive of me, and we remain well connected.
 
 # Comments or Feedback About Me from Managers
 - Outspoken, able to communicate ideas or concerns openly.
@@ -40,10 +80,7 @@ With over seven years of experience in research and development, product experie
 
 # Work Eligibility and Visa Sponsorship
 ## United States (US)
-I am legally eligible to work in the United States for up to 3 years after graduating from NYU through STEM OPT. I fully understand and respect that the company may prioritize hiring American talent, but if there’s a place within the company where my background can create value, I’d be honored to contribute. Down the line, I’d also be open to H-1B visa sponsorship if it ever made sense for both sides.
-
-## United Kingdom (UK)
-I am legally eligible to work in the United Kingdom for up to 2 years after graduating from NYU through an HPI Visa. I fully understand and respect that the company may prioritize hiring British talent, but if there’s a place within the company where my background can create value, I’d be honored to contribute. Down the line, I’d also be open to transitioning to a Skilled Worker visa if it ever made sense for both sides.
+I am legally eligible to work in the United States for up to 3 years after graduating from NYU through STEM OPT. I fully understand and respect that the company may prioritize hiring local talent, but if there’s a place within the company where my background can create value, I’d be honored to contribute. Down the line, I’d also be open to H-1B visa sponsorship if it ever made sense for both sides. Regardless, I would love the chance to connect and explore whether I might be a good fit.
 
 # Education
 - MS in Management and Systems, New York University (2026)
@@ -51,16 +88,19 @@ I am legally eligible to work in the United Kingdom for up to 2 years after grad
 - BS in Computer Science, De La Salle University (2016)
 
 # Projects, Design Studies, and Demos Featured on Website
-- My featured projects on this website are either Personal or Educational work to demonstrate my product design and development process.
-- Actual designs or prototypes from work experiences are not featured due to nondisclosure agreements.
-- The Xbox design study imagines a console dashboard experience based on public feedback about Microsoft's initial design.
+- My featured projects on this website are either Personal or Educational work to demonstrate my design and development process.
+- Actual designs or prototypes from work experiences are not featured due to non-disclosure agreements.
+- The Xbox design study imagines a console dashboard experience to address users' pain points about Microsoft's initial design.
 - The Twitch design study explores making features that encourage user engagement and retention easier to access.
 - The Globe design study was an end-to-end product concept challenge given to me as part of the company's hiring process. The pitch resulted in me joining the company.
-- The NYU department portal UI was an academic requirement intended to demonstrate understanding of basic web development. For this particular project, I decided to tie it to the work I was doing at that time as an IT Graduate Assistant.
+- The NYU jobs portal prototype is an academic requirement tied to the work I was doing as an IT Graduate Assistant. It provides a web-based portal for an originally manual hiring spreadsheet.
+- The Job Board is a full-stack Python, React, and SQL application. It was originally intended as a simple to-do list app to practice core development concepts across the stack. It is repurposed into a personal job board application to better align with my current goals, providing a practical solution to an existing problem while acquiring new skills.
 
 # Fun Facts
 - While I am not a master at programming in general, I do understand code and how it works to achieve my vision. This gives me the ability to work well with software engineers and determine if new features or product experiences can be successfully implemented or need to be modified given the technological limitations of the development platform.
 - I am a self-learner. Many of the skills I've gained throughout my career were learned with minimal training and supervision.
+- AI has been instrumental to my personal learning initiatives.
+- My opinion about AI is that it is a tool used to augment human capability. We must learn how to take advantage of its ability to enhance our own capabilities while being ethical in its use.
 - I built this website with assistance from AI. It provided me with guidance on how to do things I didn't know, such as setting up AI integration via API. Of course, it didn't do everything. Otherwise, this website would not work or look as fabulous as it does.
 - This website's frontend is hosted on Github while its AI, which uses OpenAI's GPT-5 mini, runs via API and Render.
 - The part where I mentioned I was once able to create an experience with an 11.8 million user reach is true. That's 11.8 million registered users for a telco super app. That number more or less accounts for the thousands of enterprise users and students I've helped achieve their goals.
