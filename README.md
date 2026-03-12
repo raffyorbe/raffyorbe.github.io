@@ -1,4 +1,4 @@
-# raffyorbe.com
+# raffyorbe.github.io
 This project is my personal portfolio website showcasing my work in Product UX Design, Frontend Development, and End-to-End Product Execution. It also includes a custom AI chat assistant powered by GPT-5 mini via OpenAI API that can answer questions about my background, experience, and projects.
 
 The goal of this project was not only to present my work but also to demonstrate practical full-stack development skills, including frontend UI development, API integration, and deployment.
