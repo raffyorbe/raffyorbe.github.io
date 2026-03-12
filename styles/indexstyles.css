@@ -5,7 +5,7 @@ html {
 }
 
 body {
-  font-family: 'Google Sans Flex', sans-serif;
+  font-family: 'Albert Sans', sans-serif;
   background-color: #ffffff;
   color: #161616;
   overflow-x: hidden;
@@ -229,7 +229,7 @@ body {
 }
 
 .contact-cell {
-  background-image: url(../images/MS_EMOJI_210_v002_4k_1065.jpg); 
+  background-image: url(../images/contact_bg.jpg); 
   background-size: cover;
   background-position: center;
   color: #ffffff;
@@ -259,8 +259,8 @@ body {
 
 /* General Section Styling */
 .section {
-  padding-top: 100px;
-  padding-bottom: 40px;
+  padding-top:40px;
+  padding-bottom:40px;
 }
 
 h1 {
@@ -281,12 +281,25 @@ h2.ai-welcome{
   scroll-margin-top: 88px;
 }
 
+#impact{
+  scroll-margin-top: 0px;
+}
+
+#projects{
+  scroll-margin-top: 56px;
+}
+
+#contact{
+  scroll-margin-top: 56px;
+}
+
 p.tag{
   display:inline-block;
   align-self:first baseline;
   border: 2px solid #ffffff;
   padding: 2px;
   font-size: 12px;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); */
 }
 
 /* Buttons */
@@ -403,7 +416,7 @@ p.tag{
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image: url(../images/hero@2x-2880x1620.jpg);
+  background-image: url(../images/milad-fakurian-eRbgsJ0Ec0o-unsplash.jpeg);
   color: white;
   overflow: hidden;
   height: 300px; 
@@ -417,7 +430,7 @@ p.tag{
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(15, 98, 254, 0.1);
+  background-color: rgba(0, 45, 156, 0.1);
   z-index: 1;
 }
 
@@ -425,7 +438,7 @@ p.tag{
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(15, 98, 254, 0.1);
+  background-color: rgba(0, 45, 156, 0.1);
   z-index: 1;
 }
 
@@ -433,7 +446,7 @@ p.tag{
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(15, 98, 254, 0.1);
+  background-color: rgba(0, 45, 156, 0.1);
   z-index: 1;
 }
 
@@ -441,7 +454,7 @@ p.tag{
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(15, 98, 254, 0.1);
+  background-color: rgba(0, 45, 156, 0.1);
   z-index: 1;
 }
 
@@ -449,7 +462,7 @@ p.tag{
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0, 45, 156, 0.2);
+  background-color: rgba(0, 45, 156, 0.1);
   z-index: 1;
 }
 
@@ -457,7 +470,7 @@ p.tag{
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(15, 98, 254, 0.2);
+  background-color: rgba(0, 45, 156, 0.1);
   z-index: 1;
 }
 
@@ -505,6 +518,10 @@ p.tag{
   padding: 20px;
 }
 
+/* .project-card p, .project-card h5{
+ text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+} */
+
 /* XP Card content */
 .xp1-card .card-content,
 .xp2-card .card-content,
@@ -521,11 +538,6 @@ p.tag{
 
 .card-footer {
   margin-top: auto;
-}
-
-p {
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 400;
 }
 
 .logo-img {
@@ -696,7 +708,7 @@ p {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 8px 8px;
+  padding: 8px;
   border-radius: 999px;
   background-color: rgba(255, 255, 255, 1);
   backdrop-filter: blur(10px);
