@@ -63,7 +63,8 @@ body {
 
 /* Active Pill Style */
 .floating-navbar a.active {
-  background-color: rgba(22, 22, 22, 1);  
+  /* background-color: rgba(22, 22, 22, 1);   */
+  background: linear-gradient(to left, #0f62fe, rgb(51, 177, 255));
   color: #ffffff;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -124,7 +125,7 @@ body {
 
 .hello-overlay {
   /* background-color: rgba(15, 98, 254, 0.15);  */
-  background: linear-gradient(to bottom, rgba(15, 98, 254, 0.15) 0%, rgba(15, 98, 254, 0.15) 60%, rgba(15, 98, 254, 0.4) 100%);
+  background: linear-gradient(to bottom, rgba(15, 98, 254, 0.1) 0%, rgba(15, 98, 254, 0.1) 60%, rgba(15, 98, 254, 0.4) 100%);
   padding: 3rem 1rem;
   position: absolute;
   top: 0;
@@ -229,7 +230,7 @@ body {
 }
 
 .contact-cell {
-  background-image: url(../images/contact_bg.jpg); 
+  background-image: url(../images/Gemini_Generated_Image_ia07xuia07xuia07.jpg); 
   background-size: cover;
   background-position: center;
   color: #ffffff;
@@ -242,7 +243,7 @@ body {
 }
 
 .contact-overlay {
-  background-color: rgba(15, 98, 254, 0.15); 
+  background-color: rgba(15, 98, 254, 0.1); 
   position: absolute;
   top: 0;
   left: 0;
@@ -564,21 +565,43 @@ p.tag{
               0 0 32px rgba(15, 98, 245, 0.6);
 } */
 
-.project-card,
-.project-card.bg-image1,
-.project-card.bg-image2,
-.project-card.bg-image3,
-.project-card.bg-image4 {
+.project-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.project-card:hover,
-.project-card.bg-image1:hover,
-.project-card.bg-image2:hover,
-.project-card.bg-image3:hover,
-.project-card.bg-image4:hover {
+/* .project-card:hover {
   transform: scale(1.03);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+} */
+
+.project-card.bg-image1:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 16px rgba(25, 128, 56, 0.9);
+}
+
+.project-card.bg-image2:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 16px rgba(208, 38, 112, 0.9);
+}
+
+.project-card.bg-image3:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 16px rgba(218, 30, 40, 0.9);
+}
+
+.project-card.bg-image4:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 16px rgba(138, 63, 252, 0.9);
+}
+
+.project-card.bg-image5:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 16px rgba(51, 177, 255, 0.9);
+}
+
+.project-card.bg-image6:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 16px rgba(0, 114, 195, 0.9);
 }
 
 /* --- AI Chat --- */
@@ -832,6 +855,10 @@ footer {
     font-size: 12px;
   }
 
+  h2.ai-welcome{
+  font-weight: 400;
+  }
+
   .project-card,
   .project-card.bg-image1,
   .project-card.bg-image2,
@@ -905,14 +932,15 @@ footer {
 }
 
 @media (max-width: 768px){
-  .project-card,
+  /* .project-card,
   .project-card.bg-image1,
   .project-card.bg-image2,
   .project-card.bg-image3,
   .project-card.bg-image4,
-  .project-card.bg-image5 {
+  .project-card.bg-image5,
+  .project-card.bg-image6 {
     height: 100%;
-  }
+  } */
   
   h2{
     text-align: center;
