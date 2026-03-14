@@ -863,6 +863,12 @@ footer {
   font-weight: 400;
   }
 
+  .xp1-card,
+  .xp2-card,
+  .xp3-card {
+  height: 256px; 
+  }
+    
   .project-card,
   .project-card.bg-image1,
   .project-card.bg-image2,
@@ -959,6 +965,12 @@ footer {
   .project-card.bg-image5,
   .project-card.bg-image6 {
     height: 256px;
+  }
+
+  .xp1-card,
+  .xp2-card,
+  .xp3-card {
+  height: 256px; 
   }
   
   h2{
@@ -1072,5 +1084,10 @@ footer {
     height: 256px;
   }
 
+  .xp1-card,
+  .xp2-card,
+  .xp3-card {
+  height: 256px; 
+  }
 
 }
