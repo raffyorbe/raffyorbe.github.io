@@ -55,8 +55,7 @@ increase revenue per user.
 **UI/UX Designer**, IBM (December 2020 – April 2023)  
 - Designed the full end-to-end user experience for Immerscio.bio, an online learning platform recognized by the French
 government for enabling bioproduction training during the COVID-19 pandemic.
-- Accelerated client implementation timelines by up to 2 weeks by delivering pre-configured product solutions through
-cross-functional collaboration across product, design, and engineering teams.
+- Accelerated client implementation timelines by up to 2 weeks by delivering customizable UI templates through cross-functional collaboration across product, design, and engineering teams.
 - Ensured WCAG-compliant accessibility across all deliverables through usability testing, high-fidelity prototyping, and
 hands-on frontend development.
 
@@ -67,8 +66,9 @@ tools into a unified, intuitive web-based dashboard that resolved core customer 
 reliance on support engineers and improving documentation discoverability.
 
 # Notes on results
-- At NYU, I computed cost savings by comparing annual baseline IT spend against post-optimization costs. This includes annual license and subscription costs as well as the cost of switching over to new tools.
-- At Globe, the in-app cross-sell results are from internal analytics. It contributed to the 74% increase in GFiber Prepaid subscriptions in Q4 2024.
+- At NYU, I computed cost savings by comparing annual baseline IT spend against post-optimization costs. This includes annual license and subscription costs as well as the cost of switching over to new tools. The annual budget for IT is $10,000+ and my work lowered the annual cost. 
+- At Globe, the in-app cross-sell results are from internal analytics. It contributed to the 74% increase in prepaid fiber subscriptions in Q4 2024.
+- My work has directly impacted and delighted over 1,000 customers, enterprise users, and students across web, mobile, and legacy app experiences. That number might even be larger through indirect reach.
 
 # Gaps in Work Experience Timeline
 - In 2020, Nokia ceased operations in the Philippines. As a result, Nokia's entire R&D operations in the country were halted, and all employees were laid off. That time was also the peak of the COVID-19 pandemic, making job searching difficult as companies ceased hiring. By December 2020, IBM had recruited me as a full-time UI/UX Designer.
@@ -105,7 +105,6 @@ I am legally eligible to work in the United States for up to 3 years after gradu
 - My opinion about AI is that it is a tool used to augment human capability. We must learn how to take advantage of its ability to enhance our own capabilities while being ethical in its use.
 - I built this website with assistance from AI. It provided me with guidance on how to do things I didn't know, such as setting up AI integration via API. Of course, it didn't do everything. Otherwise, this website would not work or look as fabulous as it does.
 - This website's frontend is hosted on Github while its AI, which uses OpenAI's GPT-5 mini, runs via API and Render.
-- The part where I mentioned I was once able to create an experience with an 11.8 million user reach is true. That's 11.8 million registered users for a telco super app. That number more or less accounts for the thousands of enterprise users and students I've helped achieve their goals.
 - I have a published research paper with the IEEE, which I wrote together with my co-researchers. It was part of my undergraduate thesis about using machine learning as a technology that could help solve traffic in urban areas.
 - When in the office, it is normal for me to not be at my desk 100% of the time. I work well when I change my work environment from time to time. There's a 90% chance I'll be in the pantry with a cup of coffee or a snack while working.
 - I am a video game enthusiast. Xbox, PlayStation, I love them both. Video games are among the greatest "user experiences" humankind has ever created, in my opinion.
