@@ -26,7 +26,7 @@ body {
   padding-top: 8px;
   padding-bottom: 8px;
   border-radius: 999px;
-  background-color: rgba(255, 255, 255, .6);
+  background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
@@ -64,7 +64,7 @@ body {
 /* Active Pill Style */
 .floating-navbar a.active {
   /* background-color: rgba(22, 22, 22, 1);   */
-  background: linear-gradient(to left, #0f62fe, rgb(51, 177, 255));
+  background: linear-gradient(to right, rgb(51, 177, 255), rgb(15, 98, 254));
   color: #ffffff;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -261,7 +261,7 @@ body {
 /* General Section Styling */
 .section {
   padding-top:40px;
-  padding-bottom:40px;
+  padding-bottom:48px;
 }
 
 h1 {
@@ -331,6 +331,11 @@ p.tag{
   background-color: #ffffff;
   border-color: #ffffff;
   color: #0f62fe;
+}
+
+.btn-link{
+color: #0f62fe;
+text-decoration: none;
 }
 
 /* Project Cards */
@@ -759,9 +764,7 @@ p.tag{
   border: none;
   background: #0f62fe;
   color: white;
-  font-weight: 500;
   border-radius: 999px;
-  padding: 0.6rem 1.2rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -891,8 +894,7 @@ footer {
   }
 
   #send-btn {
-    font-size: 0.9rem;
-    padding: 0.45rem 0.9rem;
+    padding: 0.2rem 0.45rem;
   }
 
   .floating-chatbar {
@@ -929,6 +931,10 @@ footer {
     text-align: center;
   }
 
+  .link-centered{
+    text-align: center;
+  }
+
 }
 
 @media (max-width: 768px){
@@ -953,6 +959,11 @@ footer {
   .disclaimer{
     text-align: center;
   }
+
+  .link-centered{
+    text-align: center;
+  }
+
 }
 
 @media (max-height: 500px) {
@@ -982,5 +993,6 @@ footer {
   .stat-card p {
     font-size: 12px;
   }
+
 
 }
