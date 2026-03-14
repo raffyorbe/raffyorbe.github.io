@@ -24,16 +24,7 @@ craft, I’m always looking for ways to make technology not only useful, but als
 using it. I am seeking for roles where I can bring together my product mindset, technical foundation, and
 user-centered approach to create experiences that truly make a difference for people.
 
-Throughout my career, I’ve intentionally pursued continuous reinvention by learning new tools, expanding
-into adjacent roles, and finding better ways to solve problems as technology and user expectations
-evolve. I know I don’t have all the answers, but working alongside highly capable engineers, designers,
-and leaders has consistently sharpened both my technical abilities and how I approach product decisions.
-Many of my most successful projects have come from thoughtful experimentation, guided by experienced
-mentors and sustained by personal resilience. I’m motivated by environments that reward curiosity,
-adaptability, and steady improvement, and I seek roles that provide the opportunity to keep building in that
-direction. I’m also someone who believes growth requires a degree of optimistic risk-taking by taking on
-new challenges, navigating uncertainty, and leaning into opportunities that stretch my comfort zone. I
-would welcome the chance to bring that mindset to my next role.
+Throughout my career, I've grown most by staying curious and being willing to take on work that stretched me beyond what I already knew. Some of my best projects came from stepping into uncertainty, learning from the engineers, designers, and leaders I worked with, and iterating until something clicked. I'm drawn to environments where that kind of growth is encouraged, and I'd welcome the chance to keep building in that direction in my next role.
 
 # Experience
 **IT Graduate Assistant**, New York University (September 2024 – Present)  
