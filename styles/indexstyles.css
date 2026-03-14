@@ -490,11 +490,10 @@ text-decoration: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   border-radius: 36px;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: space-between;
-  height: 100%;            
-  min-height: 160px;       
-  transition: min-height 0.3s ease; 
+  height: 100%;                 
+  /* transition: min-height 0.3s ease;  */
 }
 
 .xp1-card {border: none; background: linear-gradient(to bottom, #009d9a, #00cfcf);}
@@ -510,12 +509,6 @@ text-decoration: none;
 #profile .row > [class*="col-"] {
   display: flex;
   flex-direction: column;
-}
-
-#profile .xp1-card,
-#profile .xp2-card,
-#profile .xp3-card {
-  flex: 1; /* let cards fill column height */
 }
 
 /* Card content */
@@ -863,20 +856,17 @@ footer {
   font-weight: 400;
   }
 
-  .xp1-card,
-  .xp2-card,
-  .xp3-card {
-  height: 256px; 
-  }
-    
   .project-card,
   .project-card.bg-image1,
   .project-card.bg-image2,
   .project-card.bg-image3,
   .project-card.bg-image4,
   .project-card.bg-image5,
-  .project-card.bg-image6 {
-    height: 256px;
+  .project-card.bg-image6,
+  .xp1-card,
+  .xp2-card,
+  .xp3-card {
+    height: 240px;
   }
 
   .hello-chat-border-wrapper {
@@ -963,14 +953,11 @@ footer {
   .project-card.bg-image3,
   .project-card.bg-image4,
   .project-card.bg-image5,
-  .project-card.bg-image6 {
-    height: 256px;
-  }
-
+  .project-card.bg-image6,
   .xp1-card,
   .xp2-card,
   .xp3-card {
-  height: 256px; 
+    height: 240px;
   }
   
   h2{
@@ -1010,8 +997,11 @@ footer {
   .project-card.bg-image3,
   .project-card.bg-image4,
   .project-card.bg-image5,
-  .project-card.bg-image6 {
-    height: 248px;
+  .project-card.bg-image6,
+  .xp1-card,
+  .xp2-card,
+  .xp3-card {
+    height: 240px;
   }
  
   p{
@@ -1024,6 +1014,7 @@ footer {
 }
 
 @media(max-width: 1200px){
+  
   p{
     font-size: 14px;
   }
@@ -1080,14 +1071,11 @@ footer {
   .project-card.bg-image3,
   .project-card.bg-image4,
   .project-card.bg-image5,
-  .project-card.bg-image6 {
-    height: 256px;
-  }
-
+  .project-card.bg-image6,
   .xp1-card,
   .xp2-card,
   .xp3-card {
-  height: 256px; 
+    height: 240px;
   }
 
 }
