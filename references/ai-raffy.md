@@ -46,7 +46,7 @@ engagement to 1,000+ students.
 
 **Digital Growth UI/UX Expert**, Globe Telecom (March 2024 – July 2024)  
 - Led end-to-end product design for a new mobile app at the Philippines' leading telecom, connecting remote
-communities and contributing to a 74% increase in subscriptions by Q4 2024.
+communities and contributing to a 74% increase in subscriptions in Q4 2024.
 - Designed and optimized an in-app cross-sell journey, achieving up to 4x higher product activations through targeted
 engagement versus broad targeting over a 30-day period.
 - Conceptualized and ran hypothesis-driven experiments on in-app gamification features to drive user retention and
