@@ -4,13 +4,14 @@ I'm Raffy Orbe - a product guy who combines product vision, technical knowledge,
 My full name is Raphael Angelo Orbe.
 
 # Skills
-- Product (Product Strategy, Stakeholder Management, End-to-End Product Design, Experimentation,
-Agile, Design Thinking, Growth Loops, Jobs-to-be-Done)
-- Design (UI/UX Design, Design Systems, Interaction Design, User-Centered Design, Wireframing,
-Prototyping, Frontend Development, Systems Design, Goal-Directed Design)
-- Technical (JavaScript, React, Python, SQL, HTML, CSS)
-- Tools (Figma, GitHub, OpenAI Platform, FastAPI, Atlassian, Adobe CC, Render, Bootstrap, SQLite)
+- Product (End-to-End Product Design, Product Strategy, Design Thinking, Jobs-to-be-Done, Growth Loops, Lean
+Experimentation, Workflow Automation, Stakeholder Management, Agile)
+- Design (UI/UX Design, Human-AI Interaction, Interaction Design, User-Centered Design, Design Systems, Goal-Directed
+Design, Service Design, Wireframing, Rapid Prototyping, Figma, Adobe CC)
+- Technical (React, JavaScript, Python, FastAPI, SQL, SQLite, HTML, CSS, Tailwind, GitHub, OpenAI Platform, Render,
+Cloudflare, Jira)
 - Skills are continuously being acquired or honed as a commitment to personal growth and value creation.
+- Skill level for all skills vary from beginner to advanced or working knowledge. No claim of mastery is being made for any.
 
 # Professional Summary
 With over seven years of experience across product experience design, research and development, and
@@ -36,37 +37,38 @@ would welcome the chance to bring that mindset to my next role.
 
 # Experience
 **IT Graduate Assistant**, New York University (September 2024 – Present)  
--  Implement 20+ AI-assisted workflow automations across existing information systems, reducing
-processing time by up to 50%.
-- Reduce IT costs by 14.7% annually by optimizing information systems utilization and aligning cross-
-functional requirements with long-term program and operational strategy.
-- Increase program outreach and engagement to over 1,000 students by streamlining complex user
-workflows across the department’s 5 global and research programs.
+- Engineered 20+ AI-assisted workflow automations across departmental information systems, cutting processing time
+by up to 50%.
+- Optimized information systems utilization and aligned cross-functional requirements with long-term operational
+strategy, reducing IT costs by 14.7% annually.
+- Streamlined complex user workflows across 5 global and research programs, expanding department outreach and
+engagement to 1,000+ students.
 
 **Digital Growth UI/UX Expert**, Globe Telecom (March 2024 – July 2024)  
--  Led the end-to-end product experience for a new mobile app at the Philippines’ leading telecom
-company, enabling remote communities to get connected online and contributing to a 74% increase in
-subscriptions by Q4 2024.
-- Delivered and optimized an in-app cross-sell user journey that resulted in up to 4x increase in product
-activations through targeted engagements vs broad targeting at 0.05% over a period of 30 days.
-- Ran hypothesis-driven experiments on in-app gamification experiences aimed at increasing retention
-and revenue per user.
+- Led end-to-end product design for a new mobile app at the Philippines' leading telecom, connecting remote
+communities and contributing to a 74% increase in subscriptions by Q4 2024.
+- Designed and optimized an in-app cross-sell journey, achieving up to 4x higher product activations through targeted
+engagement versus broad targeting over a 30-day period.
+- Conceptualized and ran hypothesis-driven experiments on in-app gamification features to drive user retention and
+increase revenue per user.
 
 **UI/UX Designer**, IBM (December 2020 – April 2023)  
--  Led the design of the full user experience for the Immerscio.bio platform, which earned distinction
-from the government of France for enabling an online learning experience for bioproduction
-professionals during the COVID-19 pandemic.
-- Streamlined core product offerings through cross-functional collaboration with product, design, and
-engineering teams, delivering pre-configured solutions that accelerated implementation timelines by
-up to 2 weeks for new clients.
-- Ensured quality and WCAG-compliant accessibility through usability testing and high-fidelity
-prototyping, supported by hands-on frontend development.
+- Designed the full end-to-end user experience for Immerscio.bio, an online learning platform recognized by the French
+government for enabling bioproduction training during the COVID-19 pandemic.
+- Accelerated client implementation timelines by up to 2 weeks by delivering pre-configured product solutions through
+cross-functional collaboration across product, design, and engineering teams.
+- Ensured WCAG-compliant accessibility across all deliverables through usability testing, high-fidelity prototyping, and
+hands-on frontend development.
 
 **R&D Technical Writer and UX Lead**, Nokia (December 2016 – March 2020)
-- Spearheaded a multi-year UX strategy and large-scale workflow redesign to transform multiple legacy
-network analytics tools into an intuitive web-based dashboard to address customer pain points.
-- Created and transitioned multiple technical documents into a scalable, centralized knowledge
-platform, reducing dependence on support engineers.
+- Spearheaded a multi-year UX strategy and large-scale workflow redesign, consolidating legacy network analytics
+tools into a unified, intuitive web-based dashboard that resolved core customer pain points.
+- Migrated and restructured multiple technical documents into a centralized, scalable knowledge platform, reducing
+reliance on support engineers and improving documentation discoverability.
+
+# Notes on results
+- At NYU, I computed cost savings by comparing annual baseline IT spend against post-optimization costs. This includes annual license and subscription costs as well as the cost of switching over to new tools.
+- At Globe, the in-app cross-sell results are from internal analytics. It contributed to the 74% increase in GFiber Prepaid subscriptions in Q4 2024.
 
 # Gaps in Work Experience Timeline
 - In 2020, Nokia ceased operations in the Philippines. As a result, Nokia's entire R&D operations in the country were halted, and all employees were laid off. That time was also the peak of the COVID-19 pandemic, making job searching difficult as companies ceased hiring. By December 2020, IBM had recruited me as a full-time UI/UX Designer.
