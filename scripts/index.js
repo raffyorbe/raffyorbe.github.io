@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll(".floating-navbar a");
 
-  //Scroll listener
+  //Nav bar scroll listener
 
   function getCurrentSectionId() {
     let scrollPos = window.scrollY + window.innerHeight / 3;
@@ -33,14 +33,16 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           link.classList.remove("active");
         }
-      } else {
+      } 
+      else {
         // Fallback to href-based matching
         const href = link.getAttribute("href");
         const targetId = href.startsWith("#") ? href.slice(1) : null;
 
         if (targetId === currentSectionId) {
           link.classList.add("active");
-        } else {
+        } 
+        else {
           link.classList.remove("active");
         }
       }
@@ -51,11 +53,11 @@ document.addEventListener("DOMContentLoaded", function () {
   onScroll(); // run on page load
 
   // AI chat glow
+
   const glow = document.querySelector('.hello-chat-border-wrapper .border-animator-chat');
 
   if (glow) {
   const target = document.querySelector('.hello-chat-border-wrapper');
-
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
@@ -72,9 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // top and bottom margins shrink the "trigger zone" to the center 10% of the screen
     }
   );
-
   observer.observe(target);
   }
+
+  // Setup AI chat response UI
 
   const inputWrapper = document.querySelector('.hello-chat-border-wrapper');
 
@@ -84,27 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
     overlayContainer = document.createElement('div');
     overlayContainer.id = 'chat-overlay-container';
     inputWrapper.appendChild(overlayContainer);
-  }
-
-  // function to show bubble
-  function showBubble(message) {
-    // remove previous bubble if exists
-    const prev = overlayContainer.querySelector('.chat-overlay');
-    if (prev) prev.remove();
-
-    // create new bubble
-    const bubble = document.createElement('div');
-    bubble.classList.add('chat-overlay');
-    bubble.innerHTML = `
-      <span>${message}</span>
-      <button class="chat-close">&times;</button>
-    `;
-
-    overlayContainer.appendChild(bubble);
-
-    // small delay for CSS transition
-    setTimeout(() => bubble.classList.add('show'), 10);
-
   }
 
   // ChatGPT integration
