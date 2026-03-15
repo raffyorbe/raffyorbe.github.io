@@ -11,8 +11,17 @@ body {
   overflow-x: hidden;
 }
 
-:root {
-  --sat: env(safe-area-inset-top);
+/* Fixed header for mobile safe zone*/
+body::before { 
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top);
+  background: #ffffff;
+  z-index: 9999;
+  pointer-events: none;
 }
 
 /* Nav bar */
@@ -124,8 +133,8 @@ body {
 }
 
 .hello-overlay {
-  /* background-color: rgba(15, 98, 254, 0.15);  */
-  background: linear-gradient(to bottom, rgba(15, 98, 254, 0.1) 0%, rgba(15, 98, 254, 0.1) 60%, rgba(15, 98, 254, 0.4) 100%);
+  background-color: rgba(15, 98, 254, 0.15); 
+  /* background: linear-gradient(to bottom, rgba(15, 98, 254, 0.1) 0%, rgba(15, 98, 254, 0.1) 60%, rgba(15, 98, 254, 0.4) 100%); */
   padding: 3rem 1rem;
   position: absolute;
   top: 0;
@@ -141,9 +150,13 @@ body {
   /* border-radius: 36px; */
 }
 
+.hello-overlay p{
+  text-shadow: 0 0 10px rgba(15, 98, 254, 0.5);
+}
+
 .hero-stats {
   position: absolute;
-  bottom: 40px;
+  bottom: 56px;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -280,7 +293,7 @@ h2.ai-welcome{
 }
 
 #chat{
-  scroll-margin-top: 88px;
+  scroll-margin-top: 112px;
 }
 
 #profile{
@@ -750,8 +763,27 @@ text-decoration: none;
   color: #161616;
 }
 
-#user-input::placeholder {
+/* #user-input::placeholder {
   color: #a2a9b0;
+} */
+
+.placeholder {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  padding: 6px;
+  opacity: 1;
+  background: transparent;
+  color: #a2a9b0;
+  font-size: 1rem;
+  font-weight: 300;
+  transition: opacity 400ms ease;
+}
+
+.placeholder.hidden {
+  opacity: 0;
 }
 
 #send-btn {
@@ -836,7 +868,7 @@ footer {
   }
 
   #chat{
-  scroll-margin-top: 80px;
+  scroll-margin-top: 112px;
   }
 
   .stat-card {
@@ -886,7 +918,7 @@ footer {
     width: 111.11%; /* scale back down visually - fix for mobile auto zoom behavior*/
   }
 
-  #user-input::placeholder {
+  .placeholder {
     font-size: 16px;
   }
 
