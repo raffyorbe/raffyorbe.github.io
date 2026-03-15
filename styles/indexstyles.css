@@ -11,18 +11,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Fixed safe zone mask for mobile*/
-.top-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: env(safe-area-inset-top);
-  background: #ffffff;
-  z-index: 9999;
-  pointer-events: none;
-}
-
 /* Nav bar */
 .floating-navbar {
   position: relative;
