@@ -200,6 +200,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }
 
+  // Placeholder change
+  const input = document.getElementById("user-input");
+  const placeholderEl = document.getElementById("placeholder");
+
+  const placeholders = [
+    "Ask me anything",
+    "Ask me how I design experiences",
+    "Ask me how I collaborate",
+    "Ask me about my skills",
+    "Ask me about my work's impact",
+    "Ask me about my projects",
+    "Ask me about my learning style",
+    "Ask me about work authorization",
+    "Ask me about my work habits"
+  ];
+
+  let index = 0;
+
+  placeholderEl.textContent = placeholders[index];
+
+  function hidePlaceholder() {
+    placeholderEl.classList.add("hidden");
+  }
+
+  function showPlaceholder() {
+    if (input.value === "") {
+      placeholderEl.classList.remove("hidden");
+    }
+  }
+
+  input.addEventListener("focus", hidePlaceholder);
+  input.addEventListener("blur", showPlaceholder);
+
+  setInterval(() => {
+    if (input.value !== "") return;
+
+    placeholderEl.classList.add("hidden");
+
+    placeholderEl.addEventListener("transitionend", function handler() {
+      placeholderEl.removeEventListener("transitionend", handler);
+
+      index = (index + 1) % placeholders.length;
+      placeholderEl.textContent = placeholders[index];
+
+      requestAnimationFrame(() => {
+        if (input !== document.activeElement) {
+          placeholderEl.classList.remove("hidden");
+        }
+      });
+    });
+
+  }, 3000); // Duration of rotation in ms
+
   // Event listeners
   sendBtn.addEventListener("click", sendMessage);
   userInput.addEventListener("keydown", (e) => {
