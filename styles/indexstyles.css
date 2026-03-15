@@ -77,7 +77,10 @@ body {
   position: fixed;
   top: 24px;
   left: 50%;
-  transform: translateX(-50%);
+  /* transform: translateX(-50%); */
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   z-index: 999;
   padding: 4px; /* glow edge */
   border-radius: 999px;
@@ -1057,7 +1060,7 @@ footer {
   }
 
   #chat{
-  scroll-margin-top: 0;
+  scroll-margin-top: 112px;
   }
 
   .stat-card {
