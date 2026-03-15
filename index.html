@@ -24,7 +24,6 @@
   <link rel="stylesheet" href="styles/indexstyles.css" />
 </head>
 <body>
-
   <!-- Nav Bar -->
     <div class="hello-border-wrapper">
       <nav class="floating-navbar d-flex justify-content-between">
@@ -49,36 +48,10 @@
               <div class="hello-overlay">
                   <h1>Hi, I'm Raffy Orbe</h1>
                   <p>Product UX Designer • Systems Integrator • Frontend Developer</p>
-                  <a href="#chat" class="btn btn-primary btn-sm">
+                  <div class="container hero-stats">
+                    <a href="#chat" class="btn btn-primary btn-sm" id="chat">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                  </a>
-                  <div class="container hero-stats" id="chat">
-                    <div class="row g-3 justify-content-center">
-                      <div class="col-6 col-md-3 d-flex align-items-center justify-content-center d-md-flex">
-                        <h3>Quick links</h3>
-                      </div>
-                      <div class="col-6 col-md-3">
-                        <a href="https://raffyorbe.github.io/references/Raphael_Angelo_Orbe_CV_2603.pdf" target="_blank" style="text-decoration: none;">
-                          <div class="stat-card" style="background-color: rgba(0, 125, 121, 0.6)">
-                            <h5>View my resume <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></h5>  
-                          </div>
-                        </a>
-                      </div>
-                      <div class="col-6 col-md-3">
-                        <a href="https://www.figma.com/design/Wc2Qg2uSfxj2193lul5HP8/Design-Board?node-id=309-489&t=c4wSbpYVM5lFYWL4-1" target="_blank" style="text-decoration: none;">
-                          <div class="stat-card" style="background-color: rgba(208, 38, 112, 0.6)">
-                            <h5>View my Figma <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></h5>  
-                          </div>
-                        </a>
-                      </div>
-                      <div class="col-6 col-md-3">
-                        <a href="https://www.github.com/raffyorbe" target="_blank" style="text-decoration: none;">
-                          <div class="stat-card" style="background-color: rgba(138, 63, 252, 0.6)">
-                            <h5>View my GitHub <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></h5>  
-                          </div>
-                        </a>
-                      </div>
-                    </div>
+                    </a>
                   </div>
               </div>
           </div>
@@ -86,14 +59,15 @@
             
         <!-- </div>
         </div> -->
-        <div class="row justify-content-center mt-4">
+        <div class="row justify-content-center mt-2">
           <div class="col-12 col-md-8">
-            <h2 class="ai-welcome mb-3">Get to know me a little bit more</h2>
+            <h2 class="ai-welcome mb-3">Nice to meet you virtually</h2>
             <!-- Input layer -->
             <div class="hello-chat-border-wrapper">
               <div class="border-animator-chat"></div>
               <div id="chat-input-area" class="floating-chatbar">
-                <input type="text" id="user-input" placeholder="💬 Ask me anything"/>
+                <input type="text" id="user-input"/>
+                <span class="placeholder" id="placeholder"></span>
                 <button class="btn btn-primary btn-sm" id="send-btn">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M5 12l7-7 7 7"/></svg>
                 </button>
@@ -117,13 +91,16 @@
             <div class="col-md-6 col-lg-3">
                 <h2 class="mb-5">Services</h2>
                 <p class="subtitle">With end-to-end impact and real results won, a jack of all trades beats a master of one.</p>
+                <div class="link-centered">
+                  <a href="https://raffyorbe.github.io/references/Raphael_Angelo_Orbe_CV_2603.pdf" target="_blank" style="text-decoration: none;">View my resume <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></a><br>
+            </div>
               </div>      
             <div class="col-md-6 col-lg-3">
                 <div class="xp1-card">
                     <div class="card-content">
                       <h1>🎨</h1>  
                       <h2 style="color: #ffffff">Design</h2><br>
-                        <p class="card-footer">I create user-centered experiences through research, journey mapping, and high-fidelity prototyping that turn complex problems into intuitive, delightful products.</p>
+                        <p class="card-footer">I create user-centered experiences through research, journey mapping, and prototyping that turn complex problems into intuitive, delightful products.</p>
                     </div>  
                 </div>
             </div>
@@ -207,7 +184,7 @@
                     <div class="card-content">
                         <p class="tag"><strong>UI | UX</strong></p>
                         <h5>Xbox Design Study</h5>
-                        <p>Home Screen redesigned to surface ads at the right moment without disrupting the experience.</p>
+                        <p>Home Screen redesign to surface ads at the right moment without disrupting the experience.</p>
                         <a href="https://www.figma.com/proto/Wc2Qg2uSfxj2193lul5HP8/Demo?node-id=93-462&t=tmWWZU0HEyRNa4Gf-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=93%3A462" target="_blank" class="btn btn-sm btn-primary">View on Figma</a>
                     </div>
                 </div>
@@ -297,7 +274,7 @@
     <div class="container">
       <hr style="color: #a2a9b0;">
       <br>
-      <p class="disclaimer" style="text-align: center; color: #a2a9b0;">AI Raffy is powered by ChatGPT. Impact results reflect internal and publicly available data. Projects protected by non-disclosure agreements are not included.</p>
+      <p class="disclaimer" style="text-align: center; color: #a2a9b0;">AI Raffy is powered by ChatGPT. Work results reflect internal and publicly available data. Projects protected by non-disclosure agreements are not included.</p>
       <hr style="color: #a2a9b0;">
     </div>
     <p class="mb-0" style="color: #a2a9b0">© 2026 Raphael Angelo Orbe</p>
