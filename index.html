@@ -24,6 +24,9 @@
   <link rel="stylesheet" href="styles/indexstyles.css" />
 </head>
 <body>
+  <!-- Safe zone mask -->
+  <div class="top-mask"></div>
+
   <!-- Nav Bar -->
     <div class="hello-border-wrapper">
       <nav class="floating-navbar d-flex justify-content-between">
@@ -49,7 +52,7 @@
                   <h1>Hi, I'm Raffy Orbe</h1>
                   <p>Product UX Designer • Systems Integrator • Frontend Developer</p>
                   <div class="container hero-stats">
-                    <a href="#chat" class="btn btn-primary btn-sm" id="chat">
+                    <a href="#chat" class="btn btn-primary btn-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
                     </a>
                   </div>
@@ -61,7 +64,7 @@
         </div> -->
         <div class="row justify-content-center mt-2">
           <div class="col-12 col-md-8">
-            <h2 class="ai-welcome mb-3">Nice to meet you virtually</h2>
+            <h2 class="ai-welcome mb-3" id="chat">Nice to meet you virtually</h2>
             <!-- Input layer -->
             <div class="hello-chat-border-wrapper">
               <div class="border-animator-chat"></div>
