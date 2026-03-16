@@ -8,10 +8,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const headline = document.getElementById("headline");
 
   function restartTypingAnimation() { //Restart animation on site revisit
-    const loader = document.getElementById("typing-loader");
     loader.style.animation = "none";
     void loader.offsetWidth;
     loader.style.animation = "";
+    greeting.classList.remove("show");
+    headline.classList.remove("show");
+    loader.style.display = "flex";
   }
 
   restartTypingAnimation();
