@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("DOMContentLoaded", restartTypingAnimation);
 
   window.addEventListener("pageshow", (event) => {
-  if (event.persisted) runGreetingSequence();
+  if (event.persisted) restartTypingAnimation();
 });
 
   //Nav bar scroll listener
