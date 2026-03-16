@@ -2,6 +2,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll(".floating-navbar a");
 
+  //Hello message
+  setTimeout(() => {
+  document.getElementById("typing-loader").style.display = "none";
+  document.getElementById("greeting").classList.add("show");
+  }, 2000);
+
   //Nav bar scroll listener
 
   function getCurrentSectionId() {
@@ -206,14 +212,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const placeholders = [
     "Ask me anything",
-    "Ask me how I design experiences",
-    "Ask me how I collaborate",
+    "Ask me how I design products",
     "Ask me about my skills",
     "Ask me about my work's impact",
+    "Ask me how I collaborate",
+    "Ask me about my work habits",
     "Ask me about my projects",
     "Ask me about my learning style",
-    "Ask me about work authorization",
-    "Ask me about my work habits"
+    "Ask me what managers say about me",
+    "Ask me about work authorization"
   ];
 
   let index = 0;
