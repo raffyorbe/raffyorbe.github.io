@@ -7,32 +7,40 @@ document.addEventListener("DOMContentLoaded", function () {
   const greeting = document.getElementById("greeting");
   const headline = document.getElementById("headline");
 
-  function restartTypingAnimation() { //Restart animation on site revisit
+  function runAnimation() {
+    // Reset everything
     loader.style.animation = "none";
-    void loader.offsetWidth;
+    void loader.offsetWidth; // force reflow
     loader.style.animation = "";
+
     greeting.classList.remove("show");
     headline.classList.remove("show");
-    void greeting.offsetWidth;
+    void greeting.offsetWidth; // force reflow
     void headline.offsetWidth;
+
     loader.style.display = "flex";
+
+    // Re-run the sequence
+    setTimeout(() => {
+      loader.style.display = "none";
+      greeting.classList.add("show");
+    }, 2000);
+
+    setTimeout(() => {
+      headline.classList.add("show");
+    }, 2000);
   }
 
-  setTimeout(() => {
-  loader.style.display = "none";
-  greeting.classList.add("show");
-  }, 2000);
+  // Run on initial load
+  runAnimation();
 
-  setTimeout(() => {
-  headline.classList.add("show");
-  }, 2000);
-
-  document.addEventListener("DOMContentLoaded", restartTypingAnimation);
-
+  // Re-run on bfcache restore (back/forward navigation)
   window.addEventListener("pageshow", (event) => {
-  if (event.persisted) restartTypingAnimation();
-});
-
+    if (event.persisted) {
+      runAnimation();
+    }
+  });
+  
   //Nav bar scroll listener
 
   function getCurrentSectionId() {
