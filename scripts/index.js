@@ -3,9 +3,27 @@ document.addEventListener("DOMContentLoaded", function () {
   const navLinks = document.querySelectorAll(".floating-navbar a");
 
   //Hello message
+  const loader = document.getElementById("typing-loader");
+  const greeting = document.getElementById("greeting");
+  const headline = document.getElementById("headline");
+
+  function restartTypingAnimation() { //Restart animation on site revisit
+    const loader = document.getElementById("typing-loader");
+    loader.style.animation = "none";
+    void loader.offsetWidth;
+    loader.style.animation = "";
+  }
+
+  restartTypingAnimation();
+  window.addEventListener("pageshow", restartTypingAnimation);
+
   setTimeout(() => {
-  document.getElementById("typing-loader").style.display = "none";
-  document.getElementById("greeting").classList.add("show");
+  loader.style.display = "none";
+  greeting.classList.add("show");
+  }, 2000);
+
+  setTimeout(() => {
+  headline.classList.add("show");
   }, 2000);
 
   //Nav bar scroll listener
