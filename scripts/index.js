@@ -7,38 +7,42 @@ document.addEventListener("DOMContentLoaded", function () {
   const greeting = document.getElementById("greeting");
   const headline = document.getElementById("headline");
 
-  function runAnimation() {
-    // Reset everything
-    loader.style.animation = "none";
-    void loader.offsetWidth; // force reflow
-    loader.style.animation = "";
+  let greetingTimer, headlineTimer;
 
+  function runAnimation() {
+    clearTimeout(greetingTimer);
+    clearTimeout(headlineTimer);
+
+    loader.style.animation = "none";
+    void loader.offsetWidth;
+    loader.style.animation = "";
     greeting.classList.remove("show");
     headline.classList.remove("show");
-    void greeting.offsetWidth; // force reflow
+    void greeting.offsetWidth;
     void headline.offsetWidth;
-
     loader.style.display = "flex";
 
-    // Re-run the sequence
-    setTimeout(() => {
+    greetingTimer = setTimeout(() => {
       loader.style.display = "none";
       greeting.classList.add("show");
     }, 2000);
 
-    setTimeout(() => {
+    headlineTimer = setTimeout(() => {
       headline.classList.add("show");
     }, 2000);
   }
 
-  // Run on initial load
+  // Initial load
   runAnimation();
 
-  // Re-run on bfcache restore (back/forward navigation)
+  // bfcache restore
   window.addEventListener("pageshow", (event) => {
-    if (event.persisted) {
-      runAnimation();
-    }
+    if (event.persisted) runAnimation();
+  });
+
+  // Tab visibility
+  document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && !document.referrer) runAnimation();
   });
   
   //Nav bar scroll listener
