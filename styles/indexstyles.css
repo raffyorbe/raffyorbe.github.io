@@ -75,7 +75,7 @@ body {
 
 .hello-border-wrapper {
   position: fixed;
-  top: calc(env(safe-area-inset-top) + 24px);
+  top: 16px;
   left: 50%;
   /* transform: translateX(-50%); */
   left: 0;
@@ -90,7 +90,7 @@ body {
 }
 
 .hello-cell {
-  /* background-image: url(../images/MS_EMOJI_380_v002_4k_1035.jpg);  */
+  /* background-image: url();  */
   background-size: cover;
   background-position: center;
   background-color: #f2f4f8;
@@ -106,10 +106,7 @@ body {
   z-index: 2;
   margin: 0;
   /* The following expands viewport on mobile to take whole screen */
-  min-height: 100vh; 
-  padding-top: calc(env(safe-area-inset-top) + 24px); 
-  padding-bottom: env(safe-area-inset-bottom);
-  height: calc(100dvh + env(safe-area-inset-top) + env(safe-area-inset-bottom));
+  height: 100vh; 
 }
 
 .hello-video {
@@ -142,6 +139,20 @@ body {
 
 .hello-overlay p{
   text-shadow: 0 0 10px rgba(15, 98, 254, 0.5);
+}
+
+.avatar{
+  filter: drop-shadow(0 0 10px rgba(15, 98, 254, 0.4));
+}
+
+.avatar-container{
+  display: flex;
+  justify-content: center;
+}
+
+.avatar-contact{
+  width: 200px;
+  height: 200px;
 }
 
 .hero-stats {
@@ -295,7 +306,8 @@ h2.ai-welcome{
 }
 
 #contact{
-  scroll-margin-top: 56px;
+  scroll-margin-top: 40px;
+  padding-top: 0px;
 }
 
 p.tag{
@@ -856,6 +868,20 @@ footer {
     max-width: none; 
     min-width: unset; 
   }
+
+  .hello-cell{
+    border-top-left-radius: 36px;
+    border-top-right-radius: 36px;
+  }
+
+  .hero-stats {
+    bottom: 200px;
+  }
+
+  .avatar-contact{
+    width: 184px;
+    height: 184px;
+}
 
   #chat{
   scroll-margin-top: 240px;
