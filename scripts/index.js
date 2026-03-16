@@ -41,8 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Tab visibility
+  let hasLoaded = false;
+
   document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible" && !document.referrer) runAnimation();
+    if (document.visibilityState === "visible" && !hasLoaded) {
+      hasLoaded = true;
+      runAnimation();
+    }
   });
   
   //Nav bar scroll listener
