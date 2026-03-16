@@ -32,23 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 2000);
   }
 
-  // Initial load
   runAnimation();
-
-  // bfcache restore
-  window.addEventListener("pageshow", (event) => {
-    if (event.persisted) runAnimation();
-  });
-
-  // Tab visibility
-  let hasLoaded = false;
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible" && !hasLoaded) {
-      hasLoaded = true;
-      runAnimation();
-    }
-  });
   
   //Nav bar scroll listener
 
