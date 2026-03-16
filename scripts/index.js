@@ -18,9 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
     loader.style.display = "flex";
   }
 
-  restartTypingAnimation();
-  window.addEventListener("pageshow", restartTypingAnimation);
-
   setTimeout(() => {
   loader.style.display = "none";
   greeting.classList.add("show");
@@ -29,6 +26,12 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
   headline.classList.add("show");
   }, 2000);
+
+  document.addEventListener("DOMContentLoaded", restartTypingAnimation);
+
+  window.addEventListener("pageshow", (event) => {
+  if (event.persisted) runGreetingSequence();
+});
 
   //Nav bar scroll listener
 
