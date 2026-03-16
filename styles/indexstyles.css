@@ -167,28 +167,48 @@ body {
   z-index: 20;
 }
 
-.stat-card {
-  background-color: rgba(255, 255, 255, 0.6);
+.greeting-message {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  padding: 8px 24px;
+  border-radius: 99px;
+  background: linear-gradient(to bottom, #fff 0%, #d0e2ff 100%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-radius: 99px;
-  padding: 1rem;
-  text-align: center;
-  cursor: pointer;
-  /* box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); */
+  box-shadow: 0 0px 16px rgba(15, 98, 254, 0.6);
 }
 
-.stat-card h5 {
+.greeting-message h1 {
+  margin: auto;
+  /* color: #0f62fe; */
+  background: linear-gradient(to bottom, #0f62fe, #33b1ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  font-weight: 300;
+}
+
+#greeting{ /* stat card h1 hidden initially */
+  opacity: 0;
+  transform: translateY(20px); /* start slightly lower */
+  transition: opacity 0.6s ease, transform 0.6s ease;
   margin: 0;
-  font-weight: 400;
-  font-size: 16px;
-  color: #ffffff;
+  text-align: center;
+}
+
+#greeting.show{
+  opacity: 1;
+  transform: translateY(0); /* move to final position */
 }
 
 .stat-card p {
   margin: 0;
   font-size: 16px;
   color: #ffffff;
+  text-shadow: none;
 }
 
 #hello {
@@ -743,6 +763,36 @@ text-decoration: none;
   40% { opacity: 1; }
 }
 
+/* Typing dots hero*/
+.greeting-typing {
+  position: absolute;
+  display: flex;
+  align-items: center;
+}
+
+.greeting-dot {
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  background-color: #0f62fe;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: greetingblink 1.4s infinite;
+}
+
+.greeting-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.greeting-dot:nth-child(3) {
+  animation-delay: 0.4s;
+  margin-right: 0;
+}
+
+@keyframes greetingblink {
+  0%, 80%, 100% { opacity: 0.3; }
+  40% { opacity: 1; }
+}
+
 /*  Chat Input Bar  */
 .floating-chatbar {
   position: relative;
@@ -879,29 +929,26 @@ footer {
   } */
 
   .hero-stats {
-    bottom: 200px;
+    bottom: 152px;
+  }
+
+  .greeting-message h1 {
+    font-weight: 400;
+  }
+
+  .greeting-dot {
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
   }
 
   .avatar-contact{
     width: 184px;
     height: 184px;
-}
+  }
 
   #chat{
   scroll-margin-top: 240px;
-  }
-
-  .stat-card {
-    padding: 0.5rem;
-    border-radius: 16px;
-  }
-
-  .stat-card h5 {
-    font-size: 14px;
-  }
-
-  .stat-card p {
-    font-size: 12px;
   }
 
   h2.ai-welcome{
@@ -919,6 +966,12 @@ footer {
   .xp2-card,
   .xp3-card {
     height: 240px;
+  }
+
+  .xp1-card h1,
+  .xp2-card h1,
+  .xp3-card h1{
+    font-size: 40px;
   }
 
   .hello-chat-border-wrapper {
@@ -1100,6 +1153,12 @@ footer {
 
   .stat-card h5 {
     font-size: 14px;
+  }
+
+  .xp1-card h1,
+  .xp2-card h1,
+  .xp3-card h1{
+    font-size: 40px;
   }
 
   h3 {
