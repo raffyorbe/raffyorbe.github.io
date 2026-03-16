@@ -1012,9 +1012,9 @@ footer {
   }
 
   .typing .dot {
-  width: 6px;
-  height: 6px;
-  margin: 0 2px;
+  width: 8px;
+  height: 8px;
+  margin: 0 3px;
   }
 
   .floating-chatbar {
