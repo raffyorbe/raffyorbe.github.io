@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
     loader.style.animation = "";
     greeting.classList.remove("show");
     headline.classList.remove("show");
+    void greeting.offsetWidth;
+    void headline.offsetWidth;
     loader.style.display = "flex";
   }
 
