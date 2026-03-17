@@ -1155,14 +1155,14 @@ footer {
 
 #egg {
   position: relative; /* needed for absolute positioning */
-  cursor: pointer;
+  cursor: default;
   display: inline-block;
   text-shadow: none;
 }
 
 .eggmsg {
   position: absolute;
-  bottom: 100%; /* float above the h1 */
+  bottom: 100%; /* float above the egg */
   left: 50%;
   transform: translateX(-50%) translateY(0);
   padding: 6px 10px;
