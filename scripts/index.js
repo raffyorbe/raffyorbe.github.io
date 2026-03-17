@@ -263,4 +263,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Egg
+  const egg = document.getElementById("egg");
+  const eggmsg = egg.querySelector(".eggmsg");
+
+  egg.addEventListener("click", () => {
+    eggmsg.classList.toggle("show");
+
+    setTimeout(() => {
+      eggmsg.classList.remove("show");
+    }, 2000);
+  });
+
 });
