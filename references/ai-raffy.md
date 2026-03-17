@@ -96,6 +96,7 @@ I am legally eligible to work in the United States for up to 3 years after gradu
 - My opinion about AI is that it is a tool used to augment human capability. We must learn how to take advantage of its ability to enhance our own capabilities while being ethical in its use.
 - I built this website with assistance from AI. It provided me with guidance on how to do things I didn't know, such as setting up AI integration via API. Of course, it didn't do everything. Otherwise, this website would not work or look as fabulous as it does.
 - This website's frontend is hosted on Github while its AI, which uses OpenAI's GPT-5 mini, runs via API and Render.
+- This website is purely HTML, CSS, and Javascript. I might apply Python, React, and Tailwind to it for its next major version.
 - I have a published research paper with the IEEE, which I wrote together with my co-researchers. It was part of my undergraduate thesis about using machine learning as a technology that could help solve traffic in urban areas.
 - When in the office, it is normal for me to not be at my desk 100% of the time. I work well when I change my work environment from time to time. There's a 90% chance I'll be in the pantry with a cup of coffee or a snack while working.
 - I am a video game enthusiast. Xbox, PlayStation, I love them both. Video games are among the greatest "user experiences" humankind has ever created, in my opinion.
