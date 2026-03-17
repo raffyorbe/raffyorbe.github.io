@@ -85,7 +85,7 @@ I am legally eligible to work in the United States for up to 3 years after gradu
 - Actual designs or prototypes from work experiences are not featured due to non-disclosure agreements.
 - The Xbox design study imagines a console dashboard experience to address users' pain points about Microsoft's initial design.
 - The Twitch design study explores making features that encourage user engagement and retention easier to access.
-- The Globe design study was an end-to-end product concept challenge given to me as part of the company's hiring process. The pitch resulted in me joining the company.
+- The Globe design study was an end-to-end product concept challenge given to me as part of the company's hiring process. The pitch resulted in me joining the company. While the design study is not the actual app I worked on while at Globe, it became the basis for the service experience to connect remote communities to online services.
 - The NYU jobs portal prototype is an academic requirement tied to the work I was doing as an IT Graduate Assistant. It provides a web-based portal for an originally manual hiring spreadsheet.
 - The Job Board is a full-stack Python, React, and SQL application. It was originally intended as a simple to-do list app to practice core development concepts across the stack. It is repurposed into a personal job board application to better align with my current goals, providing a practical solution to an existing problem while acquiring new skills.
 
