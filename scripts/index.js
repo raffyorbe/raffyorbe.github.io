@@ -266,13 +266,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Egg
   const egg = document.getElementById("egg");
   const eggmsg = egg.querySelector(".eggmsg");
+  const eggIcon = document.getElementById("eggIcon");
 
   egg.addEventListener("click", () => {
-    eggmsg.classList.toggle("show");
+    eggIcon.textContent = "🦕";
+    eggmsg.classList.add("show");
 
     setTimeout(() => {
       eggmsg.classList.remove("show");
-    }, 2000);
+      eggIcon.textContent = "🥚";
+    }, 3000);
   });
 
 });
