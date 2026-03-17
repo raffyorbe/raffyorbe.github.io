@@ -143,6 +143,10 @@ body {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
+.hello-emoji{
+  font-size: 56px;
+}
+
 .hero-stats {
   position: absolute;
   bottom: 56px;
@@ -471,20 +475,69 @@ text-decoration: none;
 .xp1-card,
 .xp2-card,
 .xp3-card {
-  border-width: 2px;
-  border-style: solid;
+  position: relative;
+  border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   border-radius: 36px;
   display: flex;
-  /* flex-direction: column; */
   justify-content: space-between;
-  height: 100%;                 
-  /* transition: min-height 0.3s ease;  */
+  height: 100%;
+  overflow: hidden;
+  background: rgb(15, 98, 254); /* base color */
 }
 
-.xp1-card {border: none; background: linear-gradient(to bottom, #009d9a, #00cfcf);}
-.xp2-card {border: none; background: linear-gradient(to bottom, #ee5396, #ff8bb0);}
-.xp3-card {border: none; background: linear-gradient(to bottom, #a56eff, #c499ff);}
+/* keep content above gradient */
+.xp1-card > *,
+.xp2-card > *,
+.xp3-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.xp1-card::before {
+  content: "";
+  position: absolute;
+  inset: -70px;
+  z-index: 0;
+
+  background:
+    radial-gradient(circle at 30% 15%, #00cfcf 0%, transparent 60%),
+    radial-gradient(circle at 85% 45%, #4589ff 0%, transparent 65%),
+    radial-gradient(circle at 55% 85%, #ff8bb0 0%, transparent 70%),
+    radial-gradient(circle at 10% 65%, #c499ff 0%, transparent 65%);
+
+  filter: blur(20px);
+}
+
+.xp2-card::before {
+  content: "";
+  position: absolute;
+  inset: -70px;
+  z-index: 0;
+
+  background:
+    radial-gradient(circle at 30% 15%, #c499ff 0%, transparent 60%),
+    radial-gradient(circle at 85% 45%, #ff8bb0 0%, transparent 65%),
+    radial-gradient(circle at 55% 85%, #00cfcf 0%, transparent 70%),
+    radial-gradient(circle at 10% 65%, #4589ff 0%, transparent 65%);
+
+  filter: blur(20px);
+}
+
+.xp3-card::before {
+  content: "";
+  position: absolute;
+  inset: -70px;
+  z-index: 0;
+
+  background:
+    radial-gradient(circle at 30% 15%, #ff8bb0 0%, transparent 60%),
+    radial-gradient(circle at 85% 45%, #00cfcf 0%, transparent 65%),
+    radial-gradient(circle at 55% 85%, #4589ff 0%, transparent 70%),
+    radial-gradient(circle at 10% 65%, #c499ff 0%, transparent 65%);
+
+  filter: blur(20px);
+}
 
 #profile .row {
   display: flex;
@@ -1098,4 +1151,32 @@ footer {
     height: 240px;
   }
 
+}
+
+#egg {
+  position: relative; /* needed for absolute positioning */
+  cursor: pointer;
+  display: inline-block;
+  text-shadow: none;
+}
+
+.eggmsg {
+  position: absolute;
+  bottom: 100%; /* float above the h1 */
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.eggmsg.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-8px); /* float up when visible */
 }
