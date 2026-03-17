@@ -2,38 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll(".floating-navbar a");
 
-  //Hello message
-  const loader = document.getElementById("typing-loader");
-  const greeting = document.getElementById("greeting");
-  const headline = document.getElementById("headline");
-
-  let greetingTimer, headlineTimer;
-
-  function runAnimation() {
-    clearTimeout(greetingTimer);
-    clearTimeout(headlineTimer);
-
-    loader.style.animation = "none";
-    void loader.offsetWidth;
-    loader.style.animation = "";
-    greeting.classList.remove("show");
-    headline.classList.remove("show");
-    void greeting.offsetWidth;
-    void headline.offsetWidth;
-    loader.style.display = "flex";
-
-    greetingTimer = setTimeout(() => {
-      loader.style.display = "none";
-      greeting.classList.add("show");
-    }, 2000);
-
-    headlineTimer = setTimeout(() => {
-      headline.classList.add("show");
-    }, 2000);
-  }
-
-  runAnimation();
-  
   //Nav bar scroll listener
 
   function getCurrentSectionId() {
