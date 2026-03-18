@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const eggIcon = document.getElementById("eggIcon");
 
   egg.addEventListener("click", () => {
-    eggIcon.textContent = "🦕";
+    eggIcon.textContent = "🦖";
     eggmsg.classList.add("show");
 
     setTimeout(() => {
