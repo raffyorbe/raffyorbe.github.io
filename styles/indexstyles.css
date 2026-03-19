@@ -140,7 +140,7 @@ body {
 .hello-overlay {
   background-color: rgba(15, 98, 254, 0.15); 
   /* background: linear-gradient(to bottom, rgba(15, 98, 254, 0.1) 0%, rgba(15, 98, 254, 0.1) 60%, rgba(15, 98, 254, 0.4) 100%); */
-  padding: 3rem 3rem;
+  padding: 40px 40px;
   position: absolute;
   top: 0;
   left: 0;
@@ -180,8 +180,9 @@ body {
 
 #hello {
   position: relative;
-  padding: 0;
   background:#f2f4f8;
+  padding-top: 0px;
+  padding-bottom: 0px;
   box-shadow: 0 16px 24px -12px rgba(15, 98, 254, 0.3);
   /* box-shadow: 0 4px 16px rgba(15, 98, 254, 0.3); */
   border-radius: 36px;
@@ -260,14 +261,15 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  padding: 40px 40px;
   z-index: 20;
   /* border-radius: 36px; */
 }
 
 /* General Section Styling */
 .section {
-  padding-top:40px;
-  padding-bottom:48px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 h1 {
@@ -291,10 +293,11 @@ h2.ai-welcome{
 
 #profile{
   scroll-margin-top: 0px;
+  padding-top: 80px;
 }
 
 #projects{
-  scroll-margin-top: 56px;
+  scroll-margin-top: 60px;
 }
 
 #companies h1{
@@ -307,7 +310,7 @@ h2.ai-welcome{
 }
 
 #contact{
-  scroll-margin-top: 56px;
+  scroll-margin-top: 60px;
 }
 
 p.tag{
@@ -370,6 +373,16 @@ text-decoration: none;
 
 .link:hover{
   text-decoration: underline;
+}
+
+.disclaimer {
+  font-size: 12px;
+  text-align: center;
+  color: #161616;
+  margin-top: 8px;
+  margin-bottom: 40px;
+  opacity: 0.8;
+  /* font-weight: lighter; */
 }
 
 /* Project Cards */
@@ -524,7 +537,7 @@ text-decoration: none;
   border-radius: 36px;
   display: flex;
   justify-content: space-between;
-  height: 100%;
+  height: 300px;
   overflow: hidden;
   background: #4589ff; /* base color */
 }
@@ -872,10 +885,6 @@ text-decoration: none;
   background-color: #005fcb;
 }
 
-#hello .row.justify-content-center .col-md-8 {
-  padding-top: 40px;
-}
-
 .border-animator-chat {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -904,15 +913,6 @@ text-decoration: none;
   animation-delay: 0s;
 }
 
-.disclaimer {
-  font-size: 0.7rem;
-  color: #161616;
-  margin-top: 8px;
-  margin-bottom: 40px;
-  opacity: 0.8;
-  /* font-weight: lighter; */
-}
-
 /* Footer */
 footer {
   background-color: #ffffff;
@@ -922,7 +922,7 @@ footer {
 
 /* Responsive CSS */
 
-@media (max-width: 576px) {
+@media (width <= 576px) {
 
   .floating-navbar {
     padding: 4px 4px; /* reduced navbar padding on mobile */
@@ -1004,7 +1004,7 @@ footer {
   }
 
   .placeholder {
-    font-size: 15px;
+    font-size: 16px;
     padding: 0px;
   }
 
@@ -1036,21 +1036,8 @@ footer {
     transform: translateY(0);
   }
 
-  .ai-disclaimer {
-    font-size: 0.6rem;
-    margin-top: 8px;
-  }
-
   h2{
     text-align: center;
-  }
-
-  p{
-    font-size: 14px;
-  }
-
-  a{
-    font-size: 14px;
   }
 
   .card-content h2{
@@ -1060,8 +1047,9 @@ footer {
   p.subtitle{
     text-align: center;
   }
-  .disclaimer{
-    text-align: center;
+
+  p.disclaimer{
+    font-size: 12px;
   }
 
   .link-centered{
@@ -1077,9 +1065,13 @@ footer {
   font-size: 16px;
   }
 
+  .contact-cell{
+    height: 480px;
+  }
+
 }
 
-@media (max-width: 768px){
+@media (576px <= width <= 768px){
   
   .mission-title h1{
   font-size: 40px;
@@ -1108,23 +1100,11 @@ footer {
     text-align: center;
   }
 
-  p{
-    font-size: 14px;
-  }
-
-  a{
-    font-size: 14px;
-  }
-
   .card-content h2{
     text-align: left;
   }
 
   p.subtitle{
-    text-align: center;
-  }
-
-  .disclaimer{
     text-align: center;
   }
 
@@ -1134,7 +1114,7 @@ footer {
 
 }
 
-@media(max-width: 992px){
+@media(768px <= width <= 992px){
   .project-card,
   .project-card.bg-image1,
   .project-card.bg-image2,
@@ -1147,17 +1127,10 @@ footer {
   .xp3-card {
     height: 240px;
   }
- 
-  p{
-    font-size: 14px;
-  }
 
-  a{
-    font-size: 14px;
-  }
 }
 
-@media(max-width: 1200px){
+@media(992px <= width <= 1366px){
   
   p{
     font-size: 14px;
@@ -1173,7 +1146,7 @@ footer {
 
 }
 
-@media (max-height: 500px) {
+@media (height <= 500px) {
    
   .hello-cell {
     height: auto;
@@ -1204,15 +1177,15 @@ footer {
   }
 
   p{
-    font-size: 14px;
+    font-size: 16px;
   }
 
   a{
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .stat-card p {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .project-card,
@@ -1246,7 +1219,7 @@ footer {
   background: rgba(0,0,0,0.8);
   color: white;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 16px;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
