@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           link.classList.remove("active");
         }
-      } 
+      }
       else {
         // Fallback to href-based matching
         const href = link.getAttribute("href");
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (targetId === currentSectionId) {
           link.classList.add("active");
-        } 
+        }
         else {
           link.classList.remove("active");
         }
@@ -57,24 +57,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const glow = document.querySelector('.hello-chat-border-wrapper .border-animator-chat');
 
   if (glow) {
-  const target = document.querySelector('.hello-chat-border-wrapper');
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          glow.classList.add('visible'); // start glow animation
-          observer.unobserve(entry.target); // optional: only trigger once
-        }
-      });
-    },
-    {
-      root: null, // use viewport as root
-      threshold: 0, // we’ll rely on rootMargin instead
-      rootMargin: '-30% 0px -30% 0px' 
-      // top and bottom margins shrink the "trigger zone" to the center 10% of the screen
-    }
-  );
-  observer.observe(target);
+    const target = document.querySelector('.hello-chat-border-wrapper');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            glow.classList.add('visible'); // start glow animation
+            observer.unobserve(entry.target); // optional: only trigger once
+          }
+        });
+      },
+      {
+        root: null, // use viewport as root
+        threshold: 0, // we’ll rely on rootMargin instead
+        rootMargin: '-30% 0px -30% 0px'
+        // top and bottom margins shrink the "trigger zone" to the center 10% of the screen
+      }
+    );
+    observer.observe(target);
   }
 
   // Setup AI chat response UI
@@ -175,8 +175,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       bubble.classList.remove("loading");
-    } 
-    
+    }
+
     catch (error) {
       const textElem = bubble.querySelector(".chat-text");
       if (textElem) {
@@ -189,8 +189,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       console.error(error);
 
-    } 
-    
+    }
+
     finally {
       userInput.disabled = false;
       sendBtn.disabled = false;
