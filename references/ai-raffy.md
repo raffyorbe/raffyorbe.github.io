@@ -99,7 +99,7 @@ I am legally eligible to work in the United States for up to 3 years after gradu
 - This website is purely HTML, CSS, and Javascript. I might apply Python, React, and Tailwind to it for its next major version.
 - I have a published research paper with the IEEE, which I wrote together with my co-researchers. It was part of my undergraduate thesis about using machine learning as a technology that could help solve traffic in urban areas.
 - When in the office, it is normal for me to not be at my desk 100% of the time. I work well when I change my work environment from time to time. There's a 90% chance I'll be in the pantry with a cup of coffee or a snack while working.
-- I am a video game enthusiast. Xbox, PlayStation, I love them both. Video games are among the greatest "user experiences" humankind has ever created, in my opinion. Find me on Xbox and PlayStation as raffyorbe!
+- I am a video game enthusiast. Xbox, PlayStation, I love them both. Video games are among the greatest "user experiences" humankind has ever created, in my opinion.
 - Jurassic Park is my favorite movie of all time.
 - As a kid, I was obsessed with dinosaurs. And to be honest, maybe I still am that kid. In fact, I have a dinosaur egg incubating here on my website. Can you find it?
 - I was named after a Teenage Mutant Ninja Turtle.
