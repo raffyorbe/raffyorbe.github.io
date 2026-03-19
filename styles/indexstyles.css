@@ -4,6 +4,20 @@ html {
     overflow-x: hidden;
 }
 
+header{
+  background: linear-gradient(
+  to right, 
+  #0f62fe,
+  #08bdba, 
+  #a56eff, 
+  #ee5396
+  );
+  height: 4.1px;
+  position: sticky;
+  top: 0;
+  z-index: 99999;
+}
+
 body {
   font-family: 'Albert Sans', sans-serif;
   background-color: #ffffff;
@@ -221,7 +235,7 @@ body {
 }
 
 .contact-cell {
-  background-image: url(../images/Gemini_Generated_Image_ia07xuia07xuia07.jpg); 
+  background-image: url(../images/googledeepmind-17486101.jpeg); 
   background-size: cover;
   background-position: center;
   color: #ffffff;
@@ -262,11 +276,12 @@ h1 {
 h2.ai-welcome{
   font-weight: 300;
   text-align: center;
-  background: linear-gradient(to bottom, #0f62fe, #33b1ff);
+  color: #0f62fe;
+  /* background: linear-gradient(to bottom, #0f62fe, #33b1ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: transparent;
+  color: transparent; */
 }
 
 #chat{
@@ -281,6 +296,15 @@ h2.ai-welcome{
   scroll-margin-top: 56px;
 }
 
+#companies h1{
+  font-weight: 300;
+}
+
+#companies p{
+  font-weight: 300;
+  font-size: 20px;
+}
+
 #contact{
   scroll-margin-top: 56px;
 }
@@ -292,6 +316,21 @@ p.tag{
   padding: 2px;
   font-size: 12px;
   /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); */
+}
+
+.section-label{
+  font-size: 32px;
+}
+
+.mission-title h1{
+  font-size: 48px;
+  font-weight: 300;
+  color: #0f62fe;
+}
+
+.mission-statement h3{
+  font-size: 32px;
+  font-weight: 300;
 }
 
 /* Buttons */
@@ -324,9 +363,12 @@ p.tag{
   color: #0f62fe;
 }
 
-.btn-link{
-color: #0f62fe;
+.link{
 text-decoration: none;
+}
+
+.link:hover{
+  text-decoration: underline;
 }
 
 /* Project Cards */
@@ -483,7 +525,7 @@ text-decoration: none;
   justify-content: space-between;
   height: 100%;
   overflow: hidden;
-  background: rgb(15, 98, 254); /* base color */
+  background: #4589ff; /* base color */
 }
 
 /* keep content above gradient */
@@ -501,10 +543,14 @@ text-decoration: none;
   z-index: 0;
 
   background:
-    radial-gradient(circle at 30% 15%, #00cfcf 0%, transparent 60%),
+    /* radial-gradient(circle at 30% 15%, #00cfcf 0%, transparent 60%),
     radial-gradient(circle at 85% 45%, #4589ff 0%, transparent 65%),
     radial-gradient(circle at 55% 85%, #ff8bb0 0%, transparent 70%),
-    radial-gradient(circle at 10% 65%, #c499ff 0%, transparent 65%);
+    radial-gradient(circle at 10% 65%, #c499ff 0%, transparent 65%); */
+    radial-gradient(circle at 30% 15%, #00cfcf 0%, transparent 60%),
+    radial-gradient(circle at 85% 45%, #4589ff 0%, transparent 65%),
+    radial-gradient(circle at 55% 85%, #4589ff 0%, transparent 70%),
+    radial-gradient(circle at 10% 65%, #00cfcf 0%, transparent 65%);
 
   filter: blur(20px);
 }
@@ -517,9 +563,9 @@ text-decoration: none;
 
   background:
     radial-gradient(circle at 30% 15%, #c499ff 0%, transparent 60%),
-    radial-gradient(circle at 85% 45%, #ff8bb0 0%, transparent 65%),
-    radial-gradient(circle at 55% 85%, #00cfcf 0%, transparent 70%),
-    radial-gradient(circle at 10% 65%, #4589ff 0%, transparent 65%);
+    radial-gradient(circle at 85% 45%, #4589ff 0%, transparent 65%),
+    radial-gradient(circle at 55% 85%, #4589ff 0%, transparent 70%),
+    radial-gradient(circle at 10% 65%, #c499ff 0%, transparent 65%);
 
   filter: blur(20px);
 }
@@ -532,9 +578,9 @@ text-decoration: none;
 
   background:
     radial-gradient(circle at 30% 15%, #ff8bb0 0%, transparent 60%),
-    radial-gradient(circle at 85% 45%, #00cfcf 0%, transparent 65%),
+    radial-gradient(circle at 85% 45%, #4589ff 0%, transparent 65%),
     radial-gradient(circle at 55% 85%, #4589ff 0%, transparent 70%),
-    radial-gradient(circle at 10% 65%, #c499ff 0%, transparent 65%);
+    radial-gradient(circle at 10% 65%, #ff8bb0 0%, transparent 65%);
 
   filter: blur(20px);
 }
@@ -876,7 +922,7 @@ footer {
 /* Responsive CSS */
 
 @media (max-width: 576px) {
-  
+
   .floating-navbar {
     padding: 4px 4px; /* reduced navbar padding on mobile */
     gap: 0.05rem;
@@ -908,6 +954,16 @@ footer {
 
   h2.ai-welcome{
   font-weight: 400;
+  }
+
+  .mission-title h1{
+  font-size: 40px;
+  text-align: center;
+  }
+
+  .mission-statement h3{
+  font-size: 22px;
+  text-align: center;
   }
 
   .project-card,
@@ -1011,9 +1067,29 @@ footer {
     text-align: center;
   }
 
+  #companies h1{
+  font-weight: 400;
+  }
+
+  #companies p{
+  font-weight: 400;
+  font-size: 16px;
+  }
+
 }
 
 @media (max-width: 768px){
+  
+  .mission-title h1{
+  font-size: 40px;
+  text-align: center;
+  }
+
+  .mission-statement h3{
+  font-size: 22px;
+  text-align: center;
+  }
+  
   .project-card,
   .project-card.bg-image1,
   .project-card.bg-image2,
