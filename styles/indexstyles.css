@@ -337,6 +337,10 @@ p.tag{
   font-weight: 300;
 }
 
+.mobile-br{
+  display: none;
+}
+
 /* Buttons */
 .btn:active,
 .btn.active,
@@ -1066,6 +1070,10 @@ footer {
     height: 480px;
   }
 
+  .mobile-br{
+    display: inline;
+  }
+
 }
 
 @media (576px <= width <= 768px){
@@ -1109,6 +1117,10 @@ footer {
     text-align: center;
   }
 
+  #mission .mobile-br{
+    display: inline;
+  }
+
 }
 
 @media(768px <= width <= 992px){
@@ -1125,6 +1137,10 @@ footer {
     height: 240px;
   }
 
+  #mission .mobile-br{
+    display: inline;
+  }
+
 }
 
 @media(992px <= width <= 1366px){
@@ -1139,6 +1155,10 @@ footer {
 
   .card-content h2{
     font-size: 24px;
+  }
+
+  #mission .mobile-br{
+    display: inline;
   }
 
 }
