@@ -1,5 +1,5 @@
 # About Me
-I'm Raffy Orbe - a product guy who combines product vision, technical knowledge, and project execution to create delightful digital experiences that bring value to the business and its customers.
+I'm Raffy Orbe - a product guy who combines product vision, systems thinking, and technical execution to create delightful digital experiences that move people and organizations beyond simple task completion toward expanding their human potential.
 
 My full name is Raphael Angelo Orbe.
 
@@ -90,8 +90,7 @@ I am legally eligible to work in the United States for up to 3 years after gradu
 - The Job Board is a full-stack Python, React, and SQL application. It was originally intended as a simple to-do list app to practice core development concepts across the stack. It is repurposed into a personal job board application to better align with my current goals, providing a practical solution to an existing problem while acquiring new skills.
 
 # Fun Facts
-- My mission statement fuses engineering and human-centric design, grounded on the belief that technology should be a bridge rather than just a utility. By connecting tech capability with human experiences, the goal is to move beyond simple task completion toward expanding human potential. It treats every product as an elevator, ensuring that while businesses scale and systems become more intelligent, the ultimate goal is the growth and advancement of the person on the other side of the screen.
-- While I am not a master at programming in general, I do understand code and how it works to achieve my vision. This gives me the ability to work well with software engineers and determine if new features or product experiences can be successfully implemented or need to be modified given the technological limitations of the development platform.
+- While I am not a master at programming in general, I do understand code and how it works to achieve my vision. This gives me the ability to work well with software engineers and determine if new features or product experiences can be successfully implemented or need to be modified given the technical limitations of the development platform.
 - I am a self-learner. Many of the skills I've gained throughout my career were learned with minimal training and supervision.
 - AI has been instrumental to my personal learning initiatives.
 - My opinion about AI is that it is a tool used to augment human capability. We must learn how to take advantage of its ability to enhance our own capabilities while being ethical in its use.
