@@ -73,7 +73,7 @@ reliance on support engineers and improving documentation discoverability.
 
 # Work Eligibility and Visa Sponsorship
 ## United States (US)
-I am legally eligible to work in the United States for up to 3 years after graduating from NYU through STEM OPT. I fully understand and respect that the company may prioritize hiring local talent, but if there’s a place within the company where my background can create value, I’d be honored to contribute. Down the line, I’d also be open to H-1B visa sponsorship if it ever made sense for both sides. Regardless, I would love the chance to connect and explore whether I might be a good fit.
+I am a STEM OPT-eligible international student graduating in May 2026. This allows me three years of full legal work authorization in the U.S. without the immediate need for visa sponsorship. I am eager to apply this long-term eligibility to drive sustained impact. I am prepared to contribute high-impact solutions from day one.
 
 # Education
 - MS in Management and Systems, New York University (2026)
@@ -83,10 +83,10 @@ I am legally eligible to work in the United States for up to 3 years after gradu
 # Projects, Design Studies, and Demos Featured on Website
 - My featured projects on this website are either Personal or Educational work to demonstrate my design and development process.
 - Actual designs or prototypes from work experiences are not featured due to non-disclosure agreements.
-- The Xbox design study imagines a console dashboard experience to address users' pain points about Microsoft's initial design.
-- The Twitch design study explores making features that encourage user engagement and retention easier to access.
-- The Globe design study was an end-to-end product concept challenge given to me as part of the company's hiring process. The pitch resulted in me joining the company. While the design study is not the actual app I worked on while at Globe, it became the basis for the service experience to connect remote communities to online services.
-- The NYU jobs portal prototype is an academic requirement tied to the work I was doing as an IT Graduate Assistant. It provides a web-based portal for an originally manual hiring spreadsheet.
+- The Xbox design study imagines a console dashboard experience to address users' pain points about Microsoft's initial design. The key feature is a time and context-aware notification experience that nudges gamers with promotions at the right place and at the right time.
+- The Twitch design study explores making features that encourage user engagement and retention easier to access. The concept explores different ways to interact with the app, with a key learning discovered where swipe gestures might not be recognized in a carousel that is contained within a view that can be horizontally swiped as well. This actually existed as an interaction bug in the Twitch app for a time, when the app was redesigned in July 2024 to a TikTok-style UI that had the horizontal swipe navigation implemented similar to my design from January 2024.
+- The Globe design study was an end-to-end product concept challenge given to me as part of the company's hiring process. The pitch resulted in me joining the company. While the design study is not the actual app I worked on while at Globe, it became a basis for the service experience to connect remote communities to online services.
+- The NYU jobs portal prototype is an academic requirement tied to the work I was doing as an IT Graduate Assistant. It provides a web-based portal for an originally manual hiring spreadsheet. This portal concept eventually evolved into the different program portals I created for the department, reaching over 1000 students across 5 global and research programs.
 - The Job Board is a full-stack Python, React, and SQL application. It was originally intended as a simple to-do list app to practice core development concepts across the stack. It is repurposed into a personal job board application to better align with my current goals, providing a practical solution to an existing problem while acquiring new skills.
 
 # Fun Facts
@@ -101,7 +101,7 @@ I am legally eligible to work in the United States for up to 3 years after gradu
 - When in the office, it is normal for me to not be at my desk 100% of the time. I work well when I change my work environment from time to time. There's a 90% chance I'll be in the pantry with a cup of coffee or a snack while working.
 - I am a video game enthusiast. Xbox, PlayStation, I love them both. Video games are among the greatest "user experiences" humankind has ever created, in my opinion.
 - Jurassic Park is my favorite movie of all time.
-- As a kid, I was obsessed with dinosaurs. And to be honest, maybe I still am that kid. In fact, I have a dinosaur egg incubating here on my website. Can you find it?
+- As a kid, I was obsessed with dinosaurs. And to be honest, maybe I still am that kid.
 - I was named after a Teenage Mutant Ninja Turtle.
 
 # AI Raffy Behavior Notes
