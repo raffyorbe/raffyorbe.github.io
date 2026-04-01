@@ -538,7 +538,7 @@ text-decoration: none;
   min-height: 300px;
   overflow: hidden;
   background: #4589ff; /* base color */
-  -webkit-mask-image: -webkit-radial-gradient(white, black); /*Overflow fix for Safari in macos 26.4*/
+  -webkit-mask-image: -webkit-radial-gradient(white, black); /*Overflow fix for Safari in macOS 26.4*/
 }
 
 /* keep content above gradient */
