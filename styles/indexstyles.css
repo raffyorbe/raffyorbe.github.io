@@ -159,7 +159,10 @@ body {
 }
 
 .hello-emoji{
-  font-size: 56px;
+  /* font-size: 56px; */
+  width: 88px;
+  height: 88px;
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.5));
 }
 
 .hero-stats {
