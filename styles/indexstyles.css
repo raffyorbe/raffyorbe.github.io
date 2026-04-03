@@ -534,7 +534,7 @@ text-decoration: none;
 .xp3-card {
   position: relative;
   border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); */
   border-radius: 36px;
   display: flex;
   justify-content: space-between;
@@ -542,6 +542,12 @@ text-decoration: none;
   overflow: hidden;
   background: #4589ff; /* base color */
   -webkit-mask-image: -webkit-radial-gradient(white, black); /*Overflow fix for Safari in macOS 26.4*/
+}
+
+/* Fix for shadow disappearing after webkit fix */
+.xp-card-shadow{ 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 36px;
 }
 
 /* keep content above gradient */
