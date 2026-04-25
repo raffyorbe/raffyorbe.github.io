@@ -5,14 +5,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="theme-color" content="#ffffff">
-  <meta property="og:image" content="https://raffyorbe.com/images/memojibadge-ogimage.jpg"/>
+  <meta property="og:image" content="https://raffyorbe.com/images/memojibadge-ogimage.jpg" />
   <meta property="og:title" content="Raffy Orbe" />
   <meta property="og:description" content="Product UX Designer, Systems Integrator, Frontend Developer" />
-  
+
   <title>Raffy Orbe – Product UX Designer, Systems Integrator, Frontend Developer</title>
 
-  <link rel="icon" type="image/png" href="images/memojicon.png"/>
-  
+  <link rel="icon" type="image/png" href="images/memojicon.png" />
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
@@ -40,46 +40,51 @@
   <section class="section" id="hello">
 
     <div class="hello-cell">
-      <video autoplay muted loop playsinline preload="auto" class="hello-video">
+      <!-- <video autoplay muted loop playsinline preload="auto" class="hello-video">
         <source src="images/heroclip.mp4" type="video/mp4">
-      </video>
+      </video> -->
       <div class="hello-overlay">
-        <img src="images/memojibadge.png" class="mb-3 hello-emoji">
-        <h1>Hi, I'm Raffy Orbe</h1>
-        <p>Product UX Designer • Systems Integrator • Frontend Developer</p>
+        <div class="container stat-card">
+          <img src="images/memojibadge.png" class="mb-3 hello-emoji">
+
+          <div class="row justify-content-center">
+            <div class="col">
+              <h2 class="ai-welcome mb-0" id="chat">Hi, I'm Raffy Orbe</h2>
+              <p class="disclaimer mb-4" style="color: #0f62fe;">Product UX Designer • Systems Integrator <br class="mobile-br">• Frontend Developer</p>
+              <!-- Input layer -->
+              <div class="hello-chat-border-wrapper">
+                <div class="border-animator-chat"></div>
+                <div id="chat-input-area" class="floating-chatbar">
+                  <input type="text" id="user-input" />
+                  <span class="placeholder" id="placeholder"></span>
+                  <button class="btn btn-primary btn-sm" id="send-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 19V6M5 12l7-7 7 7" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Overlay container for AI reply bubble -->
+              <div id="chat-overlay-container"></div>
+
+              <p class="disclaimer">AI Raffy can make mistakes. Check info with human Raffy.</p>
+            </div>
+          </div>
+        </div>
+        
+
         <div class="container hero-stats">
-          <a href="#chat" class="btn btn-primary btn-sm">
+          <a href="#profile" class="btn btn-primary btn-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 9l6 6 6-6" />
             </svg>
           </a>
         </div>
-      </div>
-    </div>
 
-    <div class="row justify-content-center mt-5">
-      <div class="col">
-        <h2 class="ai-welcome mb-3" id="chat">Nice to meet you. Let's chat!</h2>
-        <!-- Input layer -->
-        <div class="hello-chat-border-wrapper">
-          <div class="border-animator-chat"></div>
-          <div id="chat-input-area" class="floating-chatbar">
-            <input type="text" id="user-input" />
-            <span class="placeholder" id="placeholder"></span>
-            <button class="btn btn-primary btn-sm" id="send-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 19V6M5 12l7-7 7 7" />
-              </svg>
-            </button>
-          </div>
-        </div>
 
-        <!-- Overlay container for AI reply bubble -->
-        <div id="chat-overlay-container"></div>
-
-        <p class="disclaimer">AI Raffy can make mistakes. Check info with human Raffy.</p>
       </div>
     </div>
 
@@ -95,9 +100,9 @@
           <p class="subtitle">With end-to-end impact and real results won, a jack of all trades beats a master of one.
           </p>
           <div class="link-centered">
-            <a class="link" href="https://raffyorbe.github.io/references/Raffy_Orbe_Overview.pdf" target="_blank">Learn more about me <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
+            <a class="link" href="https://raffyorbe.github.io/references/Raffy_Orbe_Overview.pdf" target="_blank">Learn
+              more about me <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M7 17l9.2-9.2M17 17V7H7" />
               </svg></a>
           </div>
@@ -120,7 +125,8 @@
               <div class="card-content">
                 <h1>⚙️</h1>
                 <h2 style="color: #ffffff">Integration</h2>
-                <p class="card-footer">I connect design vision with technical execution, ensuring that systems, workflows,
+                <p class="card-footer">I connect design vision with technical execution, ensuring that systems,
+                  workflows,
                   and products work together as one seamless, intentional whole.</p>
               </div>
             </div>
@@ -145,16 +151,16 @@
   <section class="section" id="mission">
     <div class="container mt-1">
       <hr style="color: #0f62fe;">
-        <div class="row g-4 mt-2 mb-5">
-            <div class="mission-title col-md-6">
-              <h1>Essential is <br>the human potential</span></h1>
-            </div>
-            <div class="mission-statement col-md-6">
-              <h3>To empower people and organizations through products and experiences that expand the human potential</h3>
-            </div>
+      <div class="row g-4 mt-2 mb-5">
+        <div class="mission-title col-md-6">
+          <h1>Essential is <br>the human potential</span></h1>
         </div>
-        <hr style="color: #0f62fe;">
+        <div class="mission-statement col-md-6">
+          <h3>To empower people and organizations through products and experiences that expand the human potential</h3>
+        </div>
       </div>
+      <hr style="color: #0f62fe;">
+    </div>
   </section>
 
   <!-- Projects Section -->
@@ -163,12 +169,14 @@
       <div class="row g-4">
         <div class="col-md-6 col-lg-3">
           <h2 class="section-label mb-5">Projects</h2>
-          <p class="subtitle">Designed with vision and built with precision, concept becomes code in seamless transition.</p>
+          <p class="subtitle">Designed with vision and built with precision, concept becomes code in seamless
+            transition.</p>
           <div class="link-centered">
-            <a class="link" href="https://www.figma.com/design/Wc2Qg2uSfxj2193lul5HP8/Portfolio?node-id=0-1&t=9bJPBST7S0cZs5iA-1"
-              target="_blank">View my Figma boards <svg
-                xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <a class="link"
+              href="https://www.figma.com/design/Wc2Qg2uSfxj2193lul5HP8/Portfolio?node-id=0-1&t=9bJPBST7S0cZs5iA-1"
+              target="_blank">View my Figma boards <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
                 <path d="M7 17l9.2-9.2M17 17V7H7" />
               </svg></a><br>
             <a class="link" href="https://www.github.com/raffyorbe" target="_blank">View my GitHub
@@ -185,7 +193,8 @@
                 <p class="tag"><strong>PYTHON • REACT • SQL</strong></p>
                 <h5>My Job Board</h5>
                 <p>Full-stack personal app to practice new skills and streamline my own career growth process.</p>
-                <a href="https://raffyorbe.github.io/my-jobs-fe" target="_blank" class="btn btn-sm btn-primary">View project</a>
+                <a href="https://raffyorbe.github.io/my-jobs-fe" target="_blank" class="btn btn-sm btn-primary">View
+                  project</a>
               </div>
             </div>
           </div>
@@ -210,7 +219,8 @@
                 <p class="tag"><strong>HTML • CSS • JS</strong></p>
                 <h5>NYU Jobs Portal Prototype</h5>
                 <p>Web-based jobs portal designed to ease hiring for aspiring student workers.</p>
-                <a href="https://raffyorbe.github.io/nyu-jobs" target="_blank" class="btn btn-sm btn-primary">View project</a>
+                <a href="https://raffyorbe.github.io/nyu-jobs" target="_blank" class="btn btn-sm btn-primary">View
+                  project</a>
               </div>
             </div>
           </div>
@@ -320,7 +330,8 @@
     <div class="container">
       <hr style="color: #a2a9b0;">
       <br>
-      <p class="disclaimer" style="color: #a2a9b0;">AI Raffy is powered by ChatGPT. Impact and results reflect internal and publicly available data. Projects protected by non-disclosure agreements are not included.</p>
+      <p class="disclaimer" style="color: #a2a9b0;">AI Raffy is powered by ChatGPT. Impact and results reflect internal
+        and publicly available data. Projects protected by non-disclosure agreements are not included.</p>
       <hr style="color: #a2a9b0;">
     </div>
     <p class="mb-3" style="color: #a2a9b0">© 2026 Raphael Angelo Orbe</p>

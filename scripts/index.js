@@ -206,7 +206,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const placeholders = [
     "Ask me anything",
-    "Ask me how I design products",
+    "Ask me how I design experiences",
+    "Ask me how I integrate systems",
+    "Ask me how I develop frontends",
     "Ask me about my skills",
     "Ask me about my work's impact",
     "Ask me how I collaborate",
