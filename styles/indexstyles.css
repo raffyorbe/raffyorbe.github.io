@@ -7,10 +7,10 @@ html {
 header{
   background: linear-gradient(
   to right, 
-  #0f62fe,
-  #08bdba, 
-  #a56eff, 
-  #ee5396
+  rgb(15, 98, 254),
+  rgb(8, 189, 186), 
+  rgb(165, 110, 255), 
+  rgb(238, 83, 150)
   );
   height: 0px;
   padding-top: env(safe-area-inset-top);
@@ -183,26 +183,24 @@ body {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   /* background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(208, 226, 255) 100%); */
-  box-shadow: 0 0px 16px rgba(15, 98, 254, 0.8);
-  animation: glow 6s ease-in-out infinite;
+  box-shadow: 0 0px 12px rgba(15, 98, 254, 0.7);
+  animation: glow 12s ease-in-out infinite;
 }
 
 @keyframes glow {
   0%, 100% {
-    box-shadow: 0 0 8px rgba(15, 98, 254, 0.3);
+    box-shadow: 0 0 12px rgba(15, 98, 254, 0.7);
+  }
+  25% {
+    box-shadow: 0 0 12px rgba(8, 189, 186, 0.7);
   }
   50% {
-    box-shadow: 0 0 16px rgba(15, 98, 254, 0.8);
-  }
-  /* 50% {
-    box-shadow: 0 0 16px rgba(190, 149, 255, 0.8);
+    box-shadow: 0 0 12px rgba(165, 110, 255, 0.7);
   }
   75% {
-    box-shadow: 0 0 16px rgba(255, 126, 182, 0.8);
+    box-shadow: 0 0 12px rgba(238, 83, 150, 0.7);
   }
-  100% {
-    box-shadow: 0 0 16px rgba(15, 98, 254, 0.8);
-  } */
+
 }
 
 /* .stat-card p {
@@ -899,7 +897,7 @@ text-decoration: none;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  padding: 6px;
+  padding: 4px;
   opacity: 1;
   background: transparent;
   color: #a2a9b0;
