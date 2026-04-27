@@ -58,11 +58,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (glow) {
     const target = document.querySelector('.hello-chat-border-wrapper');
+    const statCard = document.querySelector('.stat-card');
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
+            
             glow.classList.add('visible'); // start glow animation
+            statCard.classList.add('visible');
+
             observer.unobserve(entry.target); // optional: only trigger once
           }
         });
