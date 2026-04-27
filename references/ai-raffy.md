@@ -4,61 +4,42 @@ I'm Raffy Orbe - a product guy who combines product vision, systems thinking, an
 My full name is Raphael Angelo Orbe.
 
 # Skills
-- Product (End-to-End Product Design, Product Strategy, Design Thinking, Jobs-to-be-Done, Growth Loops, Lean
-Experimentation, Workflow Automation, Stakeholder Management, Agile)
-- Design (UI/UX Design, Human-AI Interaction, Interaction Design, User-Centered Design, Design Systems, Goal-Directed
-Design, Service Design, Wireframing, Rapid Prototyping, Figma, Adobe CC)
-- Technical (React, JavaScript, Python, FastAPI, SQL, SQLite, HTML, CSS, Tailwind, GitHub, OpenAI Platform, Render,
-Cloudflare, Jira)
+- Design & Strategy: Figma, Adobe Creative Cloud, Design Systems, UX Design, UI Design, Visual Design, Interaction Design, Service Design, Web Design, App Design, Wireframing, Customer Journey Mapping, User Flows, Growth Loops, A/B Testing, WCAG Accessibility (A11y), Human-Computer Interaction (HCI), Design Thinking, Agile
+- Business Analysis & Product Strategy: Requirements Gathering, Business Process Analysis, Systems Analysis, Stakeholder Management, Process Mapping, Customer Journey Mapping, Data Analysis, User Stories, Use Cases, Technical Documentation
+- AI & Product Prototyping: AI-assisted Design, AI Workflow Automation, Human-AI Interaction Design, Prompt Engineering, React, Python, Tailwind CSS, PostgreSQL, FastAPI, OpenAI API
+- Core Technical: HTML, CSS, JavaScript, SQL, GitHub, Managed Systems Architecture, Database Management
 - Skills are continuously being acquired or honed as a commitment to personal growth and value creation.
 - Skill level for all skills vary from beginner to advanced or working knowledge. No claim of mastery is being made for any.
 
 # Professional Summary
-With over seven years of experience across product experience design, research and development, and
-IT systems delivery, I bring a practical mix of technical depth and user-centered thinking to my work. I’ve
-held roles at companies like Nokia and IBM, and I currently support more than 1,000 students across five
-programs at NYU as an IT Graduate Assistant while pursuing my Master’s in Management and Systems.
-Across these roles, I design and deliver both internal and front-facing systems and experiences that help
-people achieve their goals more effectively while creating value for the organization. As an engineer by
-craft, I’m always looking for ways to make technology not only useful, but also delightful for the people
-using it. I am seeking for roles where I can bring together my product mindset, technical foundation, and
-user-centered approach to create experiences that truly make a difference for people.
+I leverage a Computer Science foundation and 7+ years of UX expertise, having held roles at companies like Nokia and IBM. At NYU, I currently design and manage AI-driven workflows, databases, and student information systems that serve over 1,000 users across five global programs while pursuing my Master’s in Management and Systems. Across these roles, I design and deliver both internal and front-facing systems and experiences that help people achieve their goals more effectively while creating value for the organization. I thrive at the intersection of design and engineering. Whether prototyping functional systems or scaling design system infrastructure, I focus on building technical foundations that allow product teams to ship faster and more consistently.
 
 Throughout my career, I've grown most by staying curious and being willing to take on work that stretched me beyond what I already knew. Some of my best projects came from stepping into uncertainty, learning from the engineers, designers, and leaders I worked with, and iterating until something clicked. I'm drawn to environments where that kind of growth is encouraged, and I'd welcome the chance to keep building in that direction in my next role.
 
 # Experience
 **IT Graduate Assistant**, New York University (September 2024 – Present)  
-- Engineered 20+ AI-assisted workflow automations across departmental information systems, cutting processing time
-by up to 50%.
-- Optimized information systems utilization and aligned cross-functional requirements with long-term operational
-strategy, reducing IT costs by 14.7% annually.
-- Streamlined complex user workflows across 5 global and research programs, expanding department outreach and
-engagement to 1,000+ students.
+- Implemented 20+ AI-driven business process workflows, leveraging automation to optimize the department’s student information system (SIS) and database, reducing student record processing time by up to 50%.
+- Conducted business requirements analysis to define process flows and use cases for internal tools and student portals, improving system configuration and contributing to a 14.7% annual reduction in IT operational costs.
+- Streamlined system design and user journeys through data analysis, expanding digital outreach and student engagement to 1,000+ users.
 
 **Digital Growth UI/UX Expert**, Globe Telecom (March 2024 – July 2024)  
-- Led end-to-end service design for a new mobile app at the Philippines' leading telecom, connecting remote
-communities to the internet and contributing to a 74% increase in subscriptions in Q4 2024.
-- Designed and optimized an in-app cross-sell journey, achieving up to 4x higher product activations through targeted
-engagement versus broad targeting over a 30-day period.
-- Conceptualized and ran hypothesis-driven experiments on in-app gamification features to drive user retention and
-increase revenue per user.
+- Led the end-to-end service and app design for a mobile app at the Philippines’ leading telecom, moving it from wireframes and customer journey maps to pilot and contributing to a 74% increase in subscriptions in Q4 2024.
+- Optimized in-app conversion funnels through user research, A/B testing, and targeted engagement journeys, achieving 4x higher product activations compared to baseline targeting.
+- Facilitated hypothesis-driven cross-functional design reviews on content creation and gamification features to drive user retention and increase average revenue per user (ARPU), aligning product design with product strategy.
 
 **UI/UX Designer**, IBM (December 2020 – April 2023)  
-- Designed the full end-to-end user experience for Immerscio.bio, an online learning platform recognized by the French
-government for enabling bioproduction training during the COVID-19 pandemic.
-- Accelerated client implementation timelines by up to 2 weeks by delivering customizable UI templates through cross-functional collaboration across product, design, and engineering teams.
-- Ensured WCAG-compliant accessibility across all deliverables through usability testing, high-fidelity prototyping, and
-hands-on frontend development.
+- Designed the full end-to-end user experience (UX) for Immerscio.bio, a high-scale, government-recognized online learning platform that enabled pharmaceutical bioproduction training during the pandemic.
+- Accelerated design-to-development handoffs and cross-functional collaboration workflows by 2 weeks by building a library of customizable UI templates and migrating designs from Adobe XD to Figma.
+- Embedded responsive cross-platform design and WCAG-compliant accessibility into all digital platforms through high-fidelity prototypes and mockups, usability testing, and hands-on web development (HTML/CSS).
 
 **R&D Technical Writer and UX Lead**, Nokia (December 2016 – March 2020)
-- Spearheaded a multi-year UX strategy and large-scale workflow redesign, consolidating legacy network analytics
-tools into a unified, intuitive web-based dashboard that resolved core customer pain points.
-- Migrated and restructured multiple technical documents into a centralized, scalable knowledge platform, reducing
-reliance on support engineers and improving documentation discoverability.
+- Spearheaded a multi-year UX strategy to modernize legacy network analytics, addressing data visualization pain points from user feedback and consolidating fragmented tools into a unified, scalable dashboard ecosystem.
+- Coordinated efforts to create design tokens and component libraries, facilitating the team’s UI development work.
+- Reduced technical debt by migrating fragmented technical documentation into a scalable knowledge platform, improving discoverability and product knowledge transfer for customers and support engineers.
 
 # Notes on results
 - At NYU, I computed cost savings by comparing annual baseline IT spend against post-optimization costs. This includes annual license and subscription costs as well as the cost of switching over to new tools. The annual budget for IT is $10,000+ and my work lowered the annual cost. 
-- At Globe, the in-app cross-sell results are from internal analytics. It contributed to the 74% increase in prepaid fiber subscriptions in Q4 2024.
+- At Globe, the in-app cross-sell results are from internal analytics. It contributed to the 74% increase in prepaid fiber subscriptions, which was the app's hero product at the time, in Q4 2024.
 - My work has directly impacted and delighted over 1,000 customers, enterprise users, and students across web, mobile, and legacy app experiences. That number might even be larger through indirect reach.
 
 # Gaps in Work Experience Timeline
@@ -73,11 +54,10 @@ reliance on support engineers and improving documentation discoverability.
 
 # Work Eligibility and Visa Sponsorship
 ## United States (US)
-I am a STEM OPT-eligible international student graduating in May 2026. This allows me three years of full legal work authorization in the U.S. without the immediate need for visa sponsorship. I am eager to apply this long-term eligibility to drive sustained impact. I am prepared to contribute high-impact solutions from day one.
+I am legally authorized to work in the United States for up to 3 years. Employment Authorization Document (EAD) card is available upon request. This authorization granted to me through my F-1 visa's STEM OPT eligibility allows full legal work in the U.S. without the immediate need for visa sponsorship. I am eager to apply this long-term eligibility to drive sustained impact. I am prepared to contribute high-impact solutions from day one.
 
 # Education
 - MS in Management and Systems, New York University (2026)
-  - I will graduate from NYU in May 2026.
 - BS in Computer Science, De La Salle University (2016)
 
 # Projects, Design Studies, and Demos Featured on Website
