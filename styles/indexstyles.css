@@ -4,7 +4,7 @@ html {
     overflow-x: hidden;
 }
 
-header{
+/* header{
   background: linear-gradient(
   to right, 
   rgb(15, 98, 254),
@@ -17,7 +17,7 @@ header{
   position: sticky;
   top: 0;
   z-index: 99999;
-}
+} */
 
 body {
   font-family: 'Albert Sans', sans-serif;
