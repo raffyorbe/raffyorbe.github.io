@@ -1,5 +1,5 @@
 # About Me
-I'm Raffy Orbe - a product guy who combines product vision, systems thinking, and technical execution to create delightful digital experiences that move people and organizations beyond simple task completion toward expanding their human potential.
+I'm Raffy Orbe - Product designer and systems thinker with 7+ years driving measurable outcomes across B2B and B2C, spanning business systems, process optimization, digital platforms, and technology operations.
 
 My full name is Raphael Angelo Orbe.
 
@@ -17,25 +17,25 @@ I leverage a Computer Science foundation and 7+ years of UX expertise, having he
 Throughout my career, I've grown most by staying curious and being willing to take on work that stretched me beyond what I already knew. Some of my best projects came from stepping into uncertainty, learning from the engineers, designers, and leaders I worked with, and iterating until something clicked. I'm drawn to environments where that kind of growth is encouraged, and I'd welcome the chance to keep building in that direction in my next role.
 
 # Experience
-**IT Graduate Assistant**, New York University (September 2024 – Present)  
-- Implemented 20+ AI-driven business process workflows, leveraging automation to optimize the department’s student information system (SIS) and database, reducing student record processing time by up to 50%.
-- Conducted business requirements analysis to define process flows and use cases for internal tools and student portals, improving system configuration and contributing to a 14.7% annual reduction in IT operational costs.
-- Streamlined system design and user journeys through data analysis, expanding digital outreach and student engagement to 1,000+ users.
+**IT Assistant**, New York University (September 2024 – Present)  
+- Reduced department processing time by up to 50% by designing 20+ AI-enabled workflows using AI agents, enhancing administrative user experience (UX) and automating student information systems.
+- Decreased IT operational costs by 14.7% annually by defining process flows and redesigning internal tools and student portals, optimizing system configurations and user interface (UI) patterns.
+- Expanded digital outreach and engaged 1,000+ users by streamlining system design and user journeys across 5 global research programs.
 
 **Digital Growth UI/UX Expert**, Globe Telecom (March 2024 – July 2024)  
-- Led the end-to-end service and app design for a mobile app at the Philippines’ leading telecom, moving it from wireframes and customer journey maps to pilot and contributing to a 74% increase in subscriptions in Q4 2024.
-- Optimized in-app conversion funnels through user research, A/B testing, and targeted engagement journeys, achieving 4x higher product activations compared to baseline targeting.
-- Facilitated hypothesis-driven cross-functional design reviews on content creation and gamification features to drive user retention and increase average revenue per user (ARPU), aligning product design with product strategy.
+- Increased subscriptions by 74% in Q4 2024 by leading end-to-end service and app design for a mobile app at the Philippines’ leading telecom, moving it from wireframes and customer journey maps to pilot.
+- Achieved 4x higher product activations compared to baseline targeting by optimizing in-app conversion funnels through user research, A/B testing, and targeted engagement journeys.
+- Drove user retention and average revenue per user (ARPU) metrics by facilitating hypothesis-driven cross-functional design reviews on content creation and gamification features, aligning product design with product strategy.
 
 **UI/UX Designer**, IBM (December 2020 – April 2023)  
-- Designed the full end-to-end user experience (UX) for Immerscio.bio, a high-scale, government-recognized online learning platform that enabled pharmaceutical bioproduction training during the pandemic.
+- Enabled bioproduction training during the pandemic with a 64% module completion rate across 68 immersive modules by designing the end-to-end UX for Immerscio.bio, a government-recognized online learning platform.
 - Accelerated design-to-development handoffs and cross-functional collaboration workflows by 2 weeks by building a library of customizable UI templates and migrating designs from Adobe XD to Figma.
-- Embedded responsive cross-platform design and WCAG-compliant accessibility into all digital platforms through high-fidelity prototypes and mockups, usability testing, and hands-on web development (HTML/CSS).
+- Ensured responsive cross-platform design and WCAG-compliant accessibility across all digital platforms through high-fidelity prototypes and mockups, usability testing, and hands-on web development (HTML/CSS).
 
 **R&D Technical Writer and UX Lead**, Nokia (December 2016 – March 2020)
-- Spearheaded a multi-year UX strategy to modernize legacy network analytics, addressing data visualization pain points from user feedback and consolidating fragmented tools into a unified, scalable dashboard ecosystem.
-- Coordinated efforts to create design tokens and component libraries, facilitating the team’s UI development work.
-- Reduced technical debt by migrating fragmented technical documentation into a scalable knowledge platform, improving discoverability and product knowledge transfer for customers and support engineers.
+- Modernized legacy network analytics by spearheading a multi-year UX strategy, consolidating fragmented tools into a unified, scalable dashboard ecosystem, and addressing data visualization pain points from user feedback.
+- Improved UI and UX development efficiency by mentoring developers and coordinating the creation of design tokens and component libraries across different product teams.
+- Enhanced support and knowledge discoverability by pushing Help tools as a product feature and migrating fragmented technical documentation into a scalable knowledge platform for customers and support engineers.
 
 # Notes on results
 - At NYU, I computed cost savings by comparing annual baseline IT spend against post-optimization costs. This includes annual license and subscription costs as well as the cost of switching over to new tools. The annual budget for IT is $10,000+ and my work lowered the annual cost. 
@@ -57,8 +57,9 @@ Throughout my career, I've grown most by staying curious and being willing to ta
 I am legally authorized to work in the United States for up to 3 years. Employment Authorization Document (EAD) card is available upon request. This authorization granted to me through my F-1 visa's STEM OPT eligibility allows full legal work in the U.S. without the immediate need for visa sponsorship. I am eager to apply this long-term eligibility to drive sustained impact. I am prepared to contribute high-impact solutions from day one.
 
 # Education
-- MS in Management and Systems, New York University (2026 - Graduated)
-- BS in Computer Science, De La Salle University (2016 - Graduated)
+**MS in Management and Systems**, New York University (2026 - Graduated)
+- Relevant Coursework: Data Analytics, Project Management, Technology Management, Tech Risk Management & Governance, Threat & Risk Analysis, Incident Response & Reporting
+**BS in Computer Science**, De La Salle University (2016 - Graduated)
 
 # Projects, Design Studies, and Demos Featured on Website
 - My featured projects on this website are either Personal or Educational work to demonstrate my design and development process.
