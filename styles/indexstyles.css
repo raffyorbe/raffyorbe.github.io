@@ -414,7 +414,8 @@ p.tag{
   color: #ffffff;
 }
 
-.btn-secondary:hover {
+.btn-secondary:hover,
+.btn-secondary.btn-coming-soon {
   background-color: #ffffff;
   border-color: #ffffff;
   color: #0f62fe;
