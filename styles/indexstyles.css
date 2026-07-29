@@ -429,6 +429,10 @@ text-decoration: none;
   text-decoration: underline;
 }
 
+.link-white{
+  color: #ffffff;
+}
+
 .disclaimer {
   font-size: 12px;
   text-align: center;
