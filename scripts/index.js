@@ -98,6 +98,28 @@ document.addEventListener("DOMContentLoaded", function () {
   const userInput = document.getElementById("user-input");
   const sendBtn = document.getElementById("send-btn");
 
+  // Notification sound played when a text reply (not the loading dots) appears
+  const replySound = new Audio("audio/dragon-studio-new-notification-3-398649.mp3");
+
+  function playReplySound() {
+    replySound.currentTime = 0;
+    replySound.play().catch(() => {});
+  }
+
+  // Browsers only allow audio.play() for a brief window after a user gesture.
+  // If the fetch below takes longer than that window, the later playReplySound()
+  // call gets silently blocked. Unlocking the element here (still inside the
+  // click/keydown gesture) lets it play later regardless of response time.
+  function unlockReplySound() {
+    const p = replySound.play();
+    if (p && p.catch) {
+      p.then(() => {
+        replySound.pause();
+        replySound.currentTime = 0;
+      }).catch(() => {});
+    }
+  }
+
   // Function to add AI message bubble
   function addAIBubble(message, isLoading = false) {
     if (!overlayContainer) return null; // return null if no container
@@ -156,6 +178,9 @@ document.addEventListener("DOMContentLoaded", function () {
     userInput.disabled = true;
     sendBtn.disabled = true;
 
+    // Unlock audio playback now, while still inside the user gesture
+    unlockReplySound();
+
     // Show loading bubble
     const bubble = addAIBubble("", true);
 
@@ -179,6 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       bubble.classList.remove("loading");
+      playReplySound();
     }
 
     catch (error) {
@@ -190,6 +216,9 @@ document.addEventListener("DOMContentLoaded", function () {
         textElem.classList.add("fade-in");
         setTimeout(() => textElem.classList.remove("fade-in"), 400);
       }
+
+      bubble.classList.remove("loading");
+      playReplySound();
 
       console.error(error);
 

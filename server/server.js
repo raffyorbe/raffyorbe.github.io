@@ -17,10 +17,13 @@ const client = new OpenAI({
 import path from 'path';
 
 let referenceText = '';
+const secretPath = '/etc/secrets/ai-raffy.md';
+const localPath = path.join(process.cwd(), '..', 'references', 'ai-raffy.md');
+
 try {
-  const referencePath = path.join(process.cwd(), '..', 'references', 'ai-raffy.md');
+  const referencePath = fs.existsSync(secretPath) ? secretPath : localPath;
   referenceText = fs.readFileSync(referencePath, 'utf8');
-  console.log('Reference file loaded successfully!');
+  console.log(`Reference file loaded from ${referencePath}`);
 } catch (err) {
   console.error('Error loading reference file:', err);
 }

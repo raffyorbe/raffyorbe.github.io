@@ -178,11 +178,12 @@ body {
   padding: 5px;
   border-radius: 48px;
   width: 640px;
-  background-color: rgba(22, 22, 22, 1);
+  background-color: rgba(38, 38, 38, 1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   /* background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(208, 226, 255) 100%); */
-  box-shadow: 0 0px 12px rgba(255, 255, 255, 0.5);
+  /* box-shadow: 0 0px 12px rgba(255, 255, 255, 0.5);  */
+  box-shadow: 0 0px 12px rgb(255, 157, 82, 0.5);
   /* animation: glow 6s ease-in-out infinite; */
 }
 
@@ -210,10 +211,10 @@ body {
 
 @keyframes opacity{
   0%{
-    background-color: rgba(22, 22, 22, 1);
+    background-color: rgba(38, 38, 38, 1);
   }
   80%{
-    background-color: rgba(22, 22, 22, 1);
+    background-color: rgba(38, 38, 38, 1);
   }
   100%{
     background-color: rgba(38, 38, 38, 0.4);
@@ -778,7 +779,7 @@ color: #ffffff;
   -webkit-backdrop-filter: blur(10px); */
   color: #ffffff;       
   padding: 16px 16px;
-  border-radius: 16px;
+  border-radius: 32px;
   pointer-events: auto;      
   display: inline-flex;
   align-items: center;
@@ -791,7 +792,7 @@ color: #ffffff;
   box-sizing: border-box;
   max-width: 100%;
   width: 100%;
-  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 12px rgb(255, 157, 82, 0.8);
   font-size: small;
   font-weight: 400;
   word-wrap: break-word;
@@ -872,7 +873,7 @@ color: #ffffff;
   gap: 0.5rem;
   padding: 6px;
   border-radius: 999px;
-  background-color: rgba(22, 22, 22, 1);
+  background-color: rgba(38, 38, 38, 1);
   /* backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px); */
   width: 100%;
@@ -880,7 +881,7 @@ color: #ffffff;
 }
 
 .floating-chatbar:focus-within {
-  box-shadow: 0 0 0 2px #ffffff;
+  box-shadow: 0 0 0 1px #ffffff;
 }
 
 #user-input {
@@ -943,14 +944,14 @@ color: #ffffff;
     rgba(0, 0, 0, 0),
     rgba(0, 0, 0, 0),
     rgba(0, 0, 0, 0),
-    #2a0e6e,      /* deep indigo, where the streak first appears */
-    #6a1fd0,      /* rich violet */
-    #ff9d52,      /* warm orange core of the highlight */
-    #ffd9a8,      /* pale orange-white blend */
-    #ffffff,      /* hot white peak */
+    #2a0e6e,      
+    #6a1fd0,      
+    #ff9d52,      
+    #ffd9a8,     
+    #ffffff,      
     /* #ffffff, */
-    #d089ff,      /* soft violet-pink falloff */
-    #5a2fd0,      /* blue-violet tail */
+    #d089ff,      
+    #5a2fd0,      
     rgba(0, 0, 0, 0)
     );
 
@@ -959,7 +960,7 @@ color: #ffffff;
 }
 
 .border-animator-chat.visible {
-  animation: rotate-gradient 4s linear forwards;
+  animation: rotate-gradient 3.5s linear forwards;
   animation-delay: 0.5s;
 }
 
