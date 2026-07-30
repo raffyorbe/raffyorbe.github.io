@@ -212,12 +212,15 @@ body {
 @keyframes opacity{
   0%{
     background-color: rgba(38, 38, 38, 1);
+    box-shadow: 0 0px 12px rgb(255, 157, 82, 0);
   }
   80%{
     background-color: rgba(38, 38, 38, 1);
+    box-shadow: 0 0px 12px rgb(255, 157, 82, 1);
   }
   100%{
     background-color: rgba(38, 38, 38, 0.4);
+    box-shadow: 0 0px 12px rgb(255, 157, 82, 0.5);
   }
 }
 
@@ -948,8 +951,7 @@ color: #ffffff;
     #6a1fd0,      
     #ff9d52,      
     #ffd9a8,     
-    #ffffff,      
-    /* #ffffff, */
+    #ffffff,
     #d089ff,      
     #5a2fd0,      
     rgba(0, 0, 0, 0)
