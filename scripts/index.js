@@ -111,13 +111,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // call gets silently blocked. Unlocking the element here (still inside the
   // click/keydown gesture) lets it play later regardless of response time.
   function unlockReplySound() {
+    // Pause synchronously, without waiting for the play() promise to resolve.
+    // This stops playback before the browser actually renders audio (no blip),
+    // while still satisfying the "played during a user gesture" requirement
+    // that lets later, non-gesture playReplySound() calls succeed. Doing this
+    // synchronously (vs. muting and unmuting inside a .then()) avoids a race
+    // with a fast API response calling playReplySound() before the unlock
+    // finishes, which would otherwise play the real reply muted/silent.
     const p = replySound.play();
-    if (p && p.catch) {
-      p.then(() => {
-        replySound.pause();
-        replySound.currentTime = 0;
-      }).catch(() => {});
-    }
+    replySound.pause();
+    replySound.currentTime = 0;
+    if (p && p.catch) p.catch(() => {});
   }
 
   // Function to add AI message bubble
