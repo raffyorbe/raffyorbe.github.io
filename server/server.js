@@ -34,7 +34,7 @@ app.post('/api/chat', async (req, res) => {
     console.log("Received message:", message);
 
     const completion = await client.chat.completions.create({
-      model: 'gpt-5-mini',
+      model: 'gpt-5.6-luna',
       messages: [
         { role: 'system', content: referenceText },
         { role: 'user', content: message },
