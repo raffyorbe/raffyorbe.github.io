@@ -105,7 +105,7 @@ body {
 }
 
 .hello-cell {
-  background-image: url(../images/milad-fakurian-3jKKdDZQjWs-unsplash.jpeg); 
+  background-image: url(../images/luke-hales-OHhW1k0PXHg-unsplash.jpeg);
   background-size: cover;
   background-position: center;
   background-color: #000000;
@@ -947,13 +947,13 @@ color: #ffffff;
     rgba(0, 0, 0, 0),
     rgba(0, 0, 0, 0),
     rgba(0, 0, 0, 0),
-    #2a0e6e,      
-    #6a1fd0,      
-    #ff9d52,      
-    #ffd9a8,     
+    #0a2540,
+    #1f6fd6,
+    #ff9d52,
+    #ffd9a8,
     #ffffff,
-    #d089ff,      
-    #5a2fd0,      
+    #bfe3ff,
+    #2a5fc2,
     rgba(0, 0, 0, 0)
     );
 
