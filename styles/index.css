@@ -290,7 +290,7 @@ body {
 }
 
 .contact-cell {
-  background-image: url(../images/milad-fakurian-onK-mUAOfXg-unsplash.jpeg); 
+  background-image: url(../images/boliviainteligente-9bpBBb1K1ak-unsplash.jpeg); 
   background-size: cover;
   background-position: center;
   color: #ffffff;
@@ -303,7 +303,8 @@ body {
 }
 
 .contact-overlay {
-  background-color: rgba(15, 98, 254, 0.1); 
+  background-color: rgba(15, 98, 245, 0.1);
+  /* background: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 80%, rgba(0, 0, 0, 1) 100%); */
   position: absolute;
   top: 0;
   left: 0;
@@ -469,11 +470,12 @@ color: #ffffff;
 }
 
 /* Project Cards with Background Image */
+/* Card 4 */
 .project-card.bg-image1 {
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image: url(../images/sean-sinclair-C_NJKfnTR5A-unsplash.jpeg);
+  background-image: url(../images/milad-fakurian-Ln-NOJdhpZA-unsplash.jpeg);
   color: white;
   overflow: hidden;
   display: flex;
@@ -481,11 +483,12 @@ color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Card 5 */
 .project-card.bg-image2 {
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image: url(../images/maxim-berg-hC6yh7GsWuY-unsplash.jpeg);
+  background-image: url(../images/codioful-formerly-gradienta-H5eYSjFGw5M-unsplash.jpeg);
   color: white;
   overflow: hidden;
   display: flex;
@@ -493,11 +496,12 @@ color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Card 2 */
 .project-card.bg-image3 {
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image: url(../images/sean-sinclair-vWWn8lT0TJw-unsplash.jpeg);
+  background-image: url(../images/codioful-formerly-gradienta-0puD7g0Aa1U-unsplash.jpeg);
   color: white;
   overflow: hidden;
   display: flex;
@@ -505,11 +509,12 @@ color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Card 3 */
 .project-card.bg-image4 {
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image: url(../images/kukai-art-y2l6MU6z2hk-unsplash.jpeg);
+  background-image: url(../images/muhammad-ridwan-imam-fajar-meqxXc9zPGI-unsplash.jpeg);
   color: white;
   overflow: hidden;
   display: flex;
@@ -517,11 +522,12 @@ color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Card 1 */
 .project-card.bg-image5 {
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image: url(../images/milad-fakurian-m6Hs8sAH9l8-unsplash.jpeg);
+  background-image: url(../images/codioful-formerly-gradienta-5GClY37K3rU-unsplash.jpeg);
   color: white;
   overflow: hidden;
   display: flex;
@@ -529,11 +535,12 @@ color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Card 6 */
 .project-card.bg-image6 {
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image: url(../images/boliviainteligente-blfFrgB53uk-unsplash.jpeg);
+  background-image: url(../images/codioful-formerly-gradienta-5GClY37K3rU-unsplash2.jpeg);
   color: white;
   overflow: hidden;
   display: flex;
