@@ -711,6 +711,8 @@ color: #ffffff;
 } */
 
 .project-card {
+  position: relative;
+  z-index: 0;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -721,32 +723,67 @@ color: #ffffff;
 
 .project-card.bg-image1:hover{
   transform: scale(1.03);
-  /* box-shadow: 0 0 16px rgba(255, 255, 255, 0.9); */
 }
 
 .project-card.bg-image2:hover{
   transform: scale(1.03);
-  /* box-shadow: 0 0 16px rgba(255, 255, 255, 0.9); */
 }
 
 .project-card.bg-image3:hover{
   transform: scale(1.03);
-  /* box-shadow: 0 0 16px rgba(255, 255, 255, 0.9); */
 }
 
 .project-card.bg-image4:hover{
   transform: scale(1.03);
-  /* box-shadow: 0 0 16px rgba(255, 255, 255, 0.9); */
 }
 
 .project-card.bg-image5:hover{
   transform: scale(1.03);
-  /* box-shadow: 0 0 16px rgba(255, 255, 255, 0.9); */
 }
 
 .project-card.bg-image6:hover{
   transform: scale(1.03);
-  /* box-shadow: 0 0 16px rgba(255, 255, 255, 0.9); */
+}
+
+/* Gradient glow on hover, sampled from each card's own background image */
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  z-index: -1;
+  border-radius: 16px;
+  opacity: 0;
+  filter: blur(18px);
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.project-card:hover::before {
+  opacity: 0.85;
+}
+
+.project-card.glow-1::before {
+  background: linear-gradient(135deg, #0393be, #02a485, #0187b5);
+}
+
+.project-card.glow-2::before {
+  background: linear-gradient(135deg, #e704f2, #0266b9, #00686a);
+}
+
+.project-card.glow-3::before {
+  background: linear-gradient(135deg, #00bf91, #008cb0, #000c87);
+}
+
+.project-card.glow-4::before {
+  background: linear-gradient(135deg, #696ffe, #611ccc, #951996);
+}
+
+.project-card.glow-5::before {
+  background: linear-gradient(135deg, #2b0be3, #24b16c, #490971);
+}
+
+.project-card.glow-6::before {
+  background: linear-gradient(135deg, #ee0301, #d77e1c, #1e9c66);
 }
 
 /* --- AI Chat --- */
