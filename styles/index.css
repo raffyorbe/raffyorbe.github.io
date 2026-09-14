@@ -754,6 +754,10 @@ color: #ffffff;
   border-radius: 16px;
   opacity: 0;
   filter: blur(18px);
+  /* Forces its own compositing layer so Safari doesn't clip the blurred
+     output to the pseudo-element's unblurred box. */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   transition: opacity 0.35s ease;
   pointer-events: none;
 }
