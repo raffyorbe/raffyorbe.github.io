@@ -289,6 +289,12 @@ body {
   }
 }
 
+@keyframes rotate-glow {
+  to {
+    --angle: 360deg;
+  }
+}
+
 .contact-cell {
   background-image: url(../images/milad-fakurian-3jKKdDZQjWs-unsplash.jpg); 
   background-size: cover;
@@ -824,30 +830,65 @@ color: #ffffff;
 
 /* Floating bubble */
 .chat-overlay {
-  background: linear-gradient(to bottom, rgb(38, 38, 38) 0%, rgb(57, 57, 57) 100%);
-  /* background: rgb(237, 245, 255, .8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); */
-  color: #ffffff;       
+  position: relative;
+  /* background lives on ::after so the ::before glow can sit truly behind it */
+  color: #ffffff;
   padding: 16px 16px;
   border-radius: 32px;
-  pointer-events: auto;      
+  pointer-events: auto;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   text-align: left;
   opacity: 0;
-  transform: translateY(12px); 
+  transform: translateY(12px);
   transition: all 0.35s ease;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   box-sizing: border-box;
   max-width: 100%;
   width: 100%;
-  box-shadow: 0 2px 12px rgb(255, 157, 82, 0.8);
-  font-size: small;
   font-weight: 400;
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+/* Continuously moving glow behind the bubble, using the chat bar's border-animation palette.
+   Spread/blur matches the reach of the original static gold glow so it stays subtle. */
+.chat-overlay::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  z-index: -2;
+  --angle: 0deg;
+  background: conic-gradient(
+    from var(--angle),
+    #1f6fd6,
+    #ff9d52,
+    #ffd9a8,
+    #ffffff,
+    #bfe3ff,
+    #2a5fc2,
+    #1f6fd6
+  );
+  filter: blur(7px);
+  opacity: 0.8;
+  animation: rotate-glow 6s linear infinite;
+}
+
+/* Glow rotation paced to the loading dots: one dot cycle (1.4s) = half a glow rotation */
+.chat-overlay.loading::before {
+  animation-duration: 2.8s;
+}
+
+/* The bubble's own solid background, painted above the glow so the interior stays opaque */
+.chat-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgb(38, 38, 38) 0%, rgb(57, 57, 57) 100%);
 }
 
 /* Show bubble (floating up) */
@@ -874,6 +915,28 @@ color: #ffffff;
 
 .chat-text.fade-in {
   animation: fadeUpNew 0.35s ease;
+}
+
+/* AI response avatar + name header */
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.chat-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.chat-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #ffffff;
 }
 
 /* Close button inside bubble */
@@ -1139,7 +1202,6 @@ footer {
     z-index: 10000; /* ensure overlay is above the wrapper */
   }
   .chat-overlay {
-    font-size: 0.85rem;
     /* padding: 16px 16px; */
     transform: translateY(8px);
   }

@@ -168,6 +168,29 @@ document.addEventListener("DOMContentLoaded", function () {
     return bubble;
   }
 
+  // Render the "AI Raffy" avatar/name header followed by the message text
+  function setAIMessageContent(textElem, message) {
+    textElem.innerHTML = "";
+
+    const header = document.createElement("div");
+    header.className = "chat-header";
+
+    const avatar = document.createElement("img");
+    avatar.src = "images/memojibadge.png";
+    avatar.alt = "";
+    avatar.className = "chat-avatar";
+
+    const name = document.createElement("span");
+    name.className = "chat-name";
+    name.textContent = "AI Raffy";
+
+    header.appendChild(avatar);
+    header.appendChild(name);
+
+    textElem.appendChild(header);
+    textElem.appendChild(document.createTextNode(message));
+  }
+
   // Remove loading bubble
   function removeLoadingBubble() {
     const loading = overlayContainer.querySelector(".chat-overlay.loading");
@@ -200,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const textElem = bubble.querySelector(".chat-text");
       if (textElem) {
-        textElem.textContent = aiMessage;
+        setAIMessageContent(textElem, aiMessage);
 
         // Add fade animation for new message
         textElem.classList.add("fade-in");
@@ -214,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
     catch (error) {
       const textElem = bubble.querySelector(".chat-text");
       if (textElem) {
-        textElem.textContent = "Error connecting to the server. 😵";
+        setAIMessageContent(textElem, "Error connecting to the server. 😵");
 
         // Fade-in for the error as well
         textElem.classList.add("fade-in");
