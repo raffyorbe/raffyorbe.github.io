@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return bubble;
   }
 
-  // Render the "AI Raffy" avatar/name header followed by the message text
+  // Render the "Raffy Orbe" avatar/name header followed by the message text
   function setAIMessageContent(textElem, message) {
     textElem.innerHTML = "";
 
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const name = document.createElement("span");
     name.className = "chat-name";
-    name.textContent = "AI Raffy";
+    name.textContent = "Raffy Orbe";
 
     header.appendChild(avatar);
     header.appendChild(name);
