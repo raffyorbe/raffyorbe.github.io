@@ -124,10 +124,18 @@ document.addEventListener("DOMContentLoaded", function () {
     if (p && p.catch) p.catch(() => {});
   }
 
+  // Hero overlay switches to a frosted dark layer while a chat bubble is showing
+  const heroOverlay = inputWrapper.closest('.hello-overlay');
+
+  function setHeroChatActive(active) {
+    if (heroOverlay) heroOverlay.classList.toggle('chat-active', active);
+  }
+
   // Function to add AI message bubble
   function addAIBubble(message, isLoading = false) {
     if (!overlayContainer) return null; // return null if no container
     overlayContainer.innerHTML = "";
+    setHeroChatActive(true);
 
     const bubble = document.createElement("div");
     bubble.className = "chat-overlay" + (isLoading ? " loading" : "");
@@ -164,6 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Close fade-out
     closeBtn.addEventListener("click", () => {
+      setHeroChatActive(false);
       bubble.classList.add("hide");
       bubble.addEventListener("transitionend", () => bubble.remove(), { once: true });
     });
@@ -202,7 +211,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Remove loading bubble
   function removeLoadingBubble() {
     const loading = overlayContainer.querySelector(".chat-overlay.loading");
-    if (loading) loading.remove();
+    if (loading) {
+      loading.remove();
+      setHeroChatActive(false);
+    }
   }
 
   // Send message

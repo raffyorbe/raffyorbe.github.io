@@ -154,6 +154,35 @@ body {
   z-index: 20;
 }
 
+/* Chat-active layer: a flat black 50% overlay with a frosted blur, sitting on top of the
+   original gradient (which stays on .hello-overlay itself). It's a sibling of the content
+   rather than an ancestor, so the backdrop-filter never touches the chat bubble or its
+   blurred glow.
+
+   Fades by transitioning the background alpha and the blur radius themselves instead of
+   the element's opacity, since opacity on a backdrop-filter element is unreliable in Safari. */
+.hello-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  transition:
+    background-color 0.35s ease,
+    -webkit-backdrop-filter 0.35s ease,
+    backdrop-filter 0.35s ease;
+}
+
+/* Set by scripts/index.js while an AI chat bubble (loading or with a reply) is showing */
+.hello-overlay.chat-active::before {
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
 /* .hello-overlay p{
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 } */
