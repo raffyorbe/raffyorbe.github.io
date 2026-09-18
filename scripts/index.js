@@ -132,6 +132,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const bubble = document.createElement("div");
     bubble.className = "chat-overlay" + (isLoading ? " loading" : "");
 
+    // Animated glow behind the bubble (see the .chat-glow comment in styles/index.css)
+    const glow = document.createElement("div");
+    glow.className = "chat-glow";
+    glow.setAttribute("aria-hidden", "true");
+    glow.innerHTML =
+      '<div class="chat-glow-clip"><div class="chat-glow-spin"><div class="chat-glow-color"></div></div></div>';
+    bubble.appendChild(glow);
+
     // Create message container
     const textElem = document.createElement("div");
     textElem.className = "chat-text";

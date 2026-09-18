@@ -289,6 +289,12 @@ body {
   }
 }
 
+@keyframes chat-glow-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .contact-cell {
   background-image: url(../images/milad-fakurian-3jKKdDZQjWs-unsplash.jpg); 
   background-size: cover;
@@ -825,7 +831,7 @@ color: #ffffff;
 /* Floating bubble */
 .chat-overlay {
   position: relative;
-  background: linear-gradient(to bottom, rgb(38, 38, 38) 0%, rgb(57, 57, 57) 100%);
+  /* background lives on ::after so the .chat-glow element can sit truly behind it */
   color: #ffffff;
   padding: 16px 16px;
   border-radius: 32px;
@@ -835,10 +841,7 @@ color: #ffffff;
   justify-content: space-between;
   text-align: left;
   opacity: 0;
-  /* Slide uses `top`, not `transform` — see the git history around
-     2026-09-17 for why (a Safari filter/border-radius bug on an animated
-     glow effect that was ultimately reverted back to this static glow). */
-  top: 12px;
+  transform: translateY(12px);
   transition: all 0.35s ease;
   font-size: 0.85rem;
   box-sizing: border-box;
@@ -847,18 +850,82 @@ color: #ffffff;
   font-weight: 400;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  box-shadow: 0 2px 12px rgb(255, 157, 82, 0.8);
+}
+
+/* Continuously moving glow behind the bubble, using the chat bar's border-animation palette.
+   Built from real elements, structured like Google AI Mode's glow (verified by inspecting
+   its live CSS): a blurred wrapper > a clipping, rounded box > a spinner that rotates via
+   `transform` > the conic gradient. No animated custom property (@property) involved.
+
+   The blurred wrapper has a 14px transparent margin around the colored shape, so the
+   7px blur fades out fully *inside* its own bounds. That way nothing depends on the
+   engine letting a filter render outside its box (Safari appears not to). Visible glow
+   is unchanged: colored shape = bubble + 2px, blurred 7px. */
+.chat-glow {
+  position: absolute;
+  inset: -16px;
+  z-index: -2;
+  pointer-events: none;
+  filter: blur(7px);
+  opacity: 0.8;
+}
+
+.chat-glow-clip {
+  position: absolute;
+  inset: 14px;
+  border-radius: 34px; /* bubble's 32px + the 2px the colored shape extends past it */
+  overflow: clip;
+  isolation: isolate;
+}
+
+.chat-glow-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  animation: chat-glow-spin 6s linear infinite;
+}
+
+.chat-glow-color {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    #1f6fd6,
+    #ff9d52,
+    #ffd9a8,
+    #ffffff,
+    #bfe3ff,
+    #2a5fc2,
+    #1f6fd6
+  );
+}
+
+/* Glow rotation paced to the loading dots: one dot cycle (1.4s) = half a glow rotation */
+.chat-overlay.loading .chat-glow-spin {
+  animation-duration: 2.8s;
+}
+
+/* The bubble's own solid background, painted above the glow so the interior stays opaque */
+.chat-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgb(38, 38, 38) 0%, rgb(57, 57, 57) 100%);
 }
 
 /* Show bubble (floating up) */
 .chat-overlay.show {
   opacity: 1;
-  top: 0;
+  transform: translateY(0);  
 }
 
-.chat-overlay.hide {
+.chat-overlay.hide {  
   opacity: 0;
-  top: 12px;
+  transform: translateY(12px);
 }
 
 @keyframes fadeUpNew {
@@ -1162,10 +1229,10 @@ footer {
   }
   .chat-overlay {
     /* padding: 16px 16px; */
-    top: 8px;
+    transform: translateY(8px);
   }
   .chat-overlay.show {
-    top: 0;
+    transform: translateY(0);
   }
 
   h2{
