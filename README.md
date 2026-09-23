@@ -1,5 +1,5 @@
 # raffyorbe.github.io
-This project is my personal portfolio website showcasing my work in Product UX Design, Frontend Development, and End-to-End Product Execution. It also includes a custom AI chat assistant powered by GPT-5 mini via OpenAI API that can answer questions about my background, experience, and projects.
+This project is my personal portfolio website showcasing my work in Product UX Design, Frontend Development, and End-to-End Product Execution. It also includes a custom AI chat assistant powered by GPT-6 Luna via OpenAI API that can answer questions about my background, experience, and projects.
 
 The goal of this project was not only to present my work but also to demonstrate practical full-stack development skills, including frontend UI development, API integration, and deployment.
 
@@ -21,7 +21,7 @@ The UI was designed and built from scratch with a focus on clean layout, respons
 
 ## AI Integration
 - OpenAI API
-- GPT-5 Mini
+- GPT-6 Luna
 
 The AI assistant is configured to:
 - Answer questions about my professional background
