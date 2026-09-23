@@ -159,13 +159,17 @@ body {
    rather than an ancestor, so the backdrop-filter never touches the chat bubble or its
    blurred glow.
 
+   It sits above the hero's memoji, headline and subheadline, which get frosted. Only the
+   chat bar, chat bubble, AI disclaimer and scroll arrow are lifted above it (z-index 2,
+   see below). The floating navbar is outside #hello, so it stays above everything.
+
    Fades by transitioning the background alpha and the blur radius themselves instead of
    the element's opacity, since opacity on a backdrop-filter element is unreliable in Safari. */
 .hello-overlay::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 1;
   pointer-events: none;
   background-color: rgba(0, 0, 0, 0);
   -webkit-backdrop-filter: blur(0px);
@@ -181,6 +185,19 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
+}
+
+/* Chat bar (its wrapper holds the chat bubble) and AI disclaimer stay above the frosted layer */
+.hello-overlay .stat-card,
+.hello-overlay .disclaimer {
+  position: relative;
+  z-index: 2;
+}
+
+/* Scroll-down arrow is navigation, so it also stays above the frost. It's already
+   position: absolute, so only the z-index is needed (position: relative would move it). */
+.hello-overlay .hero-stats {
+  z-index: 2;
 }
 
 /* .hello-overlay p{
