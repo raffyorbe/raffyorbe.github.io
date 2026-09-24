@@ -849,7 +849,11 @@ color: #ffffff;
 .hello-chat-border-wrapper {
   position: relative; /* important: overlay is absolute relative to this */
   z-index: 0;
-  padding: 4px;
+  /* Shared with #chat-overlay-container below, which insets the reply bubble by the same
+     amount so it lines up with the input field (.floating-chatbar) rather than this wrapper's
+     outer edge. Overridden on phones. */
+  --chat-wrap-pad: 4px;
+  padding: var(--chat-wrap-pad);
   border-radius: 999px;
   margin: 0 auto;
   width: 100%;
@@ -863,15 +867,16 @@ color: #ffffff;
 /* Container anchored just above input bar */
 #chat-overlay-container {
   position: absolute;
-  bottom: 100%;        
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 100%;
+  /* Same left and right edges as the input field (the solid gray .floating-chatbar), i.e.
+     inset from the wrapper's edge by its padding. The reply bubble fills this width, which
+     also leaves that padding free at each side for the glow's opening spread. */
+  left: var(--chat-wrap-pad);
+  right: var(--chat-wrap-pad);
   display: flex;
   justify-content: center;
-  pointer-events: none; 
-  z-index: 1000;         
-  width: 100%;
-  max-width: 640px;  
+  pointer-events: none;
+  z-index: 1000;
 }
 
 /* Floating bubble */
@@ -888,7 +893,11 @@ color: #ffffff;
   text-align: left;
   opacity: 0;
   transform: translateY(12px);
-  transition: all 0.35s ease;
+  /* Just the show/hide slide, which is all `all` ever animated here. Deliberately not
+     width/height/padding: the loading circle swaps to the full-width reply instantly when it
+     lands, and transitioning those would turn that into a half-animated stretch (width would
+     animate while height can't, since it goes to `auto`). */
+  transition: opacity 0.35s ease, transform 0.35s ease;
   font-size: 0.85rem;
   box-sizing: border-box;
   max-width: 100%;
@@ -898,30 +907,76 @@ color: #ffffff;
   overflow-wrap: break-word;
 }
 
+/* Loading: a circle around the three dots, centered above the input, with no × (the send
+   button becomes a stop button while loading). Its diameter is the original loading bubble's
+   height (16px padding x 2 + the old × line, 1.1rem x 1.5 = 58.4px), which leaves a bit of
+   room around the 42px-wide dots at the circle's widest point. The 32px corner radius is
+   larger than half of that, so it clamps to a perfect circle. */
+.chat-overlay.loading {
+  width: calc(32px + 1.1rem * 1.5);
+  height: calc(32px + 1.1rem * 1.5);
+  padding: 0;
+  justify-content: center;
+}
+
+.chat-overlay.loading .chat-close {
+  display: none;
+}
+
 /* Continuously moving glow behind the bubble, using the chat bar's border-animation palette.
    Built from real elements, structured like Google AI Mode's glow (verified by inspecting
    its live CSS): a blurred wrapper > a clipping, rounded box > a spinner that rotates via
    `transform` > the conic gradient. No animated custom property (@property) involved.
 
-   The blurred wrapper has a 14px transparent margin around the colored shape, so the
-   7px blur fades out fully *inside* its own bounds. That way nothing depends on the
-   engine letting a filter render outside its box (Safari appears not to). Visible glow
-   is unchanged: colored shape = bubble + 2px, blurred 7px. */
+   The blurred wrapper has a 24px transparent margin around the colored shape, so the
+   blur fades out fully *inside* its own bounds: 24px is 2x the 12px peak blur of the
+   reply's opening swell (see revealReply in scripts/index.js), and covers the steady 7px
+   blur with plenty to spare. That way nothing depends on the engine letting a filter
+   render outside its box (Safari appears not to). Visible glow is unchanged: colored
+   shape = bubble + 2px, blurred 7px. */
 .chat-glow {
   position: absolute;
-  inset: -16px;
+  inset: -26px;
   z-index: -2;
   pointer-events: none;
   filter: blur(7px);
-  opacity: 0.8;
 }
 
 .chat-glow-clip {
   position: absolute;
-  inset: 14px;
+  inset: 24px;
   border-radius: 34px; /* bubble's 32px + the 2px the colored shape extends past it */
   overflow: clip;
   isolation: isolate;
+  /* The glow's steady brightness (the response state). It lives on this inner layer, not on
+     the blurred .chat-glow wrapper, so the reply's opening swell (see revealReply in
+     scripts/index.js) can rise above it: the wrapper is at full opacity, and blur is linear,
+     so this looks the same as setting 0.8 on the wrapper. */
+  opacity: 0.8;
+}
+
+/* Loading only: the glow breathes with the typing dots. The glow laps twice per dot cycle, so
+   in each cycle one pass crosses above the dots while they ripple and the other while they
+   rest. Swelling the glow as the ripple peaks and easing it down as the dots rest makes both
+   passes look intended, without touching the spin speed or the dots. Same 1.4s clock as the
+   dots (DOTS_CYCLE_MS in scripts/index.js), started in the same frame; the peak lands at 54%
+   (760ms), the middle dot's peak. Opacity is animated on this inner clip rather than on the
+   blurred .chat-glow wrapper, so the filtered layer itself isn't what changes. The range is
+   0.36 to 0.8 (the clip's steady 0.8, scaled by 0.45 at the dip): the same brightness as
+   before the steady level moved from the wrapper to this layer. (Two other variants were
+   tried and dropped: a floor equal to the response brightness, and that plus a lighter
+   "bloom" layer at the peak. This deeper dip read best.) */
+.chat-overlay.loading .chat-glow-clip {
+  animation: chat-glow-breathe 1.4s ease-in-out infinite;
+}
+
+@keyframes chat-glow-breathe {
+  0%, 100% {
+    opacity: 0.36;
+  }
+  54% {
+    opacity: 0.8;
+  }
 }
 
 .chat-glow-spin {
@@ -934,23 +989,54 @@ color: #ffffff;
   animation: chat-glow-spin 6s linear infinite;
 }
 
+/* Loading and response are one effect that settles, not two effects that swap:
+   - .chat-glow-arc is the loading look: a sweeping arc with a transparent gap, like the
+     chat input bar's border animation (transparent 0-20%, colors 30-92%, out by 100%).
+   - .chat-glow-color is the ring, painted on top. It uses the *same colors at the same
+     angles* as the arc, with only the gap filled in blue. It's hidden while loading and
+     fades in when the reply lands, so the gap closes gradually instead of the glow
+     swapping to a different pattern.
+   The spin speed eases from fast to slow in scripts/index.js (settleGlow) via the
+   animation's playbackRate, which unlike changing animation-duration doesn't snap the
+   glow to a different angle.
+   Blues are sampled from the hero image (images/luke-hales-...jpeg): #60bae4 and #409bd0,
+   lighter than the old #1f6fd6 / #2a5fc2 so they read on the dark frosted layer. */
+.chat-glow-arc,
 .chat-glow-color {
   position: absolute;
   inset: 0;
+}
+
+.chat-glow-arc {
   background: conic-gradient(
-    #1f6fd6,
-    #ff9d52,
-    #ffd9a8,
-    #ffffff,
-    #bfe3ff,
-    #2a5fc2,
-    #1f6fd6
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 20%,
+    #60bae4 30%,
+    #ff9d52 43%,
+    #ffd9a8 56%,
+    #ffffff 69%,
+    #bfe3ff 82%,
+    #409bd0 92%,
+    rgba(0, 0, 0, 0) 100%
   );
 }
 
-/* Glow rotation paced to the loading dots: one dot cycle (1.4s) = half a glow rotation */
-.chat-overlay.loading .chat-glow-spin {
-  animation-duration: 2.8s;
+.chat-glow-color {
+  background: conic-gradient(
+    #60bae4 0%,
+    #60bae4 30%,
+    #ff9d52 43%,
+    #ffd9a8 56%,
+    #ffffff 69%,
+    #bfe3ff 82%,
+    #409bd0 92%,
+    #60bae4 100%
+  );
+  transition: opacity 0.9s ease;
+}
+
+.chat-overlay.loading .chat-glow-color {
+  opacity: 0;
 }
 
 /* The bubble's own solid background, painted above the glow so the interior stays opaque */
@@ -1023,7 +1109,8 @@ color: #ffffff;
   cursor: pointer;
 }
 
-/* Typing dots */
+/* Typing dots. The blink cycle (1.4s) and the 0.2s stagger must match DOTS_CYCLE_MS and
+   MIDDLE_DOT_PEAK_MS in scripts/index.js, which pace and align the glow's rotation to them. */
 .typing {
   display: inline-flex;
   align-items: center;
@@ -1116,6 +1203,20 @@ color: #ffffff;
 /* #send-btn:hover {
   background-color: #525252;
 } */
+
+/* The send button doubles as a stop button while a reply is loading (scripts/index.js toggles
+   .is-stop): same white circle, with a square in place of the arrow. */
+#send-btn .icon-stop {
+  display: none;
+}
+
+#send-btn.is-stop .icon-arrow {
+  display: none;
+}
+
+#send-btn.is-stop .icon-stop {
+  display: inline;
+}
 
 .border-animator-chat {
   position: absolute;
@@ -1238,10 +1339,11 @@ footer {
 
   .hello-chat-border-wrapper {
     position: relative;
-    padding: 3px; 
+    --chat-wrap-pad: 3px;
+    padding: var(--chat-wrap-pad);
     /* width: inherit;   */
     max-width: none;
-    min-width: unset; 
+    min-width: unset;
   }
 
   #user-input {
@@ -1270,7 +1372,6 @@ footer {
   }
 
   #chat-overlay-container {
-    max-width: 100%; 
     z-index: 10000; /* ensure overlay is above the wrapper */
   }
   .chat-overlay {

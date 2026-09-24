@@ -58,10 +58,15 @@
                     <div id="chat-input-area" class="floating-chatbar">
                       <input type="text" id="user-input" />
                       <span class="placeholder" id="placeholder"></span>
-                      <button class="btn btn-primary btn-sm" id="send-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 24" fill="none"
+                      <button class="btn btn-primary btn-sm" id="send-btn" aria-label="Send">
+                        <svg class="icon-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 24" fill="none"
                           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                           <path d="M12 19V6M5 12l7-7 7 7" />
+                        </svg>
+                        <!-- Shown instead of the arrow while a reply is loading (the button becomes "Stop") -->
+                        <svg class="icon-stop" xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 24"
+                          fill="currentColor">
+                          <rect x="7" y="7" width="10" height="10" rx="2.5" />
                         </svg>
                       </button>
                     </div>
