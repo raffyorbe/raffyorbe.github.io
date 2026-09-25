@@ -418,6 +418,10 @@ document.addEventListener("DOMContentLoaded", function () {
     pendingRequest = { controller, bubble };
     setSendButtonMode(true);
 
+    // Bring the chat back front and center: on mobile the keyboard often scrolls the page down,
+    // and disabling the input above dismisses it, so glide back to the top as the bubble appears
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
     let stopped = false;
 
     try {
