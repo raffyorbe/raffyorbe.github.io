@@ -58,14 +58,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (glow) {
     const target = document.querySelector('.hello-chat-border-wrapper');
-    const statCard = document.querySelector('.stat-card');
+    const chatGlass = document.querySelector('.chat-glass');
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             
             glow.classList.add('visible'); // start glow animation
-            statCard.classList.add('visible');
+            chatGlass.classList.add('visible');
 
             observer.unobserve(entry.target); // optional: only trigger once
           }
@@ -180,13 +180,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // Phase lock with the typing dots. Both animations start together. The dots sit centered in
   // the bubble and ripple left to right, and along the top edge the glow also moves left to
   // right, so start the spin at the angle that puts the arc's white peak straight above the
-  // dots (12 o'clock) as the middle dot peaks: the brightest part of the glow passes over
-  // them in the same direction as the ripple, on every lap (so twice per dot cycle).
-  const GLOW_WHITE_DEG = 0.69 * 360;                    // white stop (69%) in .chat-glow-arc
-  const DOTS_ABOVE_DEG = 0;                             // 12 o'clock, straight above the centered dots
-  const MIDDLE_DOT_PEAK_MS = 200 + 0.4 * DOTS_CYCLE_MS; // 2nd dot: 0.2s delay + peak at 40% of its blink
+  // dots (12 o'clock) at the ripple's peak: the brightest part of the glow passes over them in
+  // the same direction as the ripple, on every lap (so twice per dot cycle).
+  // The ripple's peak is when the three dots are brightest together (the sum of their
+  // opacities), 630ms into the cycle. That's earlier than the middle dot's own peak (760ms)
+  // because the blink's default `ease` curve rises fast. Aiming at the middle dot's peak put the
+  // white ~70deg past the dots by the time the ripple peaked.
+  const GLOW_WHITE_DEG = 0.69 * 360; // white stop (69%) in .chat-glow-arc
+  const DOTS_ABOVE_DEG = 0;          // 12 o'clock, straight above the centered dots
+  const RIPPLE_PEAK_MS = 630;        // keep in step with the 45% peak of chat-glow-breathe in styles/index.css
   const GLOW_LOADING_PHASE =
-    ((((DOTS_ABOVE_DEG - GLOW_WHITE_DEG - (360 * MIDDLE_DOT_PEAK_MS) / GLOW_LOADING_MS) % 360) + 360) % 360) / 360;
+    ((((DOTS_ABOVE_DEG - GLOW_WHITE_DEG - (360 * RIPPLE_PEAK_MS) / GLOW_LOADING_MS) % 360) + 360) % 360) / 360;
 
   function getGlowSpin(bubble) {
     const spin = bubble.querySelector(".chat-glow-spin");

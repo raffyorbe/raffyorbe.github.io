@@ -188,7 +188,7 @@ body {
 }
 
 /* Chat bar (its wrapper holds the chat bubble) and AI disclaimer stay above the frosted layer */
-.hello-overlay .stat-card,
+.hello-overlay .chat-glass,
 .hello-overlay .disclaimer {
   position: relative;
   z-index: 2;
@@ -219,7 +219,7 @@ body {
   width: 100%;
 }
 
-.stat-card {
+.chat-glass {
   display: inline-block;
   padding: 5px;
   border-radius: 48px;
@@ -233,8 +233,8 @@ body {
   /* animation: glow 6s ease-in-out infinite; */
 }
 
-.stat-card.visible{
-  animation: opacity 4.64s ease forwards;
+.chat-glass.visible{
+  animation: opacity 4.5s ease forwards;
 }
 
 @keyframes glow {
@@ -270,7 +270,7 @@ body {
   }
 }
 
-/* .stat-card p {
+/* .chat-glass p {
   margin: 0;
   font-size: 16px;
   color: #ffffff;
@@ -894,7 +894,7 @@ color: #ffffff;
   opacity: 0;
   transform: translateY(12px);
   /* Just the show/hide slide, which is all `all` ever animated here. Deliberately not
-     width/height/padding: the loading circle swaps to the full-width reply instantly when it
+     width/height/padding: the loading pill swaps to the full-width reply instantly when it
      lands, and transitioning those would turn that into a half-animated stretch (width would
      animate while height can't, since it goes to `auto`). */
   transition: opacity 0.35s ease, transform 0.35s ease;
@@ -907,15 +907,16 @@ color: #ffffff;
   overflow-wrap: break-word;
 }
 
-/* Loading: a circle around the three dots, centered above the input, with no × (the send
-   button becomes a stop button while loading). Its diameter is the original loading bubble's
-   height (16px padding x 2 + the old × line, 1.1rem x 1.5 = 58.4px), which leaves a bit of
-   room around the 42px-wide dots at the circle's widest point. The 32px corner radius is
-   larger than half of that, so it clamps to a perfect circle. */
+/* Loading: a small pill around the three dots, centered above the input, with no × (the send
+   button becomes a stop button while loading). It has the reply's 16px padding on the sides,
+   so it hugs the 42px-wide dots (74px wide), and the height of a bubble with one line of text
+   (16px x 2 + 0.85rem x 1.5 = 52.4px). The 32px corner radius is more than half the height,
+   so it clamps to fully round ends. (A 58.4px circle, then a 58.4px-wide pill, were tried
+   first.) */
 .chat-overlay.loading {
-  width: calc(32px + 1.1rem * 1.5);
-  height: calc(32px + 1.1rem * 1.5);
-  padding: 0;
+  width: auto;
+  height: calc(32px + 0.85rem * 1.5);
+  padding: 0 16px;
   justify-content: center;
 }
 
@@ -959,8 +960,9 @@ color: #ffffff;
    in each cycle one pass crosses above the dots while they ripple and the other while they
    rest. Swelling the glow as the ripple peaks and easing it down as the dots rest makes both
    passes look intended, without touching the spin speed or the dots. Same 1.4s clock as the
-   dots (DOTS_CYCLE_MS in scripts/index.js), started in the same frame; the peak lands at 54%
-   (760ms), the middle dot's peak. Opacity is animated on this inner clip rather than on the
+   dots (DOTS_CYCLE_MS in scripts/index.js), started in the same frame; the peak lands at 45%
+   (630ms, RIPPLE_PEAK_MS), when the three dots are brightest together. (It was at 54%, the
+   middle dot's own peak, which trailed the ripple.) Opacity is animated on this inner clip rather than on the
    blurred .chat-glow wrapper, so the filtered layer itself isn't what changes. The range is
    0.36 to 0.8 (the clip's steady 0.8, scaled by 0.45 at the dip): the same brightness as
    before the steady level moved from the wrapper to this layer. (Two other variants were
@@ -974,7 +976,7 @@ color: #ffffff;
   0%, 100% {
     opacity: 0.36;
   }
-  54% {
+  45% {
     opacity: 0.8;
   }
 }
@@ -1110,7 +1112,7 @@ color: #ffffff;
 }
 
 /* Typing dots. The blink cycle (1.4s) and the 0.2s stagger must match DOTS_CYCLE_MS and
-   MIDDLE_DOT_PEAK_MS in scripts/index.js, which pace and align the glow's rotation to them. */
+   RIPPLE_PEAK_MS in scripts/index.js, which pace and align the glow's rotation to them. */
 .typing {
   display: inline-flex;
   align-items: center;
@@ -1290,7 +1292,7 @@ footer {
   font-size: 12px;
   }
   
-  .stat-card {
+  .chat-glass {
     padding: 4px;
     width: 94vw;
   }
@@ -1525,12 +1527,12 @@ footer {
   scroll-margin-top: 112px;
   }
 
-  /* .stat-card {
+  /* .chat-glass {
     padding: 0.5rem;
     border-radius: 16px;
   } */
 
-  /* .stat-card h5 {
+  /* .chat-glass h5 {
     font-size: 14px;
   } */
 
@@ -1552,7 +1554,7 @@ footer {
     font-size: 16px;
   }
 
-  /* .stat-card p {
+  /* .chat-glass p {
     font-size: 16px;
   } */
 
