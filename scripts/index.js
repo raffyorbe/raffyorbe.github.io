@@ -98,30 +98,53 @@ document.addEventListener("DOMContentLoaded", function () {
   const userInput = document.getElementById("user-input");
   const sendBtn = document.getElementById("send-btn");
 
-  // Notification sound played when a text reply (not the loading dots) appears
-  const replySound = new Audio("audio/dragon-studio-new-notification-3-398649.mp3");
+  // Notification sound played when a text reply (not the loading dots) appears.
+  // Played through Web Audio rather than an <audio> element: the file is decoded into memory
+  // up front, so it starts right away at the exact offset. An <audio> element had to wake up
+  // and seek after the idle wait for a live reply, which made the sound land late and unevenly
+  // in Safari (a looping demo hid that by keeping it warm).
+  const REPLY_SOUND_URL = "audio/47313572-intro-sound-1-269293.mp3";
 
-  function playReplySound() {
-    replySound.currentTime = 0;
-    replySound.play().catch(() => {});
+  // The file opens with a ~0.4s swell before its peak (at ~0.43s), which made the sound land
+  // late against the bubble. Skip just the silent first moment so it spools up fast (0.35s and 0.2s cut too much; 0.05s and 0.1s also tried).
+  const REPLY_SOUND_START_S = 0.08;
+
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = AudioCtx ? new AudioCtx() : null;
+  let replySoundBuffer = null;
+  let replySoundSource = null;
+
+  if (audioCtx) {
+    fetch(REPLY_SOUND_URL)
+      .then((res) => res.arrayBuffer())
+      // Callback form of decodeAudioData for older Safari, which has no promise version
+      .then((data) => new Promise((resolve, reject) => audioCtx.decodeAudioData(data, resolve, reject)))
+      .then((buffer) => { replySoundBuffer = buffer; })
+      .catch(() => {});
   }
 
-  // Browsers only allow audio.play() for a brief window after a user gesture.
-  // If the fetch below takes longer than that window, the later playReplySound()
-  // call gets silently blocked. Unlocking the element here (still inside the
-  // click/keydown gesture) lets it play later regardless of response time.
+  function playReplySound() {
+    if (!audioCtx || !replySoundBuffer) return;
+    // Restart rather than overlap if a previous reply's sound is still playing
+    if (replySoundSource) replySoundSource.stop();
+    replySoundSource = audioCtx.createBufferSource();
+    replySoundSource.buffer = replySoundBuffer;
+    replySoundSource.connect(audioCtx.destination);
+    replySoundSource.start(0, REPLY_SOUND_START_S);
+  }
+
+  // Browsers keep an AudioContext suspended until a user gesture resumes it. Resume it here,
+  // inside the send click/keydown, so the reply sound can play whenever the response arrives.
+  // Doing it on every send also recovers a context Safari suspended or interrupted in between.
+  // The silent one-sample buffer is for older iOS Safari, which also wants a sound started
+  // during the gesture before it will play any later.
   function unlockReplySound() {
-    // Pause synchronously, without waiting for the play() promise to resolve.
-    // This stops playback before the browser actually renders audio (no blip),
-    // while still satisfying the "played during a user gesture" requirement
-    // that lets later, non-gesture playReplySound() calls succeed. Doing this
-    // synchronously (vs. muting and unmuting inside a .then()) avoids a race
-    // with a fast API response calling playReplySound() before the unlock
-    // finishes, which would otherwise play the real reply muted/silent.
-    const p = replySound.play();
-    replySound.pause();
-    replySound.currentTime = 0;
-    if (p && p.catch) p.catch(() => {});
+    if (!audioCtx) return;
+    if (audioCtx.state !== "running") audioCtx.resume().catch(() => {});
+    const silent = audioCtx.createBufferSource();
+    silent.buffer = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+    silent.connect(audioCtx.destination);
+    silent.start(0);
   }
 
   // Hero overlay switches to a frosted dark layer while a chat bubble is showing
@@ -135,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // button (on a reply) and the stop button (while loading), so both leave the same way.
   function hideBubble(bubble) {
     setHeroChatActive(false);
+    bubble.classList.remove("reply-in"); // let a still-running reply fade-up yield to the fade-down
     bubble.classList.add("hide");
 
     // Remove once the bubble's own fade-down finishes. transitionend also bubbles up from
@@ -292,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
     textElem.appendChild(document.createTextNode(message));
   }
 
-  // Swap the loading dots for the reply: the dots are replaced by the text, which fades up.
+  // Swap the loading dots for the reply: the whole bubble, text included, fades up as one.
   // The glow keeps going, with its ring fading in and its speed easing down (settleGlow).
   function revealReply(bubble, message) {
     const textElem = bubble.querySelector(".chat-text");
@@ -302,13 +326,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const glowClip = bubble.querySelector(".chat-glow-clip");
     const breathingOpacity = glowClip ? getComputedStyle(glowClip).opacity : null;
 
-    if (textElem) {
-      setAIMessageContent(textElem, message);
+    if (textElem) setAIMessageContent(textElem, message);
 
-      // Add fade animation for new message
-      textElem.classList.add("fade-in");
-      setTimeout(() => textElem.classList.remove("fade-in"), 400);
-    }
+    // Whole-bubble fade-up (.chat-overlay.reply-in in styles/index.css). animationend also
+    // bubbles up from the glow's own animations, so only react to the bubble's.
+    bubble.classList.add("reply-in");
+    bubble.addEventListener("animationend", function onEnd(e) {
+      if (e.target !== bubble) return;
+      bubble.removeEventListener("animationend", onEnd);
+      bubble.classList.remove("reply-in");
+    });
 
     bubble.classList.remove("loading");
 

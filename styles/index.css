@@ -1073,7 +1073,9 @@ color: #ffffff;
   }
 }
 
-.chat-text.fade-in {
+/* When a reply lands, the whole bubble (glow, background and text together) fades up as one.
+   (Fading up just the .chat-text inside the already-visible bubble was the earlier version.) */
+.chat-overlay.reply-in {
   animation: fadeUpNew 0.35s ease;
 }
 
@@ -1382,6 +1384,11 @@ footer {
   }
   .chat-overlay.show {
     transform: translateY(0);
+  }
+  /* Restate the fade-down here: the .show above comes later than the base .hide rule, so
+     without this the close/stop only fades out on phones and never slides down */
+  .chat-overlay.hide {
+    transform: translateY(8px);
   }
 
   h2{
