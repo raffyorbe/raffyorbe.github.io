@@ -477,8 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Ask me about my work habits",
     "Ask me about my projects",
     "Ask me about my learning style",
-    "Ask me what managers say about me",
-    "Ask me about work authorization"
+    "Ask me what managers say about me"
   ];
 
   let index = 0;
