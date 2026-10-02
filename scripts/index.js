@@ -103,11 +103,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // up front, so it starts right away at the exact offset. An <audio> element had to wake up
   // and seek after the idle wait for a live reply, which made the sound land late and unevenly
   // in Safari (a looping demo hid that by keeping it warm).
-  const REPLY_SOUND_URL = "audio/47313572-intro-sound-1-269293.mp3";
+  const REPLY_SOUND_URL = "audio/ai-raffy-notification.mp3";
 
-  // The file opens with a ~0.4s swell before its peak (at ~0.43s), which made the sound land
-  // late against the bubble. Skip just the silent first moment so it spools up fast (0.35s and 0.2s cut too much; 0.05s and 0.1s also tried).
-  const REPLY_SOUND_START_S = 0.08;
+  // The file opens with 0.3s of silence before a sharp hit (at 0.30s). Skip part of it so the
+  // hit lands 0.2s after the reply appears (0 and 0.29s, a 0.3s and ~0.01s lag, also tried).
+  const REPLY_SOUND_START_S = 0.1;
 
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
   const audioCtx = AudioCtx ? new AudioCtx() : null;
