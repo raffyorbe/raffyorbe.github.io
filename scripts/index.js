@@ -98,34 +98,83 @@ document.addEventListener("DOMContentLoaded", function () {
   const userInput = document.getElementById("user-input");
   const sendBtn = document.getElementById("send-btn");
 
-  // Notification sound played when a text reply (not the loading dots) appears
-  const replySound = new Audio("audio/ai-raffy-notification.mp3");
+  // Notification sound played when a text reply (not the loading dots) appears.
+  // Played through Web Audio rather than an <audio> element: the file is decoded into memory
+  // up front, so it starts right away at the exact offset. An <audio> element has to wake up
+  // and seek after the wait for a reply, which made the sound land late in Safari and choke
+  // on phones.
+  const REPLY_SOUND_URL = "audio/ai-raffy-notification.mp3";
 
-  // The file opens with 0.3s of silence before a sharp hit (at 0.30s). Skip it so the hit lands
-  // with the reply (0, 0.1s and 0.29s tried).
+  // The file opens with 0.3s of silence before a sharp hit (at 0.30s). Skip it so the hit comes
+  // right as the sound starts (0 and 0.1s also tried).
   const REPLY_SOUND_START_S = 0.29;
 
-  function playReplySound() {
-    replySound.currentTime = REPLY_SOUND_START_S;
-    replySound.play().catch(() => {});
+  // The ding lands once the reply bubble has fully floated up: .chat-overlay.reply-in's
+  // fadeUpNew is 0.35s in styles/index.css. Scheduled on the audio clock, so it's exact.
+  const REPLY_SOUND_DELAY_S = 0.35;
+
+  // How long a reply waits for a paused audio context to wake before skipping its sound
+  const REPLY_SOUND_WAKE_LIMIT_MS = 300;
+
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = AudioCtx ? new AudioCtx() : null;
+  let replySoundBuffer = null;
+  let replySoundSource = null;
+
+  if (audioCtx) {
+    fetch(REPLY_SOUND_URL)
+      .then((res) => res.arrayBuffer())
+      // Callback form of decodeAudioData for older Safari, which has no promise version
+      .then((data) => new Promise((resolve, reject) => audioCtx.decodeAudioData(data, resolve, reject)))
+      .then((buffer) => { replySoundBuffer = buffer; })
+      .catch(() => {});
   }
 
-  // Browsers only allow audio.play() for a brief window after a user gesture.
-  // If the fetch below takes longer than that window, the later playReplySound()
-  // call gets silently blocked. Unlocking the element here (still inside the
-  // click/keydown gesture) lets it play later regardless of response time.
+  // delayS: how long from now until the hit should land
+  function startReplySound(delayS) {
+    // Restart rather than overlap if a previous reply's sound is still playing
+    if (replySoundSource) replySoundSource.stop();
+    replySoundSource = audioCtx.createBufferSource();
+    replySoundSource.buffer = replySoundBuffer;
+    replySoundSource.connect(audioCtx.destination);
+    replySoundSource.start(audioCtx.currentTime + Math.max(0, delayS), REPLY_SOUND_START_S);
+  }
+
+  function playReplySound() {
+    if (!audioCtx || !replySoundBuffer) return;
+    if (audioCtx.state === "running") {
+      startReplySound(REPLY_SOUND_DELAY_S);
+      return;
+    }
+
+    // Never start a sound on a paused context: Safari holds it until the context next resumes
+    // (the next send), so it played late, back to back with the next reply's sound. Try to wake
+    // the context instead, and skip the sound if that doesn't happen quickly. Outside a user
+    // gesture, resume() can stay pending until the next one, so the time check matters.
+    const requestedAt = performance.now();
+    audioCtx.resume()
+      .then(() => {
+        const wokeAfterMs = performance.now() - requestedAt;
+        if (audioCtx.state === "running" && wokeAfterMs <= REPLY_SOUND_WAKE_LIMIT_MS) {
+          // Count the wake time against the delay, so the hit still lands at the end of the float-up
+          startReplySound(REPLY_SOUND_DELAY_S - wokeAfterMs / 1000);
+        }
+      })
+      .catch(() => {});
+  }
+
+  // Browsers keep an AudioContext suspended until a user gesture resumes it. Resume it here,
+  // inside the send click/keydown, so the reply sound can play whenever the response arrives.
+  // Doing it on every send also recovers a context Safari suspended or interrupted in between.
+  // The silent one-sample buffer is for older iOS Safari, which also wants a sound started
+  // during the gesture before it will play any later.
   function unlockReplySound() {
-    // Pause synchronously, without waiting for the play() promise to resolve.
-    // This stops playback before the browser actually renders audio (no blip),
-    // while still satisfying the "played during a user gesture" requirement
-    // that lets later, non-gesture playReplySound() calls succeed. Doing this
-    // synchronously (vs. muting and unmuting inside a .then()) avoids a race
-    // with a fast API response calling playReplySound() before the unlock
-    // finishes, which would otherwise play the real reply muted/silent.
-    const p = replySound.play();
-    replySound.pause();
-    replySound.currentTime = 0;
-    if (p && p.catch) p.catch(() => {});
+    if (!audioCtx) return;
+    if (audioCtx.state !== "running") audioCtx.resume().catch(() => {});
+    const silent = audioCtx.createBufferSource();
+    silent.buffer = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+    silent.connect(audioCtx.destination);
+    silent.start(0);
   }
 
   // Hero overlay switches to a frosted dark layer while a chat bubble is showing
