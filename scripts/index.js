@@ -98,53 +98,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const userInput = document.getElementById("user-input");
   const sendBtn = document.getElementById("send-btn");
 
-  // Notification sound played when a text reply (not the loading dots) appears.
-  // Played through Web Audio rather than an <audio> element: the file is decoded into memory
-  // up front, so it starts right away at the exact offset. An <audio> element had to wake up
-  // and seek after the idle wait for a live reply, which made the sound land late and unevenly
-  // in Safari (a looping demo hid that by keeping it warm).
-  const REPLY_SOUND_URL = "audio/ai-raffy-notification.mp3";
+  // Notification sound played when a text reply (not the loading dots) appears
+  const replySound = new Audio("audio/ai-raffy-notification.mp3");
 
-  // The file opens with 0.3s of silence before a sharp hit (at 0.30s). Skip part of it so the
-  // hit lands 0.2s after the reply appears (0 and 0.29s, a 0.3s and ~0.01s lag, also tried).
-  const REPLY_SOUND_START_S = 0.1;
-
-  const AudioCtx = window.AudioContext || window.webkitAudioContext;
-  const audioCtx = AudioCtx ? new AudioCtx() : null;
-  let replySoundBuffer = null;
-  let replySoundSource = null;
-
-  if (audioCtx) {
-    fetch(REPLY_SOUND_URL)
-      .then((res) => res.arrayBuffer())
-      // Callback form of decodeAudioData for older Safari, which has no promise version
-      .then((data) => new Promise((resolve, reject) => audioCtx.decodeAudioData(data, resolve, reject)))
-      .then((buffer) => { replySoundBuffer = buffer; })
-      .catch(() => {});
-  }
+  // The file opens with 0.3s of silence before a sharp hit (at 0.30s). Skip it so the hit lands
+  // with the reply (0, 0.1s and 0.29s tried).
+  const REPLY_SOUND_START_S = 0.29;
 
   function playReplySound() {
-    if (!audioCtx || !replySoundBuffer) return;
-    // Restart rather than overlap if a previous reply's sound is still playing
-    if (replySoundSource) replySoundSource.stop();
-    replySoundSource = audioCtx.createBufferSource();
-    replySoundSource.buffer = replySoundBuffer;
-    replySoundSource.connect(audioCtx.destination);
-    replySoundSource.start(0, REPLY_SOUND_START_S);
+    replySound.currentTime = REPLY_SOUND_START_S;
+    replySound.play().catch(() => {});
   }
 
-  // Browsers keep an AudioContext suspended until a user gesture resumes it. Resume it here,
-  // inside the send click/keydown, so the reply sound can play whenever the response arrives.
-  // Doing it on every send also recovers a context Safari suspended or interrupted in between.
-  // The silent one-sample buffer is for older iOS Safari, which also wants a sound started
-  // during the gesture before it will play any later.
+  // Browsers only allow audio.play() for a brief window after a user gesture.
+  // If the fetch below takes longer than that window, the later playReplySound()
+  // call gets silently blocked. Unlocking the element here (still inside the
+  // click/keydown gesture) lets it play later regardless of response time.
   function unlockReplySound() {
-    if (!audioCtx) return;
-    if (audioCtx.state !== "running") audioCtx.resume().catch(() => {});
-    const silent = audioCtx.createBufferSource();
-    silent.buffer = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
-    silent.connect(audioCtx.destination);
-    silent.start(0);
+    // Pause synchronously, without waiting for the play() promise to resolve.
+    // This stops playback before the browser actually renders audio (no blip),
+    // while still satisfying the "played during a user gesture" requirement
+    // that lets later, non-gesture playReplySound() calls succeed. Doing this
+    // synchronously (vs. muting and unmuting inside a .then()) avoids a race
+    // with a fast API response calling playReplySound() before the unlock
+    // finishes, which would otherwise play the real reply muted/silent.
+    const p = replySound.play();
+    replySound.pause();
+    replySound.currentTime = 0;
+    if (p && p.catch) p.catch(() => {});
   }
 
   // Hero overlay switches to a frosted dark layer while a chat bubble is showing
