@@ -219,6 +219,11 @@ body {
   width: 100%;
 }
 
+/* The scroll-down arrow is a special button, so it keeps Bootstrap's 1px border */
+.hero-stats .btn {
+  border-width: 1px;
+}
+
 .chat-glass {
   display: inline-block;
   padding: 5px;
@@ -460,13 +465,14 @@ p.tag{
 .btn-primary {
   background-color: #000000;
   /* border-color: #0f62fe; */
-  border-color: transparent;
+  border-color: #000000;
   border-radius: 999px;
+  border-width: 1.5px; /* same weight as .btn-secondary */
 }
 
 .btn-primary:hover{
   background-color: #262626;
-  border-color: transparent;
+  border-color: #262626;
 }
 
 .btn-secondary{
@@ -714,6 +720,51 @@ color: #ffffff;
   position: relative;
   z-index: 2;
   padding: 20px;
+  /* Fill the whole card so the title link's ::after can cover it */
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* Tag sits in the top-left corner, inside the same 20px padding; the rest stays at the bottom */
+.project-card .card-content > .tag {
+  margin-bottom: auto;
+}
+
+/* Keeps the old 1rem tag gap as a minimum when a card is short on space */
+.project-card .card-content > .tag + * {
+  margin-top: 1rem;
+}
+
+/* Keep the 20px bottom padding now that the text, not a button, ends the card */
+.project-card .card-content > :last-child {
+  margin-bottom: 0;
+}
+
+/* The title link stretches over the whole card, so the card is the click target */
+.project-card .card-link {
+  color: inherit;
+  font-size: inherit; /* keep the h5 size; some breakpoints shrink every a to 14px */
+  text-decoration: none;
+}
+
+.project-card .card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 8px;
+}
+
+.project-card .card-link:focus-visible {
+  outline: none;
+}
+
+.project-card .card-link:focus-visible::after {
+  outline: 2px solid #ffffff;
+  outline-offset: -2px;
 }
 
 /* .project-card p, .project-card h5{
