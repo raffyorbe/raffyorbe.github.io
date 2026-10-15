@@ -293,12 +293,14 @@ body {
   pointer-events: none;
 }
 
-/* Reflective rim, same as the navbar's */
+/* Reflective rim, same as the navbar's. z-index 0 keeps it above the glass layer (-1) but
+   under .hello-chat-border-wrapper (1), so the chat bubble, which overlaps the glass's top
+   edge, is never drawn over by the rim. */
 .chat-glass::after {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   padding: 1.5px;
   border-radius: inherit;
   backdrop-filter: blur(2px) brightness(1.4) saturate(2);
@@ -988,7 +990,7 @@ color: #ffffff;
 /* Input bar wrapper: anchor point for bubble */
 .hello-chat-border-wrapper {
   position: relative; /* important: overlay is absolute relative to this */
-  z-index: 0;
+  z-index: 1; /* above .chat-glass's glass layer and rim, so the chat bubble is on top */
   /* Shared with #chat-overlay-container below, which insets the reply bubble by the same
      amount so it lines up with the input field (.floating-chatbar) rather than this wrapper's
      outer edge. Overridden on phones. */
