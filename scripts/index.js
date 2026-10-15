@@ -54,18 +54,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // AI chat glow
 
-  const glow = document.querySelector('.hello-chat-border-wrapper .border-animator-chat');
+  const glow = document.querySelector('.hello-chat-border-wrapper .chat-bar-glow');
 
   if (glow) {
     const target = document.querySelector('.hello-chat-border-wrapper');
-    const chatGlass = document.querySelector('.chat-glass');
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             
             glow.classList.add('visible'); // start glow animation
-            chatGlass.classList.add('visible');
 
             observer.unobserve(entry.target); // optional: only trigger once
           }

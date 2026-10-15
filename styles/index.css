@@ -37,11 +37,48 @@ body {
   padding-top: 8px;
   padding-bottom: 8px;
   border-radius: 999px;
-  background-color: rgba(38, 38, 38, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* Liquid glass: a light sheen over a darker tint (keeps white text readable over the
+     bright hero), strong blur + saturation, a thin bright rim, a specular top edge and a
+     soft drop shadow. CSS only, so Safari renders it the same as Chrome. */
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03) 60%),
+    rgba(30, 30, 30, 0.45);
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.35);
   /* box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); */
   width: 100%;
+}
+
+/* Reflective rim: a 1.5px ring over the navbar's edge that shows what's behind it,
+   brightened and saturated, so the rim picks up the color of the page under it.
+   It sits on the wrapper, not the navbar, because an element with backdrop-filter can't
+   see the page through a child's backdrop-filter. inset matches the wrapper's padding. */
+.hello-border-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  z-index: 3;
+  padding: 1.5px;
+  border-radius: 999px;
+  backdrop-filter: blur(2px) brightness(1.4) saturate(2);
+  -webkit-backdrop-filter: blur(2px) brightness(1.4) saturate(2);
+  /* Ring (full box minus the content box), faded toward the left and right ends so the
+     rim is strongest along the top and bottom and only faint on the sides */
+  mask:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.25), #000 20%, #000 80%, rgba(0, 0, 0, 0.25)) intersect,
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.25), #000 20%, #000 80%, rgba(0, 0, 0, 0.25)),
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: source-in, xor;
+  pointer-events: none;
 }
 
 /* Base Button Style */
@@ -229,17 +266,55 @@ body {
   padding: 5px;
   border-radius: 48px;
   width: 640px;
-  background-color: rgba(38, 38, 38, 1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  isolation: isolate;
   /* background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(208, 226, 255) 100%); */
   /* box-shadow: 0 0px 12px rgba(255, 255, 255, 0.5);  */
-  box-shadow: 0 0px 12px rgb(255, 157, 82, 0.5);
   /* animation: glow 6s ease-in-out infinite; */
 }
 
-.chat-glass.visible{
-  animation: opacity 4.5s ease forwards;
+/* Liquid glass layer, same treatment as the navbar. It lives on ::before instead of
+   .chat-glass itself so .chat-glass has no backdrop-filter, which would stop the rim
+   (::after) from seeing the page. */
+.chat-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03) 60%),
+    rgba(30, 30, 30, 0.45);
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+/* Reflective rim, same as the navbar's */
+.chat-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 1.5px;
+  border-radius: inherit;
+  backdrop-filter: blur(2px) brightness(1.4) saturate(2);
+  -webkit-backdrop-filter: blur(2px) brightness(1.4) saturate(2);
+  /* Ring (full box minus the content box), faded toward the left and right ends so the
+     rim is strongest along the top and bottom and only faint on the sides */
+  mask:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.25), #000 20%, #000 80%, rgba(0, 0, 0, 0.25)) intersect,
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.25), #000 20%, #000 80%, rgba(0, 0, 0, 0.25)),
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: source-in, xor;
+  pointer-events: none;
 }
 
 @keyframes glow {
@@ -260,20 +335,8 @@ body {
   }
 }
 
-@keyframes opacity{
-  0%{
-    background-color: rgba(38, 38, 38, 1);
-    box-shadow: 0 0px 12px rgb(255, 157, 82, 0);
-  }
-  80%{
-    background-color: rgba(38, 38, 38, 1);
-    box-shadow: 0 0px 12px rgb(255, 157, 82, 1);
-  }
-  100%{
-    background-color: rgba(38, 38, 38, 0.4);
-    box-shadow: 0 0px 12px rgb(255, 157, 82, 0.5);
-  }
-}
+/* The solid-to-glass intro and golden glow (tried 2026-10-15) were dropped: the bar
+   starts as glass and the intro is the rotating glow (.chat-bar-glow). */
 
 /* .chat-glass p {
   margin: 0;
@@ -294,12 +357,6 @@ body {
 }
 
 /* Glowing border animation */
-@property --angle {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-
 /* .border-animator-nav {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -322,23 +379,6 @@ body {
   animation: rotate-gradient 4s linear forwards;
   animation-delay: 1s;
 } */
-
-@keyframes rotate-gradient {
-  0% {
-    --angle: 0deg;
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    --angle: 360deg;
-    opacity: 0;
-  }
-}
 
 @keyframes chat-glow-spin {
   to {
@@ -752,6 +792,27 @@ color: #ffffff;
 /* Keeps the title's old 0.5rem gap as a minimum when a card is short on space */
 .project-card .card-content > h5 + * {
   margin-top: 0.5rem;
+}
+
+/* Right arrow in the bottom-right corner, inside the 20px padding, signals the card is a
+   link. Same icon set as the send button (the send arrow turned right). */
+.project-card .card-arrow {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  color: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+/* The description keeps a dedicated column clear for the arrow (24px icon + 12px gap,
+   like the chat bubble's close button), so text never runs under it */
+.project-card .card-content > h5 + p {
+  margin-right: 36px;
+}
+
+.project-card:hover .card-arrow,
+.project-card:has(.card-link:focus-visible) .card-arrow {
+  transform: translateX(4px);
 }
 
 /* Keep the 20px bottom padding now that the text, not a button, ends the card */
@@ -1301,36 +1362,52 @@ color: #ffffff;
   display: inline;
 }
 
-.border-animator-chat {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: inherit;
-  z-index: 0;
-  opacity: 0;
-  
-  --angle: 0deg;
-  background: conic-gradient(
-    from var(--angle),
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0),
-    #0a2540,
-    #1f6fd6,
-    #ff9d52,
-    #ffd9a8,
-    #ffffff,
-    #bfe3ff,
-    #2a5fc2,
-    rgba(0, 0, 0, 0)
-    );
+/* The intro's light streak (.border-animator-chat, a rotating conic border) was replaced
+   by this glow on 2026-10-15. */
 
-  /* animation: rotate-gradient 6s linear forwards;
-  animation-delay: 1.5s; */
+/* Intro glow around the chat bar: the chat bubble's rotating glow (same structure and
+   colors, see .chat-glow) playing one lap on the old light streak's timing: 0.5s delay,
+   3.5s, fading in over the first 20% and out over the last 20%. The 24px transparent
+   margin keeps the blur inside the box (see .chat-glow). The colored shape fills the whole
+   9px glass ring around the input field, out to .chat-glass's edge (4px wrapper padding +
+   5px glass padding; the bubble's is only 2px), and peaks at full opacity (the bubble's is
+   0.8). It already sits above the glass layer; most of it is hidden under the solid input,
+   so the ring is what shows. */
+.chat-bar-glow {
+  position: absolute;
+  inset: -29px;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(7px);
 }
 
-.border-animator-chat.visible {
-  animation: rotate-gradient 3.5s linear forwards;
-  animation-delay: 0.5s;
+.chat-bar-glow .chat-glow-clip {
+  border-radius: 999px;
+  opacity: 0;
+}
+
+.chat-bar-glow .chat-glow-spin {
+  animation: none;
+}
+
+.chat-bar-glow.visible .chat-glow-clip {
+  animation: chat-bar-glow-fade 3.5s linear 0.5s forwards;
+}
+
+.chat-bar-glow.visible .chat-glow-spin {
+  animation: chat-glow-spin 3.5s linear 0.5s forwards;
+}
+
+@keyframes chat-bar-glow-fade {
+  0% {
+    opacity: 0;
+  }
+  20%, 80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* Footer */
@@ -1351,6 +1428,10 @@ footer {
 
   .floating-navbar a {
     font-size: 0.8rem; /* reduced font size on mobile */
+  }
+
+  .hello-border-wrapper::before {
+    inset: 3px; /* matches the wrapper's mobile padding */
   }
 
   .hello-border-wrapper {
