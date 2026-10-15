@@ -470,7 +470,8 @@ p.tag{
   border-width: 1.5px; /* same weight as .btn-secondary */
 }
 
-.btn-primary:hover{
+.btn-primary:hover,
+.btn-primary:not(#send-btn):focus-visible{
   background-color: #262626;
   border-color: #262626;
 }
@@ -484,6 +485,7 @@ p.tag{
 }
 
 .btn-secondary:hover,
+.btn-secondary:focus-visible,
 .btn-secondary.btn-coming-soon {
   background-color: #ffffff;
   border-color: transparent;
@@ -495,8 +497,20 @@ text-decoration: none;
 color: #ffffff;
 }
 
-.link:hover{
+.link:hover,
+.link:focus-visible{
   text-decoration: underline;
+}
+
+/* Keyboard focus: a white ring (like the project cards') on top of the hover state.
+   The send button and company logos get the ring only. */
+.link:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+#companies a:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  box-shadow: none;
 }
 
 .link-white{
@@ -728,14 +742,16 @@ color: #ffffff;
   justify-content: flex-end;
 }
 
-/* Tag sits in the top-left corner, inside the same 20px padding; the rest stays at the bottom */
-.project-card .card-content > .tag {
+/* Tag and title sit in the top-left corner, inside the same 20px padding;
+   the description stays at the bottom */
+.project-card .card-content > h5 {
   margin-bottom: auto;
+  font-size: 24px; /* same as the skill card titles */
 }
 
-/* Keeps the old 1rem tag gap as a minimum when a card is short on space */
-.project-card .card-content > .tag + * {
-  margin-top: 1rem;
+/* Keeps the title's old 0.5rem gap as a minimum when a card is short on space */
+.project-card .card-content > h5 + * {
+  margin-top: 0.5rem;
 }
 
 /* Keep the 20px bottom padding now that the text, not a button, ends the card */
@@ -789,6 +805,11 @@ color: #ffffff;
   margin-top: auto;
 }
 
+/* Lets the focus ring wrap the logo image */
+#companies a {
+  display: inline-block;
+}
+
 .logo-img {
   max-width: 150px;
   height: auto;
@@ -824,27 +845,33 @@ color: #ffffff;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 } */
 
-.project-card.bg-image1:hover{
+.project-card.bg-image1:hover,
+.project-card.bg-image1:has(.card-link:focus-visible){
   transform: scale(1.03);
 }
 
-.project-card.bg-image2:hover{
+.project-card.bg-image2:hover,
+.project-card.bg-image2:has(.card-link:focus-visible){
   transform: scale(1.03);
 }
 
-.project-card.bg-image3:hover{
+.project-card.bg-image3:hover,
+.project-card.bg-image3:has(.card-link:focus-visible){
   transform: scale(1.03);
 }
 
-.project-card.bg-image4:hover{
+.project-card.bg-image4:hover,
+.project-card.bg-image4:has(.card-link:focus-visible){
   transform: scale(1.03);
 }
 
-.project-card.bg-image5:hover{
+.project-card.bg-image5:hover,
+.project-card.bg-image5:has(.card-link:focus-visible){
   transform: scale(1.03);
 }
 
-.project-card.bg-image6:hover{
+.project-card.bg-image6:hover,
+.project-card.bg-image6:has(.card-link:focus-visible){
   transform: scale(1.03);
 }
 
@@ -865,7 +892,8 @@ color: #ffffff;
   pointer-events: none;
 }
 
-.project-card:hover::before {
+.project-card:hover::before,
+.project-card:has(.card-link:focus-visible)::before {
   opacity: 0.85;
 }
 
@@ -1314,7 +1342,7 @@ footer {
 
 /* Responsive CSS */
 
-@media (width <= 576px) {
+@media (width < 576px) {
 
   .floating-navbar {
     padding: 4px 4px; /* reduced navbar padding on mobile */
@@ -1481,7 +1509,7 @@ footer {
 
 }
 
-@media (576px <= width <= 768px){
+@media (576px <= width < 768px){
   
   .hello-overlay {
     padding: 8px 8px;
@@ -1533,7 +1561,7 @@ footer {
 
 }
 
-@media(768px <= width <= 992px){
+@media(768px <= width < 992px){
   .project-card,
   .project-card.bg-image1,
   .project-card.bg-image2,
