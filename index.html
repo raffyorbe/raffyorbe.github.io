@@ -110,11 +110,12 @@
           <!-- <p class="subtitle">With end-to-end impact and real results won, a jack of all trades beats a master of one. -->
           </p>
           <div class="link-centered">
-            <a class="link" href="https://raffyorbe.github.io/references/Raffy_Orbe_Overview.pdf" target="_blank">Learn
-              more about me <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+            <!-- Opens the skills profile modal (#skills-dialog) -->
+            <button type="button" class="link link-button" id="skills-open" aria-haspopup="dialog">View
+              Talent Model <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M7 17l9.2-9.2M17 17V7H7" />
-              </svg></a>
+              </svg></button>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
@@ -379,6 +380,66 @@
       <span class="eggmsg">Rawr!</span>
     </p> -->
   </footer>
+
+  <!-- Talent model modal, opened by "View talent model" (#skills-open). Framed like the AI
+       chat bubble: same glow, background and ×. -->
+  <dialog class="skills-dialog" id="skills-dialog" aria-labelledby="skills-title">
+    <div class="skills-modal">
+      <div class="chat-glow" aria-hidden="true"><div class="chat-glow-clip"><div class="chat-glow-spin"><div class="chat-glow-arc"></div><div class="chat-glow-color"></div></div></div></div>
+      <button type="button" class="chat-close skills-close" aria-label="Close">×</button>
+      <!-- autofocus: opening focuses the content (no ring) rather than the ×, which Tab reaches -->
+      <div class="skills-body" tabindex="-1" autofocus>
+        <p class="skills-eyebrow">Talent Model</p>
+        <h2 class="skills-title" id="skills-title">The shape I'm working towards</h2>
+
+        <div class="skills-layout">
+          <ul class="shape-legend">
+            <li><strong>I-shaped</strong><span>One expertise</span></li>
+            <li><strong>T-shaped</strong><span>One expertise but collaborative</span></li>
+            <li class="current"><strong>M-shaped</strong><span>Several depths joined by bridges</span></li>
+          </ul>
+
+          <!-- The M: three depths (pillars) joined by two bridges -->
+          <div class="m-shape">
+            <div class="m-bridge m-bridge-left" aria-hidden="true"></div>
+            <div class="m-bridge m-bridge-right" aria-hidden="true"></div>
+            <div class="m-pillar m-pillar-left">
+              <h3>Product</h3>
+              <ul>
+                <li>Design</li>
+                <li>User Research</li>
+                <li>Funnels</li>
+                <li>Experimentation</li>
+                <li>Prototyping</li>
+              </ul>
+            </div>
+            <div class="m-pillar m-pillar-center">
+              <h3>Data &amp; Governance</h3>
+              <ul>
+                <li>Data Pipelines</li>
+                <li>Data Integrity</li>
+                <li>Analytics</li>
+                <li>Documentation</li>
+              </ul>
+            </div>
+            <div class="m-pillar m-pillar-right">
+              <h3>Systems</h3>
+              <ul>
+                <li>Automation</li>
+                <li>AI Integration</li>
+                <li>Optimization</li>
+                <li>Consolidation</li>
+                <li>Design Systems</li>
+              </ul>
+            </div>
+            <p class="m-bridge-label">Strategy and Stakeholders + Hands&#8209;on building as bridges</p>
+          </div>
+        </div>
+
+        <p class="skills-credit">Framework: Sol Rashidi, <em>The Future of Work in the Age of Automation, Augmentation, and Agentic AI</em></p>
+      </div>
+    </div>
+  </dialog>
 
   <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

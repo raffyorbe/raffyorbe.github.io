@@ -265,6 +265,39 @@ document.addEventListener("DOMContentLoaded", function () {
     requestAnimationFrame(step);
   }
 
+  // Opening swell of a glow (a reply landing, or the skills modal opening): from fromOpacity up
+  // to GLOW_REPLY_PEAK, then back down to steady, with the blur spreading and narrowing in step.
+  // When it ends the clip is back on its CSS opacity, which equals the last keyframe, so there's
+  // no jump.
+  function swellGlow(container, fromOpacity) {
+    const glowClip = container.querySelector(".chat-glow-clip");
+    if (!glowClip || !glowClip.animate) return;
+    const steady = getComputedStyle(glowClip).opacity; // the CSS value (any breathing must be gone)
+    glowClip.animate(
+      [
+        { opacity: fromOpacity, easing: "ease-out" },
+        { opacity: GLOW_REPLY_PEAK, offset: 0.18, easing: "ease-in-out" },
+        { opacity: steady },
+      ],
+      { duration: GLOW_REPLY_FLASH_MS }
+    );
+
+    // Spread: the same shape and timing on the blur radius, so the halo widens as it brightens.
+    // Loading never changes the blur, so this always starts from the same steady value.
+    const glowWrapper = container.querySelector(".chat-glow");
+    if (glowWrapper) {
+      const steadyBlur = getComputedStyle(glowWrapper).filter; // e.g. "blur(7px)"
+      glowWrapper.animate(
+        [
+          { filter: steadyBlur, easing: "ease-out" },
+          { filter: `blur(${GLOW_REPLY_BLUR_PEAK_PX}px)`, offset: 0.18, easing: "ease-in-out" },
+          { filter: steadyBlur },
+        ],
+        { duration: GLOW_REPLY_FLASH_MS }
+      );
+    }
+  }
+
   // Function to add AI message bubble
   function addAIBubble(message, isLoading = false) {
     if (!overlayContainer) return null; // return null if no container
@@ -378,34 +411,8 @@ document.addEventListener("DOMContentLoaded", function () {
     bubble.classList.remove("loading");
 
     // Opening swell: from where the breathing was, up to a bit brighter than steady, then back
-    // down to steady, alongside the ring fading in and the speed easing down. When it ends the
-    // clip is back on its CSS opacity, which equals the last keyframe, so there's no jump.
-    if (glowClip && glowClip.animate) {
-      const steady = getComputedStyle(glowClip).opacity; // the CSS value, now the breathing is gone
-      glowClip.animate(
-        [
-          { opacity: breathingOpacity, easing: "ease-out" },
-          { opacity: GLOW_REPLY_PEAK, offset: 0.18, easing: "ease-in-out" },
-          { opacity: steady },
-        ],
-        { duration: GLOW_REPLY_FLASH_MS }
-      );
-
-      // Spread: the same shape and timing on the blur radius, so the halo widens as it brightens.
-      // Loading never changes the blur, so this always starts from the same steady value.
-      const glowWrapper = bubble.querySelector(".chat-glow");
-      if (glowWrapper) {
-        const steadyBlur = getComputedStyle(glowWrapper).filter; // e.g. "blur(7px)"
-        glowWrapper.animate(
-          [
-            { filter: steadyBlur, easing: "ease-out" },
-            { filter: `blur(${GLOW_REPLY_BLUR_PEAK_PX}px)`, offset: 0.18, easing: "ease-in-out" },
-            { filter: steadyBlur },
-          ],
-          { duration: GLOW_REPLY_FLASH_MS }
-        );
-      }
-    }
+    // down to steady, alongside the ring fading in and the speed easing down.
+    if (glowClip) swellGlow(bubble, breathingOpacity);
 
     settleGlow(bubble);
   }
@@ -495,6 +502,8 @@ document.addEventListener("DOMContentLoaded", function () {
       userInput.disabled = false;
       // A stopped message stays in the input so it can be edited and sent again
       if (!stopped) userInput.value = "";
+      // Focus stays in the input (moving it to the reply's × on arrival was tried and dropped
+      // as distracting). Esc closes the reply, and Tab reaches its ×.
       userInput.focus();
     }
 
@@ -555,6 +564,67 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }, 3000); // Duration of rotation in ms
 
+  // Talent model modal (#skills-dialog, opened by "View talent model"). A native <dialog>:
+  // the browser handles the focus trap and puts focus back on the link when it closes. It fades
+  // up like the chat bubble, and its glow opens the way a landing reply's does: spinning at the
+  // loading pace and easing down (settleGlow), the ring fading in, and the swell (swellGlow).
+  const skillsDialog = document.getElementById("skills-dialog");
+  const skillsPanel = skillsDialog.querySelector(".skills-modal");
+  let skillsClosing = false;
+
+  function openSkills() {
+    if (skillsDialog.open) return;
+    skillsPanel.classList.add("glow-intro");
+    skillsDialog.showModal();
+    document.documentElement.classList.add("skills-open");
+
+    const spinAnim = getGlowSpin(skillsPanel);
+    if (spinAnim) spinAnim.playbackRate = GLOW_LOADING_RATE;
+
+    skillsPanel.getBoundingClientRect(); // lay out the hidden state first so the fade-up runs
+    skillsDialog.classList.add("show");
+    skillsPanel.classList.remove("glow-intro");
+    swellGlow(skillsPanel, 0);
+    settleGlow(skillsPanel);
+  }
+
+  function closeSkills() {
+    if (!skillsDialog.open || skillsClosing) return;
+    skillsClosing = true;
+    skillsDialog.classList.remove("show");
+
+    // Close once the panel has faded down. transitionend also bubbles up from the glow's ring,
+    // so only react to the panel's own; the timeout covers a transition that never runs.
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      skillsPanel.removeEventListener("transitionend", onEnd);
+      skillsDialog.close();
+      document.documentElement.classList.remove("skills-open");
+      skillsClosing = false;
+    };
+    const onEnd = (e) => {
+      if (e.target === skillsPanel && e.propertyName === "opacity") finish();
+    };
+    skillsPanel.addEventListener("transitionend", onEnd);
+    setTimeout(finish, 500);
+  }
+
+  document.getElementById("skills-open").addEventListener("click", openSkills);
+  skillsDialog.querySelector(".skills-close").addEventListener("click", closeSkills);
+
+  // Esc: fade out instead of the browser's instant close
+  skillsDialog.addEventListener("cancel", (e) => {
+    e.preventDefault();
+    closeSkills();
+  });
+
+  // A click on the dimmed area around the panel (the dialog itself) closes it too
+  skillsDialog.addEventListener("click", (e) => {
+    if (e.target === skillsDialog) closeSkills();
+  });
+
   // Event listeners
   sendBtn.addEventListener("click", () => (pendingRequest ? stopRequest() : sendMessage()));
 
@@ -562,6 +632,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // While loading there's no ×; the send button's stop handles that.
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
+    if (skillsDialog.open) return; // that Esc closes the skills modal instead
     const reply = overlayContainer.querySelector(".chat-overlay.show:not(.loading):not(.hide)");
     if (!reply) return;
     hideBubble(reply);
