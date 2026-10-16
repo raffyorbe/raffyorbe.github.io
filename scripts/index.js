@@ -54,7 +54,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // AI chat glow
 
-  const glow = document.querySelector('.hello-chat-border-wrapper .chat-bar-glow');
+  const glow = document.querySelector('.chat-glass .chat-bar-glow');
+  const streak = document.querySelector('.hello-chat-border-wrapper .border-animator-chat');
 
   if (glow) {
     const target = document.querySelector('.hello-chat-border-wrapper');
@@ -64,6 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (entry.isIntersecting) {
             
             glow.classList.add('visible'); // start glow animation
+            streak?.classList.add('visible'); // and its 1px bright core line
 
             observer.unobserve(entry.target); // optional: only trigger once
           }
@@ -296,14 +298,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     bubble.appendChild(textElem);
 
-    // Close button
+    // Close button. The label gives screen readers "Close" instead of "times" for the ×.
     const closeBtn = document.createElement("button");
+    closeBtn.type = "button";
     closeBtn.className = "chat-close";
+    closeBtn.setAttribute("aria-label", "Close");
     closeBtn.textContent = "×";
     bubble.appendChild(closeBtn);
 
-    // Close fade-out
-    closeBtn.addEventListener("click", () => hideBubble(bubble));
+    // Close fade-out. The button disappears with the bubble, so a keyboard user's focus goes
+    // back to the chat input. Mouse and touch closes leave focus alone, so a tap doesn't pop
+    // up the phone keyboard.
+    closeBtn.addEventListener("click", () => {
+      const fromKeyboard = closeBtn.matches(":focus-visible");
+      hideBubble(bubble);
+      if (fromKeyboard) userInput.focus();
+    });
 
     overlayContainer.appendChild(bubble);
 
@@ -547,6 +557,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Event listeners
   sendBtn.addEventListener("click", () => (pendingRequest ? stopRequest() : sendMessage()));
+
+  // Esc closes a reply bubble (like its × button) and puts focus back in the chat input.
+  // While loading there's no ×; the send button's stop handles that.
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    const reply = overlayContainer.querySelector(".chat-overlay.show:not(.loading):not(.hide)");
+    if (!reply) return;
+    hideBubble(reply);
+    userInput.focus();
+  });
+
   userInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();

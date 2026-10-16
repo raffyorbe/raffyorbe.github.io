@@ -340,7 +340,7 @@ body {
 }
 
 /* The solid-to-glass intro and golden glow (tried 2026-10-15) were dropped: the bar
-   starts as glass and the intro is the rotating glow (.chat-bar-glow). */
+   starts as glass and the intro is a streak with a glow (.border-animator-chat, .chat-bar-glow). */
 
 /* .chat-glass p {
   margin: 0;
@@ -361,6 +361,12 @@ body {
 }
 
 /* Glowing border animation */
+@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 /* .border-animator-nav {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -383,6 +389,29 @@ body {
   animation: rotate-gradient 4s linear forwards;
   animation-delay: 1s;
 } */
+
+/* The chat bar intro streak: one full turn, eased (see .border-animator-chat.visible) */
+@keyframes rotate-gradient-spin {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* Fades in over the first 20% and is fully faded out by three-quarters (75%), linear in time */
+@keyframes rotate-gradient-fade {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  75%, 100% {
+    opacity: 0;
+  }
+}
 
 @keyframes chat-glow-spin {
   to {
@@ -1252,9 +1281,19 @@ color: #ffffff;
   color: #ffffff;
   font-size: 1.1rem;
   font-weight: 300;
-  margin-left: 12px;
-  padding: 0px 0px 0px 8px;
+  /* Even padding so the focus ring is centered on the ×; the margins keep the × exactly
+     where it was (was margin-left 12px, padding-left 8px) */
+  margin-left: 16px;
+  margin-right: -4px;
+  padding: 0 4px;
+  border-radius: 4px;
   cursor: pointer;
+}
+
+/* Keyboard focus: the same white ring as the site's other links and buttons */
+.chat-close:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
 }
 
 /* Typing dots. The blink cycle (1.4s) and the 0.2s stagger must match DOTS_CYCLE_MS and
@@ -1366,50 +1405,120 @@ color: #ffffff;
   display: inline;
 }
 
-/* The intro's light streak (.border-animator-chat, a rotating conic border) was replaced
-   by this glow on 2026-10-15. */
+/* The intro glow's bright core: a 1px line of the glow's gradient right at the input's edge,
+   so the light reads as leaking from behind the input (brightest at the edge, then the soft
+   halo of .chat-bar-glow fading outward). Same rotation and timing as the halo. It sits 1px
+   outside the input (inset is the wrapper's padding minus 1px) and the input covers the
+   rest. Above the halo (in the wrapper, z-index 1) and under the input.
+   (Tried and dropped on 2026-10-16: a tail that grows from the head like Google AI Mode's
+   streak, a fast-to-slow reveal like the reply bubble's glow, a top-left start, and an SVG
+   line that draws itself along the edge.) */
+.border-animator-chat {
+  position: absolute;
+  inset: calc(var(--chat-wrap-pad) - 1px);
+  border-radius: 999px;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
 
-/* Intro glow around the chat bar: the chat bubble's rotating glow (same structure and
-   colors, see .chat-glow) playing one lap on the old light streak's timing: 0.5s delay,
-   3.5s, fading in over the first 20% and out over the last 20%. The 24px transparent
-   margin keeps the blur inside the box (see .chat-glow). The colored shape fills the whole
-   9px glass ring around the input field, out to .chat-glass's edge (4px wrapper padding +
-   5px glass padding; the bubble's is only 2px), and peaks at full opacity (the bubble's is
-   0.8). It already sits above the glass layer; most of it is hidden under the solid input,
-   so the ring is what shows. */
+  --angle: 0deg;
+  /* +45deg starts the arc's brightest part (the white stop, 70% = 252deg) at about 297deg:
+     past the bar's rounded left end, on the top edge. So it fades in already heading
+     right along the top, rather than fading in while rounding the left end (at 0deg). */
+  background: conic-gradient(
+    from calc(var(--angle) + 45deg),
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0),
+    rgba(10, 37, 64, 0), /* was #0a2540, a near-black navy that read as a gray band over the glass */
+    #1f6fd6,
+    #ff9d52,
+    #ffd9a8,
+    #ffffff,
+    #bfe3ff,
+    #2a5fc2,
+    rgba(0, 0, 0, 0)
+    );
+}
+
+/* The spin eases gently from about 1.5x its average speed at the start to about half of it
+   at the end, so the streak is visibly moving as it fades in without starting abruptly.
+   (Tried: constant angle, which looked stopped while fading in; a stronger ease-out that
+   started at 2.4x, too fast; and an even speed along the outline, keyframed in JS.) The
+   spin and fade are separate animations so only the spin is eased. */
+.border-animator-chat.visible {
+  animation:
+    rotate-gradient-spin 3s cubic-bezier(0.3, 0.45, 0.7, 0.85) 0.5s forwards,
+    rotate-gradient-fade 3s linear 0.5s forwards;
+}
+
+/* Intro glow (halo): light leaking from behind the input. Its colored shape is the input's
+   own outline, blurred 6px and brightened, so the color starts at the input's edge and fades
+   outward across the glass; the 1px core line (.border-animator-chat) marks the brightest
+   edge. It uses the core's exact gradient and spins in step with it (same 0.5s delay, 3s,
+   and a transform rotation matching the core's --angle). Fades in by 20% and out by 75% of
+   the turn, like the core. It's also clipped to .chat-glass's own shape, so it never bleeds
+   past the edges, and sits above the glass layer (-1): same z-index as the reflective rim (0)
+   but earlier in the markup, so the rim still draws over it. The input and bubble (wrapper,
+   1) stay on top. (Tried under the glass, so the rim reflected its color; dropped as too
+   muted.) Mask is the same Safari overflow-clip fix as the XP cards. */
 .chat-bar-glow {
   position: absolute;
-  inset: -29px;
+  inset: 0;
   z-index: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
   pointer-events: none;
-  filter: blur(7px);
 }
 
 .chat-bar-glow .chat-glow-clip {
+  /* The input's edge: glass padding (5px) + wrapper padding (4px) */
+  inset: 9px;
   border-radius: 999px;
   opacity: 0;
+  filter: blur(6px) brightness(2.1) saturate(1.6);
 }
 
 .chat-bar-glow .chat-glow-spin {
   animation: none;
 }
 
+/* Same stops and +45deg start as .border-animator-chat's conic-gradient */
+.chat-bar-glow .chat-glow-arc {
+  background: conic-gradient(
+    from 45deg,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0),
+    rgba(10, 37, 64, 0), /* was #0a2540, a near-black navy that read as a gray band over the glass */
+    #1f6fd6,
+    #ff9d52,
+    #ffd9a8,
+    #ffffff,
+    #bfe3ff,
+    #2a5fc2,
+    rgba(0, 0, 0, 0)
+  );
+}
+
 .chat-bar-glow.visible .chat-glow-clip {
-  animation: chat-bar-glow-fade 3.5s linear 0.5s forwards;
+  animation: chat-bar-glow-fade 3s linear 0.5s forwards;
 }
 
 .chat-bar-glow.visible .chat-glow-spin {
-  animation: chat-glow-spin 3.5s linear 0.5s forwards;
+  animation: chat-glow-spin 3s cubic-bezier(0.3, 0.45, 0.7, 0.85) 0.5s forwards; /* same easing as the core */
 }
 
+/* Matches the streak's fade (rotate-gradient-fade): in by 20%, out by 75% */
 @keyframes chat-bar-glow-fade {
   0% {
     opacity: 0;
   }
-  20%, 80% {
+  20% {
     opacity: 1;
   }
-  100% {
+  75%, 100% {
     opacity: 0;
   }
 }
@@ -1512,6 +1621,12 @@ footer {
     /* width: inherit;   */
     max-width: none;
     min-width: unset;
+  }
+
+  .chat-bar-glow .chat-glow-clip {
+    inset: 7px; /* the input's edge on phones: 4px glass + 3px wrapper */
+    /* Spread scaled to 2/3 of desktop's 6px, like the streak went 3px to 2px on phones */
+    filter: blur(4px) brightness(2.1) saturate(1.6);
   }
 
   #user-input {

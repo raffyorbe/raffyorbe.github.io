@@ -53,9 +53,11 @@
             <p class="mb-4 mobile-p">Design Technologist | Products, Systems, Data</p>
             <!-- Input layer -->
             <div class="container chat-glass">
+                  <!-- Intro glow: one blurred lap of color under the glass, built like the chat bubble's glow -->
+                  <div class="chat-bar-glow"><div class="chat-glow-clip"><div class="chat-glow-spin"><div class="chat-glow-arc"></div></div></div></div>
                   <div class="hello-chat-border-wrapper">
-                    <!-- Intro glow: one blurred lap around the chat bar, built like the chat bubble's glow -->
-                    <div class="chat-bar-glow"><div class="chat-glow-clip"><div class="chat-glow-spin"><div class="chat-glow-arc"></div></div></div></div>
+                    <!-- Intro glow's bright core: a 1px line at the input's edge (the halo is .chat-bar-glow) -->
+                    <div class="border-animator-chat"></div>
                     <div id="chat-input-area" class="floating-chatbar">
                       <input type="text" id="user-input" />
                       <span class="placeholder" id="placeholder"></span>
