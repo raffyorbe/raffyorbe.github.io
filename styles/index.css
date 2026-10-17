@@ -340,7 +340,7 @@ body {
 }
 
 /* The solid-to-glass intro and golden glow (tried 2026-10-15) were dropped: the bar
-   starts as glass and the intro is a streak with a glow (.border-animator-chat, .chat-bar-glow). */
+   starts as glass and the intro is the chat bubble's glow played once (.chat-bar-glow). */
 
 /* .chat-glass p {
   margin: 0;
@@ -361,12 +361,6 @@ body {
 }
 
 /* Glowing border animation */
-@property --angle {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-
 /* .border-animator-nav {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -389,29 +383,6 @@ body {
   animation: rotate-gradient 4s linear forwards;
   animation-delay: 1s;
 } */
-
-/* The chat bar intro streak: one full turn, eased (see .border-animator-chat.visible) */
-@keyframes rotate-gradient-spin {
-  from {
-    --angle: 0deg;
-  }
-  to {
-    --angle: 360deg;
-  }
-}
-
-/* Fades in over the first 20% and is fully faded out by three-quarters (75%), linear in time */
-@keyframes rotate-gradient-fade {
-  0% {
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  75%, 100% {
-    opacity: 0;
-  }
-}
 
 @keyframes chat-glow-spin {
   to {
@@ -1405,123 +1376,74 @@ color: #ffffff;
   display: inline;
 }
 
-/* The intro glow's bright core: a 1px line of the glow's gradient right at the input's edge,
-   so the light reads as leaking from behind the input (brightest at the edge, then the soft
-   halo of .chat-bar-glow fading outward). Same rotation and timing as the halo. It sits 1px
-   outside the input (inset is the wrapper's padding minus 1px) and the input covers the
-   rest. Above the halo (in the wrapper, z-index 1) and under the input.
-   (Tried and dropped on 2026-10-16: a tail that grows from the head like Google AI Mode's
-   streak, a fast-to-slow reveal like the reply bubble's glow, a top-left start, and an SVG
-   line that draws itself along the edge.) */
-.border-animator-chat {
-  position: absolute;
-  inset: calc(var(--chat-wrap-pad) - 1px);
-  border-radius: 999px;
-  z-index: 0;
-  opacity: 0;
-  pointer-events: none;
-  filter: brightness(1.3); /* a little brighter than the gradient's own colors (white stays white) */
-
-  --angle: 0deg;
-  /* +45deg starts the arc's brightest part (the white stop, 70% = 252deg) at about 297deg:
-     past the bar's rounded left end, on the top edge. So it fades in already heading
-     right along the top, rather than fading in while rounding the left end (at 0deg). */
-  background: conic-gradient(
-    from calc(var(--angle) + 45deg),
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0),
-    rgba(10, 37, 64, 0), /* was #0a2540, a near-black navy that read as a gray band over the glass */
-    #1f6fd6,
-    #ff9d52,
-    #ffd9a8,
-    #ffffff,
-    #bfe3ff,
-    #2a5fc2,
-    rgba(0, 0, 0, 0)
-    );
-}
-
-/* The spin eases gently from about 1.5x its average speed at the start to about half of it
-   at the end, so the streak is visibly moving as it fades in without starting abruptly.
-   (Tried: constant angle, which looked stopped while fading in; a stronger ease-out that
-   started at 2.4x, too fast; and an even speed along the outline, keyframed in JS.) The
-   spin and fade are separate animations so only the spin is eased. */
-.border-animator-chat.visible {
-  animation:
-    rotate-gradient-spin 3.5s cubic-bezier(0.3, 0.45, 0.7, 0.85) 0.5s forwards,
-    rotate-gradient-fade 3.5s linear 0.5s forwards;
-}
-
-/* Intro glow (halo): light leaking from behind the input. Its colored shape is the input's
-   own outline, blurred 6px and brightened, so the color starts at the input's edge and fades
-   outward across the glass; the 1px core line (.border-animator-chat) marks the brightest
-   edge. It uses the core's exact gradient and spins in step with it (same 0.5s delay, 3.5s,
-   and a transform rotation matching the core's --angle). Fades in by 20% and out by 75% of
-   the turn, like the core. It's also clipped to .chat-glass's own shape, so it never bleeds
-   past the edges, and sits above the glass layer (-1): same z-index as the reflective rim (0)
-   but earlier in the markup, so the rim still draws over it. The input and bubble (wrapper,
-   1) stay on top. (Tried under the glass, so the rim reflected its color; dropped as too
-   muted.) Mask is the same Safari overflow-clip fix as the XP cards. */
+/* Chat bar intro glow: the chat bubble's glow (.chat-glow, with the same structure, colors,
+   7px blur and transparent margin), played once behind the input by playChatBarGlow in
+   scripts/index.js: the bubble's reply reveal (fast spin settling, the ring's gap filling
+   in, a swell to peak 18% in), then a fade out to nothing instead of the steady glow. It
+   replaced a rotating streak and halo, whose blur rendered faint in Chromium.
+   It's more visible where it bleeds from behind the input than the bubble's, with the same
+   colors (no brightness change, which washed them toward white): its colored shape reaches
+   6px outside the input (the bubble's is 2px), so the 24px margin minus (4px wrapper padding
+   - 6px). That puts full-strength color right at the input's edge and carries the spread
+   further. The same in every browser. Inside the wrapper (z-index 1) it sits behind the input
+   and is drawn over the glass and its rim. */
 .chat-bar-glow {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  overflow: hidden;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  pointer-events: none;
+  inset: -26px;
 }
 
 .chat-bar-glow .chat-glow-clip {
-  /* The input's edge: glass padding (5px) + wrapper padding (4px) */
-  inset: 9px;
   border-radius: 999px;
   opacity: 0;
-  filter: blur(6px) brightness(2.1) saturate(1.6);
 }
 
+/* No CSS spin: playChatBarGlow starts it from script when the intro begins. Switched off
+   once it has faded out. */
 .chat-bar-glow .chat-glow-spin {
   animation: none;
 }
 
-/* Same stops and +45deg start as .border-animator-chat's conic-gradient */
-.chat-bar-glow .chat-glow-arc {
-  background: conic-gradient(
-    from 45deg,
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0),
-    rgba(10, 37, 64, 0), /* was #0a2540, a near-black navy that read as a gray band over the glass */
-    #1f6fd6,
-    #ff9d52,
-    #ffd9a8,
-    #ffffff,
-    #bfe3ff,
-    #2a5fc2,
-    rgba(0, 0, 0, 0)
-  );
+.chat-bar-glow.done {
+  display: none;
 }
 
-.chat-bar-glow.visible .chat-glow-clip {
-  animation: chat-bar-glow-fade 3.5s linear 0.5s forwards;
+/* The ring's gap fills in as the reveal starts, like a reply (transition on .chat-glow-color) */
+.chat-bar-glow .chat-glow-color {
+  opacity: 0;
 }
 
-.chat-bar-glow.visible .chat-glow-spin {
-  animation: chat-glow-spin 3.5s cubic-bezier(0.3, 0.45, 0.7, 0.85) 0.5s forwards; /* same easing as the core */
+.chat-bar-glow.visible .chat-glow-color {
+  opacity: 1;
 }
 
-/* Matches the streak's fade (rotate-gradient-fade): in by 20%, out by 75% */
-@keyframes chat-bar-glow-fade {
-  0% {
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  75%, 100% {
-    opacity: 0;
-  }
+/* The intro glow's crisp edge: an unblurred copy of the same glow (same colors, ring, spin and
+   fade, run together by playChatBarGlow), showing as a 1px line just outside the input (inset
+   is the wrapper's padding minus 1px; the input covers the rest). Above the blurred glow,
+   under the input. Its spinner is sized like the glow's, so the two conic gradients line up. */
+.chat-bar-core {
+  position: absolute;
+  inset: calc(var(--chat-wrap-pad) - 1px);
+  z-index: 0;
+  border-radius: 999px;
+  overflow: clip;
+  isolation: isolate;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chat-bar-core .chat-glow-spin {
+  animation: none; /* started from script, like the glow's */
+}
+
+.chat-bar-core .chat-glow-color {
+  opacity: 0;
+}
+
+.chat-bar-core.visible .chat-glow-color {
+  opacity: 1;
+}
+
+.chat-bar-core.done {
+  display: none;
 }
 
 /* Footer */
@@ -1540,8 +1462,16 @@ footer {
   cursor: pointer;
 }
 
-/* Skills profile modal (#skills-dialog). A native <dialog>, so Esc, the focus trap and focus
-   returning to the opener come from the browser. The dialog itself is a transparent
+/* Its info icon, raised so its center meets the middle of the capital letters (it sat 0.1em
+   below them) */
+.link-button svg {
+  position: relative;
+  top: -0.1em;
+}
+
+/* Skills profile modal (#skills-dialog). A <dialog> opened with show(), with Esc, the page
+   behind made inert and focus handled in scripts/index.js (see openSkills for why not
+   showModal()). The dialog itself is a transparent
    full-screen layer that dims the page and centers the panel; the panel (.skills-modal) is
    framed like the chat bubble: the same .chat-glow markup and classes behind it, the same
    background gradient and the same ×. Its glow plays the reply bubble's opening (swell,
@@ -1553,27 +1483,25 @@ html.skills-open {
 
 .skills-dialog {
   position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  /* Stops 16px short of every screen edge, and is transparent: iOS Safari paints its status
+     bar and bottom toolbar solid black whenever a fixed layer reaches the screen's edge,
+     whatever its background (a color, a gradient, or none). The dim and blur are on
+     .skills-scrim instead, which is in the page rather than fixed, so Safari shows it under
+     the bars like the hero's frost. (Checked in the iOS 26.4 simulator.) */
+  inset: 16px;
+  /* Opened with show(), not showModal() (see openSkills in scripts/index.js), so it's not in
+     the browser's top layer and sits above the floating navbar (99999) and the scrim itself */
+  z-index: 100001;
+  width: auto;
+  height: auto;
   max-width: none;
   max-height: none;
   margin: 0;
-  padding: 16px;
+  padding: 0;
   border: 0;
-  /* The dimmer is the dialog's own background rather than ::backdrop, so it can simply
-     transition with the panel. It's the hero's chat-active frost (.hello-overlay.chat-active::before)
-     over the whole page, navbar included, and fades the same way: the background alpha and
-     blur radius transition, not opacity (unreliable on backdrop-filter in Safari). */
-  background-color: rgba(0, 0, 0, 0);
-  -webkit-backdrop-filter: blur(0px);
-  backdrop-filter: blur(0px);
-  transition:
-    background-color 0.35s ease,
-    -webkit-backdrop-filter 0.35s ease,
-    backdrop-filter 0.35s ease;
+  background: transparent;
   color: #ffffff;
-  overflow: hidden;
+  overflow: visible; /* the panel fills it, so its glow spills past its edges */
 }
 
 .skills-dialog[open] {
@@ -1582,11 +1510,33 @@ html.skills-open {
   justify-content: center;
 }
 
-.skills-dialog::backdrop {
-  background: transparent;
+/* The dim and blur behind the modal: the hero's chat-active frost
+   (.hello-overlay.chat-active::before), over the whole visible page, navbar included. It's
+   positioned in the page (absolute) and placed over the visible area, plus a margin, when the
+   modal opens (see openSkills), not fixed (see .skills-dialog). Fades the same way as the
+   hero's: the background alpha and blur radius transition, not opacity (unreliable on
+   backdrop-filter in Safari). */
+.skills-scrim {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: calc(100lvh + 400px); /* top is set to 200px above the view when it opens */
+  z-index: 100000;
+  display: none;
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  transition:
+    background-color 0.35s ease,
+    -webkit-backdrop-filter 0.35s ease,
+    backdrop-filter 0.35s ease;
 }
 
-.skills-dialog.show {
+.skills-scrim.open {
+  display: block;
+}
+
+.skills-scrim.show {
   background-color: rgba(0, 0, 0, 0.5);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
@@ -1795,6 +1745,7 @@ html.skills-open {
   font-size: 0.95rem;
   font-weight: 300;
   line-height: 1.3;
+  text-wrap: balance; /* on phones it takes two lines: keep them even, not "as bridges" alone */
 }
 
 .skills-credit {
@@ -1982,10 +1933,8 @@ html.skills-open {
     min-width: unset;
   }
 
-  .chat-bar-glow .chat-glow-clip {
-    inset: 7px; /* the input's edge on phones: 4px glass + 3px wrapper */
-    /* Spread scaled to 2/3 of desktop's 6px, like the streak went 3px to 2px on phones */
-    filter: blur(4px) brightness(2.1) saturate(1.6);
+  .chat-bar-glow {
+    inset: -27px; /* 6px outside the input with the phones' 3px wrapper padding */
   }
 
   #user-input {

@@ -22,7 +22,7 @@
   <!-- Custom Styles. The ?v= stamp (also on scripts/index.js below) makes browsers fetch fresh
        files after a deploy instead of a cached copy (GitHub Pages caches for 10 minutes). Bump
        both stamps whenever the CSS or JS changes. -->
-  <link rel="stylesheet" href="styles/index.css?v=2026-10-16b" />
+  <link rel="stylesheet" href="styles/index.css?v=2026-10-17a" />
 </head>
 
 <header>
@@ -55,11 +55,11 @@
             <p class="mb-4 mobile-p">Design Technologist | Products, Systems, Data</p>
             <!-- Input layer -->
             <div class="container chat-glass">
-                  <!-- Intro glow: one blurred lap of color under the glass, built like the chat bubble's glow -->
-                  <div class="chat-bar-glow"><div class="chat-glow-clip"><div class="chat-glow-spin"><div class="chat-glow-arc"></div></div></div></div>
                   <div class="hello-chat-border-wrapper">
-                    <!-- Intro glow's bright core: a 1px line at the input's edge (the halo is .chat-bar-glow) -->
-                    <div class="border-animator-chat"></div>
+                    <!-- Intro glow: the chat bubble's glow, played once behind the input (see .chat-bar-glow) -->
+                    <div class="chat-glow chat-bar-glow" aria-hidden="true"><div class="chat-glow-clip"><div class="chat-glow-spin"><div class="chat-glow-arc"></div><div class="chat-glow-color"></div></div></div></div>
+                    <!-- The intro glow's crisp 1px line at the input's edge: an unblurred copy of the glow -->
+                    <div class="chat-bar-core" aria-hidden="true"><div class="chat-glow-spin"><div class="chat-glow-arc"></div><div class="chat-glow-color"></div></div></div>
                     <div id="chat-input-area" class="floating-chatbar">
                       <input type="text" id="user-input" />
                       <span class="placeholder" id="placeholder"></span>
@@ -113,11 +113,12 @@
           </p>
           <div class="link-centered">
             <!-- Opens the skills profile modal (#skills-dialog) -->
-            <button type="button" class="link link-button" id="skills-open" aria-haspopup="dialog">View
-              Talent Model <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+            <!-- Info icon (Feather "info"), not the other links' outbound arrow: it opens a modal in place -->
+            <button type="button" class="link link-button" id="skills-open" aria-haspopup="dialog"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 17l9.2-9.2M17 17V7H7" />
-              </svg></button>
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 16v-4M12 8h.01" />
+              </svg> View Talent Model</button>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
@@ -150,7 +151,7 @@
                   <li class="skill-pill">API Integration</li>
                   <li class="skill-pill">Automation</li>
                   <li class="skill-pill">AI Agents</li>
-                  <li class="skill-pill">Cloud Deployment</li>
+                  <li class="skill-pill">Systems Consolidation</li>
                 </ul>
                 </ul>
               </div>
@@ -165,10 +166,10 @@
                 <!-- <h2 style="color: #ffffff">Analytics</h2> -->
                 <p>I make it make sense</p>
                 <ul class="skills-list">
-                  <li class="skill-pill">SQL Querying</li>
+                  <li class="skill-pill">Documentation</li>
                   <li class="skill-pill">Tableau</li>
                   <li class="skill-pill">Data Analysis</li>
-                  <li class="skill-pill">ETL Pipelines</li>
+                  <li class="skill-pill">Data Pipelines</li>
                   <li class="skill-pill">Data Storytelling</li>
                 </ul>
               </div>
@@ -385,6 +386,8 @@
 
   <!-- Talent model modal, opened by "View talent model" (#skills-open). Framed like the AI
        chat bubble: same glow, background and ×. -->
+  <!-- The modal's dim and blur (see .skills-scrim): in the page, not fixed, for iOS Safari -->
+  <div class="skills-scrim" id="skills-scrim" aria-hidden="true"></div>
   <dialog class="skills-dialog" id="skills-dialog" aria-labelledby="skills-title">
     <div class="skills-modal">
       <div class="chat-glow" aria-hidden="true"><div class="chat-glow-clip"><div class="chat-glow-spin"><div class="chat-glow-arc"></div><div class="chat-glow-color"></div></div></div></div>
@@ -434,7 +437,7 @@
                 <li>Design Systems</li>
               </ul>
             </div>
-            <p class="m-bridge-label">Strategy and Stakeholders + Hands&#8209;on building as bridges</p>
+            <p class="m-bridge-label">Strategy and Stakeholders + Hands&#8209;on implementation as bridges</p>
           </div>
         </div>
 
@@ -445,7 +448,7 @@
 
   <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="scripts/index.js?v=2026-10-16b"></script>
+  <script src="scripts/index.js?v=2026-10-17a"></script>
 </body>
 
 </html>

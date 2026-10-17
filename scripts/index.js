@@ -54,8 +54,60 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // AI chat glow
 
-  const glow = document.querySelector('.chat-glass .chat-bar-glow');
-  const streak = document.querySelector('.hello-chat-border-wrapper .border-animator-chat');
+  const glow = document.querySelector('.hello-chat-border-wrapper .chat-bar-glow');
+
+  // Intro glow: the chat bubble's reply reveal (see revealReply and settleGlow below), played
+  // once behind the input, with the bubble's colors in every browser. Like a reply, it fades in
+  // rotating (the spin starts fast and the ring's gap fills in) and swells to full strength and
+  // its widest spread 18% into the bubble's 1.4s reveal, while the spin slows to rest. Unlike
+  // the bubble, which settles and keeps glowing, it fades out slowly from the peak to nothing;
+  // the glow is switched off after.
+  const CHAT_BAR_GLOW_FADE_MS = 1600; // slow fade out after the peak
+
+  // Its crisp 1px edge line (.chat-bar-core) is an unblurred copy that runs the same spin
+  // and fade, started in the same frame so the two stay in step.
+  const glowCore = document.querySelector('.hello-chat-border-wrapper .chat-bar-core');
+
+  function playChatBarGlow() {
+    const clip = glow.querySelector('.chat-glow-clip');
+    const layers = glowCore ? [glow, glowCore] : [glow];
+    // Each spin is started here, from script, in the same moment for both layers: the bubble's
+    // 6s-per-lap rotation at its fast loading speed, which settleGlow eases to rest below.
+    layers.forEach((layer) => {
+      const spin = layer.querySelector('.chat-glow-spin').animate(
+        [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }],
+        { duration: GLOW_REST_MS, iterations: Infinity }
+      );
+      spin.playbackRate = GLOW_LOADING_RATE;
+      layer.classList.add('visible');
+    });
+
+    // Computed here, not at the top level: the bubble's constants are declared further down
+    const peakMs = 0.18 * GLOW_REPLY_FLASH_MS; // the bubble's peak, ~250ms in
+    const total = peakMs + CHAT_BAR_GLOW_FADE_MS;
+    const fade = [
+      { opacity: 0, easing: 'ease-out' },
+      { opacity: GLOW_REPLY_PEAK, offset: peakMs / total, easing: 'ease-in-out' },
+      { opacity: 0 },
+    ];
+    clip.animate(fade, { duration: total, fill: 'forwards' });
+    if (glowCore) glowCore.animate(fade, { duration: total, fill: 'forwards' });
+
+    // The bubble's spread: 7px widening to 12px at the peak, back to 7px by the end of the reveal
+    const steadyBlur = getComputedStyle(glow).filter;
+    glow.animate(
+      [
+        { filter: steadyBlur, easing: 'ease-out' },
+        { filter: `blur(${GLOW_REPLY_BLUR_PEAK_PX}px)`, offset: 0.18, easing: 'ease-in-out' },
+        { filter: steadyBlur },
+      ],
+      { duration: GLOW_REPLY_FLASH_MS }
+    );
+
+    layers.forEach((layer) => settleGlow(layer)); // the bubble's spin slowdown to rest
+
+    setTimeout(() => layers.forEach((layer) => layer.classList.add('done')), total + 100);
+  }
 
   if (glow) {
     const target = document.querySelector('.hello-chat-border-wrapper');
@@ -64,8 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             
-            glow.classList.add('visible'); // start glow animation
-            streak?.classList.add('visible'); // and its 1px bright core line
+            setTimeout(playChatBarGlow, 500); // start the intro glow after a short pause
 
             observer.unobserve(entry.target); // optional: only trigger once
           }
@@ -251,18 +302,24 @@ document.addEventListener("DOMContentLoaded", function () {
     return spin && spin.getAnimations ? spin.getAnimations()[0] : null;
   }
 
+  // Waits for the spin to actually be running first (its ready promise). This changes the speed
+  // every frame, and in Chromium each change made while a just-started animation is still
+  // pending restarts its wait, so a spin started right before this (the chat bar intro, the
+  // skills panel opening) could stay frozen at 0 through the whole slowdown.
   function settleGlow(bubble) {
     const anim = getGlowSpin(bubble);
     if (!anim) return;
-    const from = anim.playbackRate;
-    const start = performance.now();
-    function step(now) {
-      const t = Math.min(1, (now - start) / GLOW_SETTLE_MS);
-      const eased = 1 - Math.pow(1 - t, 3);
-      anim.playbackRate = from + (1 - from) * eased;
-      if (t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+    anim.ready.then(() => {
+      const from = anim.playbackRate;
+      const start = performance.now();
+      function step(now) {
+        const t = Math.min(1, (now - start) / GLOW_SETTLE_MS);
+        const eased = 1 - Math.pow(1 - t, 3);
+        anim.playbackRate = from + (1 - from) * eased;
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
   }
 
   // Opening swell of a glow (a reply landing, or the skills modal opening): from fromOpacity up
@@ -564,25 +621,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }, 3000); // Duration of rotation in ms
 
-  // Talent model modal (#skills-dialog, opened by "View talent model"). A native <dialog>:
-  // the browser handles the focus trap and puts focus back on the link when it closes. It fades
-  // up like the chat bubble, and its glow opens the way a landing reply's does: spinning at the
-  // loading pace and easing down (settleGlow), the ring fading in, and the swell (swellGlow).
+  // Talent model modal (#skills-dialog, opened by "View talent model"). It fades up like the chat
+  // bubble, and its glow opens the way a landing reply's does: spinning at the loading pace and
+  // easing down (settleGlow), the ring fading in, and the swell (swellGlow).
+  //
+  // Opened with show(), not showModal(): with a modal dialog open, iOS Safari paints its status
+  // bar and bottom toolbar solid black instead of showing the (frosted) page under them, even
+  // with no dim and the dialog clear of the screen edges (checked in the iOS 26.4 simulator).
+  // So what showModal() did for free is done here: the rest of the page is made inert (no
+  // clicks, and Tab stays in the modal), Esc closes it, focus moves into it and goes back to
+  // the link afterwards, and it sits above the navbar (z-index in styles/index.css).
+  // A fixed layer reaching the screen's edge does the same, so the dim and blur are a separate
+  // in-page layer (#skills-scrim), placed over the visible area when the modal opens.
   const skillsDialog = document.getElementById("skills-dialog");
+  const skillsScrim = document.getElementById("skills-scrim");
   const skillsPanel = skillsDialog.querySelector(".skills-modal");
+  const skillsBody = skillsDialog.querySelector(".skills-body");
   let skillsClosing = false;
+  let skillsReturnFocus = null;
+
+  // Keeps the scrim over the visible area (200px margin above and below the view), in case the
+  // page still moves while the modal is open (a scroll in progress, or a rubber-band bounce)
+  function placeSkillsScrim() {
+    skillsScrim.style.top = `${window.scrollY - 200}px`;
+  }
+
+  function setPageInert(inert) {
+    for (const el of document.body.children) {
+      if (el !== skillsDialog && el !== skillsScrim && el.tagName !== "SCRIPT") el.inert = inert;
+    }
+  }
 
   function openSkills() {
     if (skillsDialog.open) return;
+    skillsReturnFocus = document.activeElement;
     skillsPanel.classList.add("glow-intro");
-    skillsDialog.showModal();
+    placeSkillsScrim();
+    window.addEventListener("scroll", placeSkillsScrim, { passive: true });
+    skillsScrim.classList.add("open");
+    skillsDialog.show();
+    setPageInert(true);
     document.documentElement.classList.add("skills-open");
+    // Focus the content (no ring) rather than the ×, which Tab reaches
+    skillsBody.focus({ preventScroll: true });
 
     const spinAnim = getGlowSpin(skillsPanel);
     if (spinAnim) spinAnim.playbackRate = GLOW_LOADING_RATE;
 
     skillsPanel.getBoundingClientRect(); // lay out the hidden state first so the fade-up runs
     skillsDialog.classList.add("show");
+    skillsScrim.classList.add("show");
     skillsPanel.classList.remove("glow-intro");
     swellGlow(skillsPanel, 0);
     settleGlow(skillsPanel);
@@ -592,6 +680,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!skillsDialog.open || skillsClosing) return;
     skillsClosing = true;
     skillsDialog.classList.remove("show");
+    skillsScrim.classList.remove("show");
 
     // Close once the panel has faded down. transitionend also bubbles up from the glow's ring,
     // so only react to the panel's own; the timeout covers a transition that never runs.
@@ -601,8 +690,13 @@ document.addEventListener("DOMContentLoaded", function () {
       done = true;
       skillsPanel.removeEventListener("transitionend", onEnd);
       skillsDialog.close();
+      skillsScrim.classList.remove("open");
+      window.removeEventListener("scroll", placeSkillsScrim);
+      setPageInert(false);
       document.documentElement.classList.remove("skills-open");
       skillsClosing = false;
+      if (skillsReturnFocus && skillsReturnFocus.focus) skillsReturnFocus.focus({ preventScroll: true });
+      skillsReturnFocus = null;
     };
     const onEnd = (e) => {
       if (e.target === skillsPanel && e.propertyName === "opacity") finish();
@@ -614,16 +708,40 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("skills-open").addEventListener("click", openSkills);
   skillsDialog.querySelector(".skills-close").addEventListener("click", closeSkills);
 
-  // Esc: fade out instead of the browser's instant close
-  skillsDialog.addEventListener("cancel", (e) => {
+  // Esc closes it (a non-modal dialog gets no "cancel" event). Tab (and Safari's Option-Tab)
+  // wraps around inside the modal instead of leaving the page: the page behind is inert, so
+  // otherwise each press past the last control went out to the browser, which Safari shows as a
+  // highlight around the whole page (and the first press from the content, which comes after
+  // the × in the markup, did that before reaching the ×).
+  document.addEventListener("keydown", (e) => {
+    if (!skillsDialog.open) return;
+    if (e.key === "Escape") {
+      closeSkills();
+      return;
+    }
+    if (e.key !== "Tab") return;
+    const stops = [...skillsDialog.querySelectorAll("button, a[href], input, select, textarea, [tabindex]:not([tabindex='-1'])")]
+      .filter((el) => !el.disabled);
+    if (!stops.length) return;
     e.preventDefault();
-    closeSkills();
+    const i = stops.indexOf(document.activeElement);
+    const next = e.shiftKey
+      ? stops[i <= 0 ? stops.length - 1 : i - 1]
+      : stops[i === -1 || i === stops.length - 1 ? 0 : i + 1];
+    next.focus();
   });
 
-  // A click on the dimmed area around the panel (the dialog itself) closes it too
+  // A click on the dimmed area around the panel (the dialog itself, or the scrim past its
+  // edges) closes it too
   skillsDialog.addEventListener("click", (e) => {
     if (e.target === skillsDialog) closeSkills();
   });
+  skillsScrim.addEventListener("click", closeSkills);
+
+
+
+
+
 
   // Event listeners
   sendBtn.addEventListener("click", () => (pendingRequest ? stopRequest() : sendMessage()));
