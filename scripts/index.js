@@ -109,6 +109,39 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => layers.forEach((layer) => layer.classList.add('done')), total + 100);
   }
 
+  // Starts the intro 500ms after the page is actually on screen. The page can load, and even
+  // render, while hidden: Safari preloads a site you've visited as a "Top Hit" while you're
+  // still typing in the address bar (and Chrome can prerender it), and swaps it in only when
+  // you press Return. Started from load alone, the short intro could be half over, or done,
+  // by the time you saw it. So while the page is hidden (or prerendering) this waits for it to
+  // become visible, and it checks again when the 500ms pause ends.
+  let chatBarGlowStarted = false;
+
+  function pageIsShown() {
+    return document.visibilityState === 'visible' && !document.prerendering;
+  }
+
+  function startChatBarGlowWhenShown() {
+    if (chatBarGlowStarted) return;
+    if (!pageIsShown()) {
+      const onShown = () => {
+        if (!pageIsShown()) return;
+        document.removeEventListener('visibilitychange', onShown);
+        document.removeEventListener('prerenderingchange', onShown);
+        startChatBarGlowWhenShown();
+      };
+      document.addEventListener('visibilitychange', onShown);
+      document.addEventListener('prerenderingchange', onShown);
+      return;
+    }
+    setTimeout(() => {
+      if (chatBarGlowStarted) return;
+      if (!pageIsShown()) return startChatBarGlowWhenShown(); // hidden again during the pause
+      chatBarGlowStarted = true;
+      playChatBarGlow();
+    }, 500); // a short pause after the page appears
+  }
+
   if (glow) {
     const target = document.querySelector('.hello-chat-border-wrapper');
     const observer = new IntersectionObserver(
@@ -116,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             
-            setTimeout(playChatBarGlow, 500); // start the intro glow after a short pause
+            startChatBarGlowWhenShown(); // the intro glow, once the page is on screen
 
             observer.unobserve(entry.target); // optional: only trigger once
           }
