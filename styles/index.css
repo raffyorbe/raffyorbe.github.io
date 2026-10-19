@@ -37,13 +37,15 @@ body {
   padding-top: 8px;
   padding-bottom: 8px;
   border-radius: 999px;
-  /* Liquid glass: a light sheen over a darker tint (keeps white text readable over the
+  /* Liquid glass: an even white tint over a darker tint (keeps white text readable over the
      bright hero), strong blur + saturation, a thin bright rim, faint inner edges and a
-     soft drop shadow. CSS only, so Safari renders it the same as Chrome. The top inner
+     soft drop shadow. The white tint is even across the surface, Apple-style (it was a
+     diagonal sheen, 0.14 at the top-left fading to 0.03, which read as a bright left side
+     on the black hero). CSS only, so Safari renders it the same as Chrome. The top inner
      edge matches the bottom's 0.08 (it was a 0.35 specular highlight, which stacked with
      the border and reflective rim into a top edge that read twice as thick). */
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03) 60%),
+    linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)),
     rgba(30, 30, 30, 0.45);
   backdrop-filter: blur(4px) saturate(180%);
   -webkit-backdrop-filter: blur(4px) saturate(180%);
@@ -144,9 +146,6 @@ body {
 }
 
 .hello-cell {
-  background-image: url(../images/luke-hales-OHhW1k0PXHg-unsplash.jpeg);
-  background-size: cover;
-  background-position: center;
   background-color: #000000;
   color: #ffffff;
   position: relative;
@@ -166,6 +165,18 @@ body {
   height: calc(100dvh + env(safe-area-inset-top) + env(safe-area-inset-bottom)); 
 }
 
+/* Cursor light trail canvas: under .hello-overlay (z-index 20), so it lights the background
+   only. Additive drawing on black, so it needs no blend mode. */
+.hello-glow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+}
+
 .hello-video {
   position: absolute;
   inset: 0;
@@ -178,6 +189,8 @@ body {
 
 .hello-overlay {
   /* background-color: rgba(15, 98, 254, 0.1); */
+  /* Fades the bottom of the hero into the black of the next section. It sits over the light
+     trail, so the trail dims toward the bottom too. */
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 60%, rgba(0, 0, 0, 1) 100%);
   /* padding: 16px 16px; */
   position: absolute;
@@ -193,8 +206,8 @@ body {
   z-index: 20;
 }
 
-/* Chat-active layer: a flat black 50% overlay with a frosted blur, sitting on top of the
-   original gradient (which stays on .hello-overlay itself). It's a sibling of the content
+/* Chat-active layer: a flat black 50% overlay with a frosted blur, sitting on top of
+   .hello-overlay's fade to black. It's a sibling of the content
    rather than an ancestor, so the backdrop-filter never touches the chat bubble or its
    blurred glow.
 
@@ -284,7 +297,7 @@ body {
   z-index: -1;
   border-radius: inherit;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03) 60%),
+    linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)),
     rgba(30, 30, 30, 0.45);
   backdrop-filter: blur(4px) saturate(180%);
   -webkit-backdrop-filter: blur(4px) saturate(180%);
@@ -425,6 +438,11 @@ body {
 .section {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+/* Content sections are black, like the hero and footer */
+.section:not(#hello) {
+  background-color: #000000;
 }
 
 /* h1 {
@@ -725,7 +743,7 @@ color: #ffffff;
   justify-content: space-between;
   min-height: 300px;
   overflow: hidden;
-  background: #161616; /* base color */
+  background: #262626; /* base color */
   -webkit-mask-image: -webkit-radial-gradient(white, black); /*Overflow fix for Safari in macOS 26.4*/
 }
 
@@ -1304,7 +1322,7 @@ color: #ffffff;
   gap: 0.5rem;
   padding: 6px;
   border-radius: 999px;
-  background-color: rgba(38, 38, 38, 1);
+  background-color: #121212;
   /* backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px); */
   width: 100%;
@@ -1378,9 +1396,10 @@ color: #ffffff;
 
 /* Chat bar intro glow: the chat bubble's glow (.chat-glow, with the same structure, colors,
    7px blur and transparent margin), played once behind the input by playChatBarGlow in
-   scripts/index.js: the bubble's reply reveal (fast spin settling, the ring's gap filling
-   in, a swell to peak 18% in), then a fade out to nothing instead of the steady glow. It
-   replaced a rotating streak and halo, whose blur rendered faint in Chromium.
+   scripts/index.js: the bubble's reply reveal (fast spin settling, a swell to peak 18% in,
+   but with the full ring from the start, see below), then a fade out to nothing instead of
+   the steady glow. It replaced a rotating streak and halo, whose blur rendered faint in
+   Chromium.
    It's more visible where it bleeds from behind the input than the bubble's, with the same
    colors (no brightness change, which washed them toward white): its colored shape reaches
    6px outside the input (the bubble's is 2px), so the 24px margin minus (4px wrapper padding
@@ -1406,13 +1425,14 @@ color: #ffffff;
   display: none;
 }
 
-/* The ring's gap fills in as the reveal starts, like a reply (transition on .chat-glow-color) */
-.chat-bar-glow .chat-glow-color {
-  opacity: 0;
-}
-
-.chat-bar-glow.visible .chat-glow-color {
+/* The full color ring shows from the first frame: the reply bubble's and skills modal's
+   settled ring (blue, orange, cream, white, light blue, deep blue, all the way around).
+   Unlike a reply, it skips the arc's transparent gap filling in: on the black hero the gap
+   was pure black, and sweeping past at the intro's fast starting spin it read as a stutter. */
+.chat-bar-glow .chat-glow-color,
+.chat-bar-core .chat-glow-color {
   opacity: 1;
+  transition: none;
 }
 
 /* The intro glow's crisp edge: an unblurred copy of the same glow (same colors, ring, spin and
@@ -1432,14 +1452,6 @@ color: #ffffff;
 
 .chat-bar-core .chat-glow-spin {
   animation: none; /* started from script, like the glow's */
-}
-
-.chat-bar-core .chat-glow-color {
-  opacity: 0;
-}
-
-.chat-bar-core.visible .chat-glow-color {
-  opacity: 1;
 }
 
 .chat-bar-core.done {

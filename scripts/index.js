@@ -106,7 +106,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     layers.forEach((layer) => settleGlow(layer)); // the bubble's spin slowdown to rest
 
-    setTimeout(() => layers.forEach((layer) => layer.classList.add('done')), total + 100);
+    setTimeout(() => {
+      layers.forEach((layer) => layer.classList.add('done'));
+      chatBarGlowDone = true;
+      document.dispatchEvent(new Event('chatbarglowdone')); // starts the hero's mobile drift
+    }, total + 100);
   }
 
   // Starts the intro 500ms after the page is actually on screen. The page can load, and even
@@ -116,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // by the time you saw it. So while the page is hidden (or prerendering) this waits for it to
   // become visible, and it checks again when the 500ms pause ends.
   let chatBarGlowStarted = false;
+  let chatBarGlowDone = !glow; // no intro glow on the page: nothing to wait for
 
   function pageIsShown() {
     return document.visibilityState === 'visible' && !document.prerendering;
@@ -266,6 +271,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function setHeroChatActive(active) {
     if (heroOverlay) heroOverlay.classList.toggle('chat-active', active);
+    // Pauses the hero's light trail while the chat has the focus (see the trail code below)
+    document.dispatchEvent(new CustomEvent('herochatchange', { detail: { active } }));
   }
 
   // Fade a bubble down and out and drop the frosted layer behind it. Shared by the close
@@ -811,5 +818,261 @@ document.addEventListener("DOMContentLoaded", function () {
   //     eggIcon.textContent = "🥚";
   //   }, 3000);
   // });
+
+  // Hero light trail: a glowing streak that follows the cursor across the black hero, white at
+  // the head and cooling through the chat glow's colors as it fades. Points are drawn as
+  // pre-rendered soft dots with additive blending, and the loop stops once the trail has
+  // faded, so an idle hero costs nothing.
+  // Touch screens can't hover (a drag scrolls the page), so there the trail drifts on its own
+  // (starting once the chat bar's intro glow has finished) along a wandering path, follows a
+  // finger while one is down, and glides back into the drift when it lifts. The drift only
+  // runs while the hero is on screen and the tab is visible. While a chat bubble is showing,
+  // the trail is paused on every device.
+  const glowCell = document.querySelector(".hello-cell");
+  const glowCanvas = glowCell && glowCell.querySelector(".hello-glow");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (glowCanvas && !reduceMotion) {
+    const ctx = glowCanvas.getContext("2d");
+    const TRAIL_LIFE = 900;   // ms a trail point takes to fade out
+    const SPACING = 6;        // px between interpolated points, so fast moves stay continuous
+    const HEAD_RADIUS = 90;   // px, the streak's width at the cursor
+    const HALO_RADIUS = 420;  // px, the wide dim light around the cursor
+    // Head-to-tail colors: the chat glow's ring (.chat-glow-color), read backwards from its
+    // white, so the trail cycles through every glow color with white leading
+    const TRAIL_COLORS = ["#ffffff", "#ffd9a8", "#ff9d52", "#60bae4", "#409bd0", "#bfe3ff"];
+
+    // One soft radial dot per color, drawn once and stamped with drawImage
+    function makeDot(color) {
+      const size = 128;
+      const c = document.createElement("canvas");
+      c.width = c.height = size;
+      const g = c.getContext("2d");
+      const grad = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+      grad.addColorStop(0, color);
+      grad.addColorStop(0.35, color + "66");
+      grad.addColorStop(1, color + "00");
+      g.fillStyle = grad;
+      g.fillRect(0, 0, size, size);
+      return c;
+    }
+    const dots = TRAIL_COLORS.map(makeDot);
+    const haloDot = makeDot("#bfe3ff");
+
+    let points = [];          // { x, y, t } in CSS px relative to the canvas
+    let head = null;          // last pointer position, for the halo
+    let headAlpha = 0;        // halo fades in on enter, out on leave
+    let pointerInside = false;
+    let rafId = null;
+
+    // Touch-only devices (phones, tablets without a mouse) get the ambient drift
+    const touchOnly = window.matchMedia("(hover: none)").matches;
+    // The drift moves fast and draws a slimmer streak with a smaller halo, so on a phone it
+    // reads as sweeping lines of light rather than a floating circle
+    const DRIFT_SPEED = 3;
+    const headRadius = touchOnly ? 55 : HEAD_RADIUS;
+    const haloRadius = touchOnly ? 260 : HALO_RADIUS;
+    let heroVisible = false;
+    // While a chat bubble is showing, the trail is paused (no cursor, finger or drift) and
+    // whatever is lit fades out, so the focus stays on the chat. It picks up again once the
+    // bubble closes.
+    let chatActive = false;
+    document.addEventListener("herochatchange", (e) => {
+      chatActive = e.detail.active;
+      if (chatActive) {
+        pointerInside = false;
+        fingerDown = false;
+        release = null;
+      }
+      start(); // fades out what's lit, or restarts the drift
+    });
+
+    // The drift waits for the chat bar's intro glow to finish, so the two don't compete
+    let introDone = chatBarGlowDone;
+    document.addEventListener("chatbarglowdone", () => {
+      introDone = true;
+      start();
+    });
+    let fingerDown = false;
+    let release = null;        // { x, y, t } where the finger lifted, to glide back into the drift
+    const DRIFT_RETURN = 1200; // ms to glide from the lifted finger back onto the drift path
+    let cssW = 0;
+    let cssH = 0;
+    // The canvas only holds soft gradients, so it renders at half the CSS size and the browser
+    // scales it up. Looks the same, but uses a quarter of the memory of 1x (a sixteenth of a
+    // 2x retina canvas), e.g. about 1.2MB instead of 20MB on a 1440×900 retina hero.
+    const scale = 0.5;
+
+    function resize() {
+      const r = glowCanvas.getBoundingClientRect();
+      cssW = r.width;
+      cssH = r.height;
+      glowCanvas.width = Math.round(r.width * scale);
+      glowCanvas.height = Math.round(r.height * scale);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    function addPoint(clientX, clientY) {
+      const r = glowCanvas.getBoundingClientRect();
+      addPointAt(clientX - r.left, clientY - r.top, performance.now());
+      pointerInside = true;
+      start();
+    }
+
+    // x, y in CSS px relative to the canvas
+    function addPointAt(x, y, now) {
+      const last = points[points.length - 1];
+      if (last && now - last.t < TRAIL_LIFE) {
+        const dist = Math.hypot(x - last.x, y - last.y);
+        const steps = Math.min(Math.floor(dist / SPACING), 60);
+        for (let i = 1; i < steps; i++) {
+          const f = i / steps;
+          points.push({ x: last.x + (x - last.x) * f, y: last.y + (y - last.y) * f, t: last.t + (now - last.t) * f });
+        }
+      }
+      points.push({ x, y, t: now });
+      head = { x, y };
+    }
+
+    function isDrifting() {
+      return touchOnly && introDone && heroVisible && !chatActive && !fingerDown && !document.hidden;
+    }
+
+    // A slow wandering path: two sine waves per axis at unrelated speeds, so it never visibly
+    // repeats. Roughly 300–750px/s on a phone.
+    function driftPosition(now) {
+      const t = (now / 1000) * DRIFT_SPEED;
+      const x = cssW * (0.5 + 0.36 * Math.sin(t * 0.53) + 0.08 * Math.sin(t * 1.37 + 2));
+      const y = cssH * (0.45 + 0.26 * Math.sin(t * 0.71 + 1) + 0.06 * Math.sin(t * 1.73));
+      if (!release) return { x, y };
+      // Just after a finger lifts: glide from where it lifted onto the path (smoothstep)
+      const k = Math.min(1, (now - release.t) / DRIFT_RETURN);
+      const e = k * k * (3 - 2 * k);
+      const pos = { x: release.x + (x - release.x) * e, y: release.y + (y - release.y) * e };
+      if (k === 1) release = null;
+      return pos;
+    }
+
+    function start() {
+      if (rafId === null) rafId = requestAnimationFrame(draw);
+    }
+
+    function draw(now) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, glowCanvas.width, glowCanvas.height);
+      ctx.setTransform(scale, 0, 0, scale, 0, 0);
+      ctx.globalCompositeOperation = "lighter";
+
+      const drifting = isDrifting();
+      if (drifting) {
+        const d = driftPosition(now);
+        addPointAt(d.x, d.y, now);
+      } else if (fingerDown && head) {
+        // Keep a finger that's held still glowing (touch events only fire on movement)
+        addPointAt(head.x, head.y, now);
+      }
+
+      // Wide dim halo lighting the area around the cursor
+      const haloTarget = pointerInside || drifting ? 1 : 0;
+      headAlpha += (haloTarget - headAlpha) * 0.08;
+      if (Math.abs(haloTarget - headAlpha) < 0.01) headAlpha = haloTarget;
+      if (head && headAlpha > 0.01) {
+        ctx.globalAlpha = 0.22 * headAlpha;
+        ctx.drawImage(haloDot, head.x - haloRadius, head.y - haloRadius, haloRadius * 2, haloRadius * 2);
+      }
+
+      // The streak, oldest first so the bright head lands on top
+      points = points.filter(p => now - p.t < TRAIL_LIFE);
+      for (const p of points) {
+        // 0 at the head, 1 at the tail. The frame's timestamp can be slightly older than the
+        // newest event's, so clamp at 0.
+        const age = Math.max(0, (now - p.t) / TRAIL_LIFE);
+        const fade = Math.pow(1 - age, 1.4);
+        const radius = headRadius * (1 - age * 0.4);
+        // Cross-fade between the two nearest colors so the streak shifts smoothly
+        const pos = age * (dots.length - 1);
+        const i = Math.min(Math.floor(pos), dots.length - 2);
+        const mix = pos - i;
+        ctx.globalAlpha = 0.12 * fade * (1 - mix);
+        ctx.drawImage(dots[i], p.x - radius, p.y - radius, radius * 2, radius * 2);
+        ctx.globalAlpha = 0.12 * fade * mix;
+        ctx.drawImage(dots[i + 1], p.x - radius, p.y - radius, radius * 2, radius * 2);
+      }
+      ctx.globalAlpha = 1;
+
+      // Keep going while the trail is fading or the halo is still easing in or out. Once both
+      // settle the canvas keeps its last frame, so a resting cursor costs nothing.
+      if (points.length || headAlpha !== haloTarget || drifting || fingerDown) {
+        rafId = requestAnimationFrame(draw);
+      } else {
+        rafId = null;
+      }
+    }
+
+    // Listen on the whole document and test against the hero's box, rather than listening on
+    // the hero itself, so the floating navbar (which sits over the hero but lives outside it)
+    // counts as hero area too and the trail keeps going under it.
+    function inHero(clientX, clientY) {
+      const r = glowCell.getBoundingClientRect();
+      return clientX >= r.left && clientX < r.right && clientY >= r.top && clientY < r.bottom;
+    }
+    function leaveHero() {
+      if (!pointerInside) return;
+      pointerInside = false;
+      start();
+    }
+
+    document.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
+      if (chatActive) return;
+      if (inHero(e.clientX, e.clientY)) addPoint(e.clientX, e.clientY);
+      else leaveHero();
+    });
+    // Cursor left the browser window
+    document.addEventListener("pointerout", (e) => {
+      if (!e.relatedTarget && (e.pointerType === "mouse" || e.pointerType === "pen")) leaveHero();
+    });
+    // Touch uses touch events, which keep firing while the finger scrolls the page
+    // (pointer events get cancelled as soon as a scroll starts)
+    function onTouch(e) {
+      if (chatActive) return;
+      const t = e.touches[0];
+      if (!inHero(t.clientX, t.clientY)) {
+        if (fingerDown) onTouchEnd(e, true);
+        return;
+      }
+      fingerDown = true;
+      release = null;
+      addPoint(t.clientX, t.clientY);
+    }
+    function onTouchEnd(e, leftHero) {
+      if (!fingerDown) return;
+      if (!leftHero && e.touches.length) return; // another finger is still down
+      fingerDown = false;
+      pointerInside = false;
+      if (head) release = { x: head.x, y: head.y, t: performance.now() };
+      start();
+    }
+    if (touchOnly) {
+      document.addEventListener("touchstart", onTouch, { passive: true });
+      document.addEventListener("touchmove", onTouch, { passive: true });
+      document.addEventListener("touchend", (e) => onTouchEnd(e), { passive: true });
+      document.addEventListener("touchcancel", (e) => onTouchEnd(e), { passive: true });
+    }
+
+    // Run the drift only while the hero is on screen and the tab is visible. The draw loop
+    // stops by itself once isDrifting() turns false and the trail fades.
+    if (touchOnly) {
+      new IntersectionObserver((entries) => {
+        heroVisible = entries[0].isIntersecting;
+        if (heroVisible) start();
+      }).observe(glowCell);
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) start();
+      });
+    }
+  }
+
 
 });
