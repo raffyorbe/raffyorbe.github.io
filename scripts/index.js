@@ -144,6 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!pageIsShown()) return startChatBarGlowWhenShown(); // hidden again during the pause
       chatBarGlowStarted = true;
       playChatBarGlow();
+      document.dispatchEvent(new Event('chatbarglowstart')); // the placeholder types in with it
     }, 500); // a short pause after the page appears
   }
 
@@ -612,6 +613,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const placeholders = [
     "Ask me anything",
+    "Try catching the light", // the hero light: catch it (glitching) and draw with it
     "Ask me how I design experiences",
     "Ask me how I integrate systems",
     "Ask me how I develop frontends",
@@ -624,9 +626,26 @@ document.addEventListener("DOMContentLoaded", function () {
     "Ask me what managers say about me"
   ];
 
+  // Each line types out: one span per letter, each flashing in with the chat glow's colors and
+  // cooling to the placeholder gray (placeholder-letter in styles/index.css), started TYPE_MS
+  // after the one before. A line holds once typed, fades out, and the next one types in. The
+  // first line types in with the chat bar's intro glow.
+  const TYPE_MS = 35;       // ms between letters
+  const LETTER_GLOW = 700;  // ms of each letter's flash, keep in step with .placeholder span
+  const HOLD_MS = 1800;     // ms a fully typed line stays before fading out
+  const FADE_MS = 400;      // .placeholder's opacity transition
+
   let index = 0;
 
-  placeholderEl.textContent = placeholders[index];
+  function typePlaceholder(text) {
+    placeholderEl.replaceChildren(...[...text].map((ch, i) => {
+      const letter = document.createElement("span");
+      letter.textContent = ch;
+      letter.style.animationDelay = `${i * TYPE_MS}ms`;
+      return letter;
+    }));
+    setTimeout(rotatePlaceholder, text.length * TYPE_MS + LETTER_GLOW + HOLD_MS);
+  }
 
   function hidePlaceholder() {
     placeholderEl.classList.add("hidden");
@@ -641,25 +660,106 @@ document.addEventListener("DOMContentLoaded", function () {
   input.addEventListener("focus", hidePlaceholder);
   input.addEventListener("blur", showPlaceholder);
 
-  setInterval(() => {
-    if (input.value !== "") return;
-
-    placeholderEl.classList.add("hidden");
-
-    placeholderEl.addEventListener("transitionend", function handler() {
-      placeholderEl.removeEventListener("transitionend", handler);
-
-      index = (index + 1) % placeholders.length;
-      placeholderEl.textContent = placeholders[index];
-
-      requestAnimationFrame(() => {
-        if (input !== document.activeElement) {
-          placeholderEl.classList.remove("hidden");
-        }
-      });
+  // Phones: leaving the chat bar (the keyboard closes) glides back to the top, as sending a
+  // message does, since the keyboard often leaves the page scrolled down. Except when the bar
+  // was left for the nav bar: that's deliberate navigation, so its own jump always wins. A
+  // touch on the nav bar is noted as it lands, before the input's blur.
+  if (window.matchMedia("(hover: none)").matches) {
+    let navTouchedAt = 0;
+    const navBar = document.querySelector(".floating-navbar");
+    const noteNav = () => { navTouchedAt = performance.now(); };
+    if (navBar) {
+      navBar.addEventListener("touchstart", noteNav, { passive: true });
+      navBar.addEventListener("click", noteNav);
+    }
+    input.addEventListener("blur", () => {
+      setTimeout(() => {
+        if (performance.now() - navTouchedAt < 800) return;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 150);
     });
+  }
 
-  }, 3000); // Duration of rotation in ms
+  // Hold the current line while something is typed in the input, and while the chat bar is
+  // off screen or the tab is hidden, so the glowing type-out doesn't keep restyling unseen
+  // letters while you read further down
+  let placeholderOnScreen = true;
+  new IntersectionObserver((entries) => {
+    placeholderOnScreen = entries[0].isIntersecting;
+  }).observe(placeholderEl);
+
+  function rotatePlaceholder() {
+    if (input.value !== "" || !placeholderOnScreen || document.hidden) {
+      setTimeout(rotatePlaceholder, 1000);
+      return;
+    }
+    placeholderEl.classList.add("hidden");
+    setTimeout(() => {
+      index = (index + 1) % placeholders.length;
+      typePlaceholder(placeholders[index]);
+      if (input !== document.activeElement) placeholderEl.classList.remove("hidden");
+    }, FADE_MS);
+  }
+
+  if (chatBarGlowStarted || !glow) {
+    typePlaceholder(placeholders[index]);
+  } else {
+    document.addEventListener("chatbarglowstart", () => typePlaceholder(placeholders[index]), { once: true });
+  }
+
+  // The input's cursor glows like a placeholder letter at its brightest. Browsers can only
+  // recolor the native caret, so it's hidden (caret-color: transparent) and a glowing bar is
+  // drawn at its place instead: the width of the text before the caret, measured by a hidden
+  // copy of it in the input's font (canvas measureText came out a few px short in Safari),
+  // less however far long text has scrolled. While the input is focused, a frame
+  // loop checks for changes (typing, arrow keys, taps, and the script's own value changes,
+  // which fire no events) and moves it. It holds steady while it moves and starts blinking
+  // after a pause, like a native caret, and hides while text is selected.
+  const inputCursor = document.createElement("span");
+  inputCursor.className = "input-cursor";
+  inputCursor.setAttribute("aria-hidden", "true");
+  input.after(inputCursor);
+  input.classList.add("custom-caret");
+  const measurer = document.createElement("span");
+  measurer.setAttribute("aria-hidden", "true");
+  measurer.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;white-space:pre;pointer-events:none";
+  document.body.appendChild(measurer);
+  let cursorRaf = null;
+  let cursorKey = "";
+  let cursorBlinkTimer = null;
+
+  function placeInputCursor() {
+    cursorRaf = requestAnimationFrame(placeInputCursor);
+    const show = !input.disabled && input.selectionStart === input.selectionEnd;
+    const key = `${show}|${input.value}|${input.selectionStart}|${input.scrollLeft}|${input.offsetWidth}`;
+    if (key === cursorKey) return;
+    cursorKey = key;
+    inputCursor.classList.toggle("visible", show);
+    if (!show) return;
+    const cs = getComputedStyle(input);
+    ["fontFamily", "fontSize", "fontWeight", "fontStretch", "fontVariationSettings", "letterSpacing", "wordSpacing", "textTransform"]
+      .forEach((prop) => { measurer.style[prop] = cs[prop]; });
+    measurer.textContent = input.value.slice(0, input.selectionStart);
+    const textW = measurer.getBoundingClientRect().width;
+    const left = input.offsetLeft + parseFloat(cs.borderLeftWidth) + parseFloat(cs.paddingLeft);
+    const right = input.offsetLeft + input.offsetWidth - parseFloat(cs.paddingRight);
+    const x = Math.min(left + textW - input.scrollLeft, right);
+    inputCursor.style.transform = `translate(${x - 1}px, -50%)`;
+    inputCursor.classList.remove("blink");
+    clearTimeout(cursorBlinkTimer);
+    cursorBlinkTimer = setTimeout(() => inputCursor.classList.add("blink"), 500);
+  }
+
+  input.addEventListener("focus", () => {
+    cursorKey = "";
+    if (cursorRaf === null) placeInputCursor();
+  });
+  input.addEventListener("blur", () => {
+    cancelAnimationFrame(cursorRaf);
+    cursorRaf = null;
+    clearTimeout(cursorBlinkTimer);
+    inputCursor.classList.remove("visible", "blink");
+  });
 
   // Talent model modal (#skills-dialog, opened by "View talent model"). It fades up like the chat
   // bubble, and its glow opens the way a landing reply's does: spinning at the loading pace and
@@ -823,11 +923,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // the head and cooling through the chat glow's colors as it fades. Points are drawn as
   // pre-rendered soft dots with additive blending, and the loop stops once the trail has
   // faded, so an idle hero costs nothing.
-  // Touch screens can't hover (a drag scrolls the page), so there the trail drifts on its own
-  // (starting once the chat bar's intro glow has finished) along a wandering path, follows a
-  // finger while one is down, and glides back into the drift when it lifts. The drift only
-  // runs while the hero is on screen and the tab is visible. While a chat bubble is showing,
-  // the trail is paused on every device.
+  // The trail drifts on its own (starting once the chat bar's intro glow has finished,
+  // launching out from behind the center of the chat bar as if the intro's energy escaped; it
+  // flies back into the bar while the bar is in use) along a wandering path. Its head can be
+  // caught, with a mouse or a finger, and dragged to draw (the catch sets off the hero wave);
+  // let go, it glides back into the drift. The drift
+  // only runs while the hero is on screen and the tab is visible. While a chat bubble is
+  // showing, the trail is paused on every device.
+  // Whether a press at a point would catch the light (set by the hero light below). The hero
+  // glitch skips those presses: a catch's cue is the character wave, not a glitch.
+  let pressCatchesLight = () => false;
   const glowCell = document.querySelector(".hello-cell");
   const glowCanvas = glowCell && glowCell.querySelector(".hello-glow");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -836,11 +941,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const ctx = glowCanvas.getContext("2d");
     const TRAIL_LIFE = 900;   // ms a trail point takes to fade out
     const SPACING = 6;        // px between interpolated points, so fast moves stay continuous
-    const HEAD_RADIUS = 90;   // px, the streak's width at the cursor
-    const HALO_RADIUS = 420;  // px, the wide dim light around the cursor
+    const HEAD_RADIUS = 72;   // px, the streak's width at the head (it was 90 when it followed the cursor)
+    const HALO_RADIUS = 380;  // px, the wide dim light around the head
     // Head-to-tail colors: the chat glow's ring (.chat-glow-color), read backwards from its
     // white, so the trail cycles through every glow color with white leading
-    const TRAIL_COLORS = ["#ffffff", "#ffd9a8", "#ff9d52", "#60bae4", "#409bd0", "#bfe3ff"];
+    const TRAIL_COLORS = ["#ffffff", "#ffd9a8", "#ff9d52", "#6a1fd0", "#5a2fd0", "#d089ff"];
 
     // One soft radial dot per color, drawn once and stamped with drawImage
     function makeDot(color) {
@@ -857,7 +962,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return c;
     }
     const dots = TRAIL_COLORS.map(makeDot);
-    const haloDot = makeDot("#bfe3ff");
+    const haloDot = makeDot("#d089ff");
 
     let points = [];          // { x, y, t } in CSS px relative to the canvas
     let head = null;          // last pointer position, for the halo
@@ -865,13 +970,17 @@ document.addEventListener("DOMContentLoaded", function () {
     let pointerInside = false;
     let rafId = null;
 
-    // Touch-only devices (phones, tablets without a mouse) get the ambient drift
+    // Touch-only devices (phones, tablets without a mouse)
     const touchOnly = window.matchMedia("(hover: none)").matches;
     // The drift moves fast and draws a slimmer streak with a smaller halo, so on a phone it
     // reads as sweeping lines of light rather than a floating circle
     const DRIFT_SPEED = 3;
     const headRadius = touchOnly ? 55 : HEAD_RADIUS;
     const haloRadius = touchOnly ? 260 : HALO_RADIUS;
+    // Each dot's strength (0.12 suited the original 90px desktop streak; the slimmer streaks
+    // stack fewer dots, so they need more)
+    const streakAlpha = touchOnly ? 0.2 : 0.18;
+    const haloAlpha = 0.3;   // the halo's strength, the same everywhere (web was 0.22)
     let heroVisible = false;
     // While a chat bubble is showing, the trail is paused (no cursor, finger or drift) and
     // whatever is lit fades out, so the focus stays on the chat. It picks up again once the
@@ -883,6 +992,9 @@ document.addEventListener("DOMContentLoaded", function () {
         pointerInside = false;
         fingerDown = false;
         release = null;
+        recall = null; // a chat switches the drift off at once, no flight back into the bar
+      } else {
+        launchNext = true; // the chat closed: relaunch from the bar
       }
       start(); // fades out what's lit, or restarts the drift
     });
@@ -894,8 +1006,77 @@ document.addEventListener("DOMContentLoaded", function () {
       start();
     });
     let fingerDown = false;
-    let release = null;        // { x, y, t } where the finger lifted, to glide back into the drift
+    let release = null;        // { x, y, t, launch } where the glide back into the drift starts
     const DRIFT_RETURN = 1200; // ms to glide from the lifted finger back onto the drift path
+    const DRIFT_LAUNCH = 1600; // ms for the launch out from behind the chat bar to join the path
+    const chatBar = document.querySelector(".floating-chatbar");
+    let wasDrifting = false;
+
+    // The drift launches from behind the center of the chat bar on a fresh load, after a chat
+    // closes, and when the user leaves the chat bar. The bar covers the canvas there, so the
+    // light seems to escape from behind it. Coming back to the hero (a scroll, the tab) it just
+    // picks up its path again, and a finger lift glides from the finger.
+    let launchNext = true;
+
+    function chatBarCenter() {
+      const b = chatBar.getBoundingClientRect();
+      const c = glowCanvas.getBoundingClientRect();
+      return { x: b.left + b.width / 2 - c.left, y: b.top + b.height / 2 - c.top };
+    }
+
+    function launchFromChatBar(now) {
+      if (!chatBar) return;
+      const at = chatBarCenter();
+      points = []; // no streak back to wherever the trail last was
+      release = { x: at.x, y: at.y, t: now, launch: true };
+    }
+
+    // While the user is in the chat bar (they tapped it), the drift flies back into the bar's
+    // center and goes out, as if returning to where it came from; leaving the bar launches it
+    // again. Only a tap, click or Tab into it counts: the script's own focus() calls (after a
+    // reply, on Esc) don't. A chat (loading or reply, with the frost) switches it off at once instead.
+    const DRIFT_RECALL = 900;  // ms to fly back into the chat bar
+    let barActive = false;
+    let recall = null;         // { x, y, t } where the flight back into the bar starts
+    if (chatBar) {
+      const barInput = chatBar.querySelector("input");
+      function useBar() {
+        if (barActive) return;
+        const wasOut = isDrifting(); // checked before the bar counts as active, which ends it
+        barActive = true;
+        if (wasOut && head) {
+          recall = { x: head.x, y: head.y, t: performance.now() };
+          release = null;
+          start();
+        }
+      }
+      function leaveBar() {
+        if (!barActive) return;
+        barActive = false;
+        recall = null;
+        launchNext = true;
+        start();
+      }
+      chatBar.addEventListener("touchstart", useBar, { passive: true });
+      // A mouse focuses the input on press, so a press that leaves it unfocused (on the bar's
+      // padding) wasn't using the bar: send the light back out. (A tap focuses on release, so
+      // touch can't be checked this way.)
+      chatBar.addEventListener("mousedown", () => {
+        useBar();
+        setTimeout(() => {
+          if (document.activeElement !== barInput) leaveBar();
+        }, 0);
+      });
+      // Tabbing into the input uses the bar too. Only a Tab counts, so the script's own
+      // focus() calls (after a reply, on Esc) still don't.
+      let tabbing = false;
+      document.addEventListener("keydown", (e) => { if (e.key === "Tab") tabbing = true; });
+      document.addEventListener("keyup", (e) => { if (e.key === "Tab") tabbing = false; });
+      barInput.addEventListener("focus", () => {
+        if (tabbing) useBar();
+      });
+      barInput.addEventListener("blur", leaveBar);
+    }
     let cssW = 0;
     let cssH = 0;
     // The canvas only holds soft gradients, so it renders at half the CSS size and the browser
@@ -936,19 +1117,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function isDrifting() {
-      return touchOnly && introDone && heroVisible && !chatActive && !fingerDown && !document.hidden;
+      return introDone && heroVisible && !chatActive && !fingerDown && !document.hidden &&
+        (!barActive || recall !== null);
     }
 
     // A slow wandering path: two sine waves per axis at unrelated speeds, so it never visibly
     // repeats. Roughly 300–750px/s on a phone.
     function driftPosition(now) {
+      if (recall) {
+        // Flying back into the chat bar (ease-in-out, so it visibly sets off at once and slips
+        // in behind the bar), then the drift ends. A cubic ease-in was tried: it sat still for
+        // the first half and read as a fade, not a return.
+        const to = chatBarCenter();
+        const k = Math.min(1, (now - recall.t) / DRIFT_RECALL);
+        const e = k * k * (3 - 2 * k);
+        const pos = { x: recall.x + (to.x - recall.x) * e, y: recall.y + (to.y - recall.y) * e };
+        if (k === 1) recall = null;
+        return pos;
+      }
       const t = (now / 1000) * DRIFT_SPEED;
       const x = cssW * (0.5 + 0.36 * Math.sin(t * 0.53) + 0.08 * Math.sin(t * 1.37 + 2));
       const y = cssH * (0.45 + 0.26 * Math.sin(t * 0.71 + 1) + 0.06 * Math.sin(t * 1.73));
       if (!release) return { x, y };
-      // Just after a finger lifts: glide from where it lifted onto the path (smoothstep)
-      const k = Math.min(1, (now - release.t) / DRIFT_RETURN);
-      const e = k * k * (3 - 2 * k);
+      // Glide from the launch point or the lifted finger onto the path. The launch eases out
+      // (it bursts out fast, then settles into the drift); a finger lift uses a smoothstep.
+      const k = Math.min(1, (now - release.t) / (release.launch ? DRIFT_LAUNCH : DRIFT_RETURN));
+      const e = release.launch ? 1 - Math.pow(1 - k, 3) : k * k * (3 - 2 * k);
       const pos = { x: release.x + (x - release.x) * e, y: release.y + (y - release.y) * e };
       if (k === 1) release = null;
       return pos;
@@ -965,6 +1159,12 @@ document.addEventListener("DOMContentLoaded", function () {
       ctx.globalCompositeOperation = "lighter";
 
       const drifting = isDrifting();
+      if (drifting && !wasDrifting && !release && !recall) {
+        if (launchNext) launchFromChatBar(now);
+        else points = []; // resuming its path elsewhere: no streak from where it last was
+        launchNext = false;
+      }
+      wasDrifting = drifting;
       if (drifting) {
         const d = driftPosition(now);
         addPointAt(d.x, d.y, now);
@@ -978,7 +1178,7 @@ document.addEventListener("DOMContentLoaded", function () {
       headAlpha += (haloTarget - headAlpha) * 0.08;
       if (Math.abs(haloTarget - headAlpha) < 0.01) headAlpha = haloTarget;
       if (head && headAlpha > 0.01) {
-        ctx.globalAlpha = 0.22 * headAlpha;
+        ctx.globalAlpha = haloAlpha * headAlpha;
         ctx.drawImage(haloDot, head.x - haloRadius, head.y - haloRadius, haloRadius * 2, haloRadius * 2);
       }
 
@@ -994,10 +1194,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const pos = age * (dots.length - 1);
         const i = Math.min(Math.floor(pos), dots.length - 2);
         const mix = pos - i;
-        ctx.globalAlpha = 0.12 * fade * (1 - mix);
-        ctx.drawImage(dots[i], p.x - radius, p.y - radius, radius * 2, radius * 2);
-        ctx.globalAlpha = 0.12 * fade * mix;
-        ctx.drawImage(dots[i + 1], p.x - radius, p.y - radius, radius * 2, radius * 2);
+        // Stamps too faint to show (the tail's end, the far side of a cross-fade) are skipped
+        const a0 = streakAlpha * fade * (1 - mix);
+        const a1 = streakAlpha * fade * mix;
+        if (a0 > 0.002) {
+          ctx.globalAlpha = a0;
+          ctx.drawImage(dots[i], p.x - radius, p.y - radius, radius * 2, radius * 2);
+        }
+        if (a1 > 0.002) {
+          ctx.globalAlpha = a1;
+          ctx.drawImage(dots[i + 1], p.x - radius, p.y - radius, radius * 2, radius * 2);
+        }
       }
       ctx.globalAlpha = 1;
 
@@ -1017,61 +1224,617 @@ document.addEventListener("DOMContentLoaded", function () {
       const r = glowCell.getBoundingClientRect();
       return clientX >= r.left && clientX < r.right && clientY >= r.top && clientY < r.bottom;
     }
-    function leaveHero() {
-      if (!pointerInside) return;
-      pointerInside = false;
-      start();
-    }
 
-    document.addEventListener("pointermove", (e) => {
-      if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
-      if (chatActive) return;
-      if (inHero(e.clientX, e.clientY)) addPoint(e.clientX, e.clientY);
-      else leaveHero();
-    });
-    // Cursor left the browser window
-    document.addEventListener("pointerout", (e) => {
-      if (!e.relatedTarget && (e.pointerType === "mouse" || e.pointerType === "pen")) leaveHero();
-    });
-    // Touch uses touch events, which keep firing while the finger scrolls the page
-    // (pointer events get cancelled as soon as a scroll starts)
-    function onTouch(e) {
-      if (chatActive) return;
-      const t = e.touches[0];
-      if (!inHero(t.clientX, t.clientY)) {
-        if (fingerDown) onTouchEnd(e, true);
-        return;
-      }
+    // Catching the light, the same with a mouse or a finger: a press on the light's head (not on
+    // a link, button, the chat bar or a bubble) grabs it, and it follows the cursor or finger,
+    // drawing, until it's let go or leaves the hero; then it glides back into the drift. The
+    // catch sets off a wave of characters (the hero wave below) instead of a glitch. Anywhere
+    // else, a press glitches, and a finger scrolls the page as usual.
+    let grabbing = false;
+    let grabTouch = null;     // the finger holding the light, by touch identifier
+    const CATCH = 0.9;        // the catch reaches 0.9x the head's radius: aim for the bright core
+    const TOUCH_CATCH = 1.5;  // a fingertip is less precise than a cursor: a wider catch
+    function overHead(clientX, clientY, reach = 1) {
+      if (!head || !isDrifting()) return false;
+      const r = glowCanvas.getBoundingClientRect();
+      return Math.hypot(clientX - r.left - head.x, clientY - r.top - head.y) <= headRadius * CATCH * reach;
+    }
+    function onControl(target) {
+      return target.closest && target.closest("a, button, input, .chat-glass, .chat-overlay, .floating-navbar");
+    }
+    pressCatchesLight = (clientX, clientY, touch) =>
+      !grabbing && !chatActive && inHero(clientX, clientY) && overHead(clientX, clientY, touch ? TOUCH_CATCH : 1);
+    function grab(clientX, clientY) {
+      grabbing = true;
       fingerDown = true;
       release = null;
-      addPoint(t.clientX, t.clientY);
+      glowCell.classList.remove("hero-grabbable");
+      document.documentElement.classList.add("hero-grabbing");
+      addPoint(clientX, clientY);
+      // A catch sets off the character wave (see the hero wave below)
+      document.dispatchEvent(new CustomEvent("herocatch", { detail: { x: clientX, y: clientY } }));
     }
-    function onTouchEnd(e, leftHero) {
-      if (!fingerDown) return;
-      if (!leftHero && e.touches.length) return; // another finger is still down
+    function letGo() {
+      if (!grabbing) return;
+      grabbing = false;
+      grabTouch = null;
       fingerDown = false;
       pointerInside = false;
+      document.documentElement.classList.remove("hero-grabbing");
       if (head) release = { x: head.x, y: head.y, t: performance.now() };
       start();
     }
-    if (touchOnly) {
-      document.addEventListener("touchstart", onTouch, { passive: true });
-      document.addEventListener("touchmove", onTouch, { passive: true });
-      document.addEventListener("touchend", (e) => onTouchEnd(e), { passive: true });
-      document.addEventListener("touchcancel", (e) => onTouchEnd(e), { passive: true });
+    function dragTo(clientX, clientY) {
+      if (chatActive || !inHero(clientX, clientY)) letGo();
+      else addPoint(clientX, clientY);
     }
+
+    // Mouse: a grab cursor shows over the head; while it's held, a grabbing cursor everywhere
+    // and no text selection
+    const isMouse = (e) => e.pointerType === "mouse" || e.pointerType === "pen";
+    document.addEventListener("pointerdown", (e) => {
+      if (!isMouse(e) || e.button !== 0 || chatActive || onControl(e.target)) return;
+      if (!inHero(e.clientX, e.clientY) || !overHead(e.clientX, e.clientY)) return;
+      e.preventDefault();
+      grab(e.clientX, e.clientY);
+    });
+    document.addEventListener("pointermove", (e) => {
+      if (!isMouse(e)) return;
+      if (grabbing) {
+        dragTo(e.clientX, e.clientY);
+        return;
+      }
+      glowCell.classList.toggle("hero-grabbable",
+        !chatActive && inHero(e.clientX, e.clientY) && !onControl(e.target) && overHead(e.clientX, e.clientY));
+    });
+    document.addEventListener("pointerup", (e) => { if (isMouse(e)) letGo(); });
+    document.addEventListener("pointercancel", (e) => { if (isMouse(e)) letGo(); });
+    window.addEventListener("blur", letGo);
+
+    // Touch: touch events on the hero, not pointer events (those are cancelled once a scroll
+    // starts). They aren't passive, so a touch that catches the light can cancel its default
+    // and the page doesn't scroll while the light is held. They're on the hero alone, so
+    // touches elsewhere on the page never wait on this script.
+    glowCell.addEventListener("touchstart", (e) => {
+      if (grabbing || chatActive || e.touches.length !== 1 || onControl(e.target)) return;
+      const t = e.touches[0];
+      if (!inHero(t.clientX, t.clientY) || !overHead(t.clientX, t.clientY, TOUCH_CATCH)) return;
+      e.preventDefault();
+      grabTouch = t.identifier;
+      grab(t.clientX, t.clientY);
+    }, { passive: false });
+    glowCell.addEventListener("touchmove", (e) => {
+      if (grabTouch === null) return;
+      const t = [...e.changedTouches].find((touch) => touch.identifier === grabTouch);
+      if (!t) return;
+      e.preventDefault();
+      dragTo(t.clientX, t.clientY);
+    }, { passive: false });
+    function onTouchEnd(e) {
+      if (grabTouch !== null && [...e.changedTouches].some((touch) => touch.identifier === grabTouch)) letGo();
+    }
+    glowCell.addEventListener("touchend", onTouchEnd);
+    glowCell.addEventListener("touchcancel", onTouchEnd);
 
     // Run the drift only while the hero is on screen and the tab is visible. The draw loop
     // stops by itself once isDrifting() turns false and the trail fades.
-    if (touchOnly) {
-      new IntersectionObserver((entries) => {
-        heroVisible = entries[0].isIntersecting;
-        if (heroVisible) start();
-      }).observe(glowCell);
-      document.addEventListener("visibilitychange", () => {
-        if (!document.hidden) start();
-      });
+    new IntersectionObserver((entries) => {
+      heroVisible = entries[0].isIntersecting;
+      if (heroVisible) start();
+    }).observe(glowCell);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) start();
+    });
+  }
+
+
+  // Hero glitch: a click or tap on the hero (not on its controls) glitches a piece of pixel art
+  // into view at that point, in the style of Watch Dogs 2's DedSec art: a 1-bit sprite in one
+  // loud color with a halftone shadow, torn into horizontal slices that jump sideways (some
+  // flashing to the sprite cut out of a solid block), a white ghost copy, stray color bars and
+  // flicker. It holds for a moment, then
+  // tears apart and drops out. Each press picks a random sprite (things Raffy likes) and a
+  // random color, never the same as the last one. Drawn on its own canvas, only while a glitch
+  // is playing. Off during a chat, and under prefers-reduced-motion.
+  const glitchCanvas = document.querySelector(".hello-glitch");
+  if (glitchCanvas && glowCell && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const gctx = glitchCanvas.getContext("2d");
+    const GLITCH_LIFE = 1300;   // ms from first flicker to gone
+    const GLITCH_IN = 220;      // ms of heavy glitching on arrival
+    const GLITCH_OUT = 340;     // ms of tearing apart at the end
+    const GLITCH_STEP = 45;     // ms each glitch state holds (choppy, like dropped frames)
+    const SPRITE_PX = 168;      // target sprite width in CSS px (phones get a bit smaller)
+    const PAD = 2;              // sprite px around the sprite (room for its shadow and the block's edge)
+    // Sampled from Watch Dogs 2 DedSec art (cyan, acid green, violet, amber) plus its hot pink
+    const GLITCH_COLORS = ["#0acbfd", "#a8fe01", "#bc02fd", "#feb606", "#ff2a8c"];
+    // 1-bit pixel art, "#" is a lit pixel. Each row of a sprite is the same length.
+    const SPRITES = {
+      dino: [
+        "........########",
+        ".......##.######",
+        ".......#########",
+        ".......#########",
+        ".......#####....",
+        ".......########.",
+        "#.....#####.....",
+        "#....#######....",
+        "##..##########..",
+        "###########.#...",
+        "###########.....",
+        ".#########......",
+        "..#######.......",
+        "...###.##.......",
+        "...##...#.......",
+        "...#....##......",
+      ],
+      // A classic five-point star
+      star: [
+        "........#........",
+        "........#........",
+        ".......###.......",
+        ".......###.......",
+        "......#####......",
+        "#################",
+        ".###############.",
+        "...###########...",
+        "....#########....",
+        ".....#######.....",
+        ".....#######.....",
+        "....#########....",
+        "....####.####....",
+        "...####...####...",
+        "...###.....###...",
+        "..##.........##..",
+      ],
+      // The 👾 alien monster
+      invader: [
+        "..##.....##..",
+        "...##...##...",
+        "..#########..",
+        ".###########.",
+        "###..###..###",
+        "###..###..###",
+        "#############",
+        "#.#########.#",
+        "#.#.......#.#",
+        "...##...##...",
+      ],
+      rocket: [
+        ".....#.....",
+        "....###....",
+        "...#####...",
+        "...#####...",
+        "..###.###..",
+        "..##...##..",
+        "..###.###..",
+        "..#######..",
+        "..#######..",
+        ".#.#####.#.",
+        "##.#####.##",
+        "##.#####.##",
+        "#...###...#",
+        "...........",
+        "....#.#....",
+        ".....#.....",
+      ],
+      music: [
+        "....##########",
+        "....##########",
+        "....##......##",
+        "....##......##",
+        "....##......##",
+        "....##......##",
+        "....##......##",
+        "....##......##",
+        "....##......##",
+        "..####....####",
+        ".#####...#####",
+        "######..######",
+        "######..######",
+        ".####....####.",
+        "..##......##..",
+      ],
+      bunny: [
+        ".##......##.",
+        "####....####",
+        "####....####",
+        "####....####",
+        ".###....###.",
+        ".###....###.",
+        ".##########.",
+        "############",
+        "##.######.##",
+        "############",
+        "#####..#####",
+        ".####..####.",
+        "..########..",
+        ".##########.",
+        "############",
+        "####....####",
+      ],
+      laptop: [
+        "..############..",
+        "..############..",
+        "..##........##..",
+        "..##.#......##..",
+        "..##..#.....##..",
+        "..##.#..##..##..",
+        "..##........##..",
+        "..############..",
+        ".##############.",
+        "################",
+        "######....######",
+        "################",
+      ],
+      frog: [
+        "..###......###..",
+        ".#####....#####.",
+        ".##.##....##.##.",
+        ".#####....#####.",
+        "################",
+        "################",
+        "##.##########.##",
+        "###.########.###",
+        "####........####",
+        ".##############.",
+        "..############..",
+        ".##.########.##.",
+        "###..######..###",
+        "####........####",
+      ],
+      heart: [
+        "..###...###..",
+        ".#####.#####.",
+        "##.##########",
+        "#############",
+        "#############",
+        ".###########.",
+        "..#########..",
+        "...#######...",
+        "....#####....",
+        ".....###.....",
+        "......#......",
+      ],
+    };
+    const SPRITE_NAMES = Object.keys(SPRITES);
+
+    let glitches = [];          // { x, y, t, seed, img, w, h, color } x/y in CSS px on the canvas
+    let glitchRaf = null;
+    let glitchChat = false;
+    let gdpr = 1;
+    let lastSprite = -1, lastColor = -1;
+
+    // Like the trail, the canvas only has pixels while a glitch plays: sized on the first press,
+    // emptied (0×0) once the last glitch is gone.
+    function sizeGlitch() {
+      gdpr = Math.min(window.devicePixelRatio || 1, 2);
+      const r = glitchCanvas.getBoundingClientRect();
+      glitchCanvas.width = Math.round(r.width * gdpr);
+      glitchCanvas.height = Math.round(r.height * gdpr);
     }
+    function emptyGlitch() {
+      glitchCanvas.width = 0;
+      glitchCanvas.height = 0;
+    }
+    emptyGlitch();
+    window.addEventListener("resize", () => {
+      if (glitches.length) sizeGlitch();
+    });
+
+    document.addEventListener("herochatchange", (e) => {
+      glitchChat = e.detail.active;
+    });
+
+    // Cheap repeatable hash, so a glitch state holds for GLITCH_STEP ms at a time
+    function hash(a, b, c) {
+      let h = (a * 374761393 + b * 668265263 + c * 2147483647) | 0;
+      h = (h ^ (h >>> 13)) * 1274126177;
+      return (h ^ (h >>> 16)) >>> 0;
+    }
+    function pickOther(n, last) {
+      const i = Math.floor(Math.random() * (n - 1));
+      return i >= last && last >= 0 ? i + 1 : i;
+    }
+
+    // The sprite at 1 canvas px per sprite px, scaled up later with smoothing off so it stays
+    // crisp. "art": the sprite in the color over a checkerboard (halftone) shadow down and to
+    // the right. "block": a block of the color with a checkered edge and the sprite cut into
+    // it in black, flashed in while it glitches. All three are the same size, so slices line up.
+    function bakeSprite(rows, color, mode) {
+      const sw = rows[0].length, sh = rows.length;
+      const w = sw + PAD * 2, h = sh + PAD * 2;
+      const c = document.createElement("canvas");
+      c.width = w;
+      c.height = h;
+      const x = c.getContext("2d");
+      const on = (i, j) => rows[j - PAD] && rows[j - PAD][i - PAD] === "#";
+      x.fillStyle = color;
+      if (mode === "block") {
+        x.fillRect(1, 1, w - 2, h - 2);
+        for (let i = 0; i < w; i++) {
+          for (let j = 0; j < h; j++) {
+            if ((i === 0 || j === 0 || i === w - 1 || j === h - 1) && (i + j) % 2 === 0) x.fillRect(i, j, 1, 1);
+          }
+        }
+        x.fillStyle = "#000";
+      } else {
+        for (let i = 0; i < w; i++) {
+          for (let j = 0; j < h; j++) {
+            if (!on(i, j) && (on(i - 1, j - 1) || on(i - 2, j - 2)) && (i + j) % 2 === 0) x.fillRect(i, j, 1, 1);
+          }
+        }
+      }
+      for (let i = 0; i < w; i++) {
+        for (let j = 0; j < h; j++) if (on(i, j)) x.fillRect(i, j, 1, 1);
+      }
+      return { img: c, w, h };
+    }
+
+    function drawGlitches(now) {
+      gctx.setTransform(1, 0, 0, 1, 0, 0);
+      gctx.clearRect(0, 0, glitchCanvas.width, glitchCanvas.height);
+      gctx.imageSmoothingEnabled = false;
+
+      glitches = glitches.filter((g) => now - g.t < GLITCH_LIFE);
+      for (const g of glitches) {
+        const age = Math.max(0, now - g.t);
+        const step = Math.floor(age / GLITCH_STEP);
+        const rnd = (k) => hash(step, k, g.seed);
+        // How torn up it is: heavy on arrival, calm with the odd spike while it holds,
+        // ramping up again as it leaves
+        const outT = Math.max(0, (age - (GLITCH_LIFE - GLITCH_OUT)) / GLITCH_OUT);
+        let amt = age < GLITCH_IN ? 1 - age / GLITCH_IN * 0.8 : 0.08;
+        if (age >= GLITCH_IN && rnd(1) % 6 === 0) amt = 0.55; // a spike
+        amt = Math.max(amt, outT * 1.4);
+        // Flicker: whole frames drop out on arrival and more and more on the way out
+        if (age < GLITCH_IN && rnd(2) % 3 === 0) continue;
+        if (outT > 0 && rnd(3) % 100 < outT * 70) continue;
+
+        const P = g.P;                       // CSS px per sprite px
+        const left = g.x - (g.w * P) / 2, top = g.y - (g.h * P) / 2;
+        const scale = gdpr * P;
+        const snap = (v) => Math.round(v * gdpr) / gdpr;
+
+        // Stray bars of the color around the block, a few each state
+        gctx.setTransform(gdpr, 0, 0, gdpr, 0, 0);
+        gctx.fillStyle = g.color;
+        const bars = Math.round(amt * 6);
+        for (let b = 0; b < bars; b++) {
+          const hb = rnd(10 + b);
+          const bw = P * (2 + (hb % 14));
+          const bh = P * (1 + ((hb >>> 4) % 2));
+          const bx = left + ((((hb >>> 6) % 1000) / 1000) * 1.8 - 0.4) * g.w * P;
+          const by = top + (((hb >>> 16) % 1000) / 1000) * g.h * P;
+          gctx.globalAlpha = 0.5 + ((hb >>> 3) % 5) / 10;
+          gctx.fillRect(snap(bx), snap(by), bw, bh);
+        }
+        gctx.globalAlpha = 1;
+
+        // The block, in horizontal slices. Each slice is a few sprite rows tall and shifts
+        // sideways by a random whole number of sprite px; while torn, some slices drop out.
+        let row = 0, s = 0;
+        while (row < g.h) {
+          const hs = rnd(100 + s);
+          const sliceH = Math.min(g.h - row, 1 + (hs % 4));
+          const shifted = (hs >>> 3) % 100 < amt * 60;
+          const dx = shifted ? ((((hs >>> 10) % 9) - 4) * amt * 3) | 0 : 0;
+          const gone = outT > 0 && (hs >>> 20) % 100 < outT * 55;
+          if (!gone) {
+            const y = top + row * P;
+            gctx.setTransform(1, 0, 0, 1, 0, 0);
+            // White ghost copy behind, offset to one side, while glitching
+            if (shifted && amt > 0.3) {
+              gctx.globalAlpha = 0.85;
+              gctx.globalCompositeOperation = "lighter";
+              gctx.drawImage(g.ghost, 0, row, g.w, sliceH,
+                Math.round((left + (dx + 2) * P) * gdpr), Math.round(y * gdpr), g.w * scale, sliceH * scale);
+              gctx.globalCompositeOperation = "source-over";
+              gctx.globalAlpha = 1;
+            }
+            // Torn slices sometimes flash to the solid block
+            const img = shifted && amt > 0.3 && (hs >>> 25) % 3 === 0 ? g.block : g.img;
+            gctx.drawImage(img, 0, row, g.w, sliceH,
+              Math.round((left + dx * P) * gdpr), Math.round(y * gdpr), g.w * scale, sliceH * scale);
+          }
+          row += sliceH;
+          s++;
+        }
+
+        // Scanlines: every other screen row of the block darkened a little
+        gctx.setTransform(gdpr, 0, 0, gdpr, 0, 0);
+        gctx.fillStyle = "rgba(0, 0, 0, 0.18)";
+        for (let yy = 0; yy < g.h * P; yy += 3) gctx.fillRect(snap(left), snap(top + yy), g.w * P, 1);
+      }
+      gctx.globalAlpha = 1;
+
+      if (glitches.length) {
+        glitchRaf = requestAnimationFrame(drawGlitches);
+      } else {
+        glitchRaf = null;
+        emptyGlitch();
+      }
+    }
+
+    // Each sprite and color is baked once, on its first use, and reused after
+    const bakedCache = new Map();
+    function bakedFor(name, color) {
+      const key = `${name}|${color}`;
+      if (!bakedCache.has(key)) {
+        const rows = SPRITES[name];
+        bakedCache.set(key, {
+          baked: bakeSprite(rows, color, "art"),
+          block: bakeSprite(rows, color, "block").img,
+          ghost: bakeSprite(rows, "#ffffff", "art").img,
+        });
+      }
+      return bakedCache.get(key);
+    }
+
+    function spawnGlitch(clientX, clientY) {
+      if (!glitchCanvas.width) sizeGlitch();
+      const r = glitchCanvas.getBoundingClientRect();
+      const si = pickOther(SPRITE_NAMES.length, lastSprite);
+      const ci = pickOther(GLITCH_COLORS.length, lastColor);
+      lastSprite = si;
+      lastColor = ci;
+      const { baked, block, ghost } = bakedFor(SPRITE_NAMES[si], GLITCH_COLORS[ci]);
+      // Whole CSS px per sprite px, sized off the widest sprite so they all read about the same
+      const target = r.width < 600 ? SPRITE_PX * 0.75 : SPRITE_PX;
+      const P = Math.max(4, Math.round(target / 16));
+      glitches.push({
+        x: Math.round(clientX - r.left), y: Math.round(clientY - r.top), t: performance.now(),
+        seed: (Math.random() * 1e6) | 0, img: baked.img, block, ghost, w: baked.w, h: baked.h,
+        color: GLITCH_COLORS[ci], P,
+      });
+      if (glitchRaf === null) glitchRaf = requestAnimationFrame(drawGlitches);
+    }
+
+    // A press on the hero's empty space (not its links, buttons, the chat bar or a chat bubble)
+    // glitches the moment it goes down, a finger or a mouse button alike, so swipes and scrolls
+    // that start on the hero count too. Not a press that catches the light: its cue is the hero
+    // wave. Pointer events rather than `click`, which iOS Safari doesn't send for taps on
+    // non-interactive areas.
+    glowCell.addEventListener("pointerdown", (e) => {
+      if (glitchChat || !e.isPrimary || e.button !== 0) return;
+      if (e.target.closest("a, button, input, .chat-glass, .chat-overlay, .floating-navbar")) return;
+      if (pressCatchesLight(e.clientX, e.clientY, e.pointerType !== "mouse")) return; // the wave shows instead
+      spawnGlitch(e.clientX, e.clientY);
+    });
+  }
+
+
+  // Hero wave: catching the light (a press on its head, held or not) sends one solid swell of
+  // random characters rolling out from the catch, like a surface bulging up and spreading. The
+  // whole disc behind the front fills with characters; a raised crest at the front lifts them
+  // toward the viewer (larger, nudged up and outward) and the surface settles behind it.
+  // Characters flicker through new ones as it rolls. Colored by distance from the catch: it
+  // bursts white and cream and cools into lilac, purple and violet as it spreads and fades.
+  // IBM Plex Mono on a character grid. Drawn on its own full-resolution canvas, between the
+  // glitch and the light, only while a wave is running. Off during a chat, and under
+  // prefers-reduced-motion.
+  const waveCanvas = document.querySelector(".hello-ripple");
+  if (waveCanvas && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const wctx = waveCanvas.getContext("2d");
+    const CELL = 16;            // px between characters on the grid
+    const FONT_PX = 13;
+    const WAVE_SPEED = 260;     // px/s the swell travels outward
+    const WAVE_LIFE = 1600;     // ms until a wave has faded out completely
+    const CREST_AT = 26;        // px behind the leading edge where the crest peaks
+    const CREST_WIDTH = 20;     // px, how broad the crest is (its Gaussian spread)
+    const SURFACE = 0.32;       // height of the settled surface behind the crest (crest = 1)
+    const SURFACE_DECAY = 160;  // px behind the front over which that surface fades out
+    const LIFT_PX = 7;          // how far the crest pushes characters outward
+    const RISE_PX = 9;          // how far it raises them (upward on screen, toward the viewer)
+    const LIFT_SCALE = 0.6;     // how much it enlarges them (+60% at the peak)
+    const CHAR_FLICKER = 70;    // ms each character holds before changing
+    const CHARS = "01<>/\\{}[]()#*+=-~:;!?%&$@ABCDEFGHJKLMNPRSTUVXYZ";
+    // By distance from the catch (px): white and cream at the burst, then the purples outward
+    const WAVE_SHADES = [[40, "#ffffff"], [95, "#ffd9a8"], [175, "#d089ff"], [270, "#6a1fd0"], [Infinity, "#5a2fd0"]];
+    const FONT = `400 ${FONT_PX}px "IBM Plex Mono", monospace`;
+
+    let waves = [];             // { x, y, t, seed } in CSS px relative to the canvas
+    let waveRaf = null;
+    let waveChat = false;
+    let wdpr = 1;
+
+    // The canvas is full resolution (the characters need to be crisp), about 20MB on a
+    // 1440x900 retina hero, so it only has pixels while a wave is playing: sized on a catch,
+    // emptied (0x0) once the last wave fades.
+    function sizeWave() {
+      wdpr = Math.min(window.devicePixelRatio || 1, 2);
+      const r = waveCanvas.getBoundingClientRect();
+      waveCanvas.width = Math.round(r.width * wdpr);
+      waveCanvas.height = Math.round(r.height * wdpr);
+    }
+    function emptyWave() {
+      waveCanvas.width = 0;
+      waveCanvas.height = 0;
+    }
+    emptyWave();
+    window.addEventListener("resize", () => {
+      if (waves.length) sizeWave();
+    });
+    if (document.fonts && document.fonts.load) document.fonts.load(FONT); // ready before the first catch
+
+    document.addEventListener("herochatchange", (e) => {
+      waveChat = e.detail.active;
+    });
+
+    // Cheap repeatable hash, so a cell keeps its character for CHAR_FLICKER ms at a time
+    function hash(a, b, c) {
+      let h = (a * 374761393 + b * 668265263 + c * 2147483647) | 0;
+      h = (h ^ (h >>> 13)) * 1274126177;
+      return (h ^ (h >>> 16)) >>> 0;
+    }
+    function shadeAt(d) {
+      for (const [upTo, color] of WAVE_SHADES) if (d < upTo) return color;
+      return WAVE_SHADES[WAVE_SHADES.length - 1][1];
+    }
+
+    function drawWaves(now) {
+      wctx.setTransform(1, 0, 0, 1, 0, 0);
+      wctx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+      wctx.font = FONT;
+      wctx.textAlign = "center";
+      wctx.textBaseline = "middle";
+
+      waves = waves.filter((w) => now - w.t < WAVE_LIFE);
+      for (const w of waves) {
+        const age = Math.max(0, now - w.t);
+        const front = (age / 1000) * WAVE_SPEED; // the leading edge's radius
+        const fade = Math.pow(1 - age / WAVE_LIFE, 1.3);
+        const reach = front + LIFT_PX;
+        const c0 = Math.floor((w.x - reach) / CELL), c1 = Math.ceil((w.x + reach) / CELL);
+        const r0 = Math.floor((w.y - reach) / CELL), r1 = Math.ceil((w.y + reach) / CELL);
+        const tick = Math.floor(now / CHAR_FLICKER);
+        for (let row = r0; row <= r1; row++) {
+          for (let col = c0; col <= c1; col++) {
+            const cx = col * CELL + CELL / 2;
+            const cy = row * CELL + CELL / 2;
+            const dx = cx - w.x, dy = cy - w.y;
+            const d = Math.hypot(dx, dy);
+            const behind = front - d; // 0 at the leading edge, growing toward the center
+            if (behind <= 0) continue;
+            // Height of the surface here: the crest (a Gaussian bump just behind the leading
+            // edge, eased in at the edge) over a lower settled surface that fades behind it
+            const crest = Math.exp(-Math.pow((behind - CREST_AT) / CREST_WIDTH, 2));
+            const surface = SURFACE * Math.exp(-behind / SURFACE_DECAY) * Math.min(1, behind / CREST_AT);
+            const lift = Math.max(crest, surface) * Math.min(1, behind / 8);
+            if (lift < 0.05) continue;
+            const alpha = Math.min(1, 0.25 + lift) * fade;
+            if (alpha < 0.03) continue; // too faint to show
+            const h = hash(col, row, tick + w.seed);
+            if (h % 7 === 0) continue; // a few gaps keep the surface from reading as a solid block
+            const push = d > 0 ? (lift * LIFT_PX) / d : 0;
+            // Sizes are rounded to 5 steps and positions to device pixels, so the browser can
+            // reuse rendered glyphs instead of rasterizing every character at a new size each
+            // frame (which dropped frames)
+            const size = 1 + (Math.round(lift * 4) / 4) * LIFT_SCALE;
+            wctx.setTransform(wdpr * size, 0, 0, wdpr * size,
+              Math.round(wdpr * (cx + dx * push)), Math.round(wdpr * (cy + dy * push - lift * RISE_PX)));
+            wctx.globalAlpha = alpha;
+            wctx.fillStyle = shadeAt(d);
+            wctx.fillText(CHARS[(h >>> 7) % CHARS.length], 0, 0);
+          }
+        }
+      }
+      wctx.globalAlpha = 1;
+
+      if (waves.length) {
+        waveRaf = requestAnimationFrame(drawWaves);
+      } else {
+        waveRaf = null;
+        emptyWave();
+      }
+    }
+
+    document.addEventListener("herocatch", (e) => {
+      if (waveChat) return;
+      if (!waveCanvas.width) sizeWave();
+      const r = waveCanvas.getBoundingClientRect();
+      waves.push({ x: e.detail.x - r.left, y: e.detail.y - r.top, t: performance.now(), seed: (Math.random() * 1e6) | 0 });
+      if (waveRaf === null) waveRaf = requestAnimationFrame(drawWaves);
+    });
   }
 
 
