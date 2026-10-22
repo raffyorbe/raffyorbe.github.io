@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // AI chat glow
 
-  const glow = document.querySelector('.hello-chat-border-wrapper .chat-bar-glow');
+  const glow = document.querySelector('.home-chat-border-wrapper .chat-bar-glow');
 
   // Intro glow: the chat bubble's reply reveal (see revealReply and settleGlow below), played
   // once behind the input, with the bubble's colors in every browser. Like a reply, it fades in
@@ -66,11 +66,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Its crisp 1px edge line (.chat-bar-core) is an unblurred copy that runs the same spin
   // and fade, started in the same frame so the two stay in step.
-  const glowCore = document.querySelector('.hello-chat-border-wrapper .chat-bar-core');
+  const glowCore = document.querySelector('.home-chat-border-wrapper .chat-bar-core');
 
-  function playChatBarGlow() {
-    const clip = glow.querySelector('.chat-glow-clip');
-    const layers = glowCore ? [glow, glowCore] : [glow];
+  // Plays the intro on a glow (a .chat-bar-glow) and its crisp edge line (a .chat-bar-core, if
+  // any), then switches them off. Shared by the chat bar and the "Ask AI Raffy" button, which
+  // passes a smaller spread (blurPeakPx). Returns how long it runs, in ms.
+  function playIntroGlow(glowEl, coreEl, blurPeakPx) {
+    const clip = glowEl.querySelector('.chat-glow-clip');
+    const layers = coreEl ? [glowEl, coreEl] : [glowEl];
+    // Restartable (the button replays it on every hover): drop a run still in progress
+    clearTimeout(glowEl.introDoneTimer);
+    layers.forEach((layer) => {
+      layer.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+      layer.classList.remove('done');
+    });
     // Each spin is started here, from script, in the same moment for both layers: the bubble's
     // 6s-per-lap rotation at its fast loading speed, which settleGlow eases to rest below.
     layers.forEach((layer) => {
@@ -91,14 +100,15 @@ document.addEventListener("DOMContentLoaded", function () {
       { opacity: 0 },
     ];
     clip.animate(fade, { duration: total, fill: 'forwards' });
-    if (glowCore) glowCore.animate(fade, { duration: total, fill: 'forwards' });
+    if (coreEl) coreEl.animate(fade, { duration: total, fill: 'forwards' });
 
-    // The bubble's spread: 7px widening to 12px at the peak, back to 7px by the end of the reveal
-    const steadyBlur = getComputedStyle(glow).filter;
-    glow.animate(
+    // The bubble's spread: the steady blur widening to blurPeakPx at the peak, back by the end
+    // of the reveal (7px to 12px on the chat bar)
+    const steadyBlur = getComputedStyle(glowEl).filter;
+    glowEl.animate(
       [
         { filter: steadyBlur, easing: 'ease-out' },
-        { filter: `blur(${GLOW_REPLY_BLUR_PEAK_PX}px)`, offset: 0.18, easing: 'ease-in-out' },
+        { filter: `blur(${blurPeakPx}px)`, offset: 0.18, easing: 'ease-in-out' },
         { filter: steadyBlur },
       ],
       { duration: GLOW_REPLY_FLASH_MS }
@@ -106,8 +116,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     layers.forEach((layer) => settleGlow(layer)); // the bubble's spin slowdown to rest
 
+    glowEl.introDoneTimer = setTimeout(() => layers.forEach((layer) => layer.classList.add('done')), total + 100);
+    return total;
+  }
+
+  function playChatBarGlow() {
+    const total = playIntroGlow(glow, glowCore, GLOW_REPLY_BLUR_PEAK_PX);
     setTimeout(() => {
-      layers.forEach((layer) => layer.classList.add('done'));
       chatBarGlowDone = true;
       document.dispatchEvent(new Event('chatbarglowdone')); // starts the hero's mobile drift
     }, total + 100);
@@ -149,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (glow) {
-    const target = document.querySelector('.hello-chat-border-wrapper');
+    const target = document.querySelector('.home-chat-border-wrapper');
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
@@ -173,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Setup AI chat response UI
 
-  const inputWrapper = document.querySelector('.hello-chat-border-wrapper');
+  const inputWrapper = document.querySelector('.home-chat-border-wrapper');
 
   // create overlay container if not exists
   let overlayContainer = inputWrapper.querySelector('#chat-overlay-container');
@@ -268,7 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Hero overlay switches to a frosted dark layer while a chat bubble is showing
-  const heroOverlay = inputWrapper.closest('.hello-overlay');
+  const heroOverlay = inputWrapper.closest('.home-overlay');
 
   function setHeroChatActive(active) {
     if (heroOverlay) heroOverlay.classList.toggle('chat-active', active);
@@ -279,19 +294,22 @@ document.addEventListener("DOMContentLoaded", function () {
   // Fade a bubble down and out and drop the frosted layer behind it. Shared by the close
   // button (on a reply) and the stop button (while loading), so both leave the same way.
   function hideBubble(bubble) {
-    setHeroChatActive(false);
+    // Only the hero's chat has the frosted layer (the "Ask AI Raffy" bubbles have none)
+    if (overlayContainer.contains(bubble)) setHeroChatActive(false);
     bubble.classList.remove("reply-in"); // let a still-running reply fade-up yield to the fade-down
     bubble.classList.add("hide");
 
     // Remove once the bubble's own fade-down finishes. transitionend also bubbles up from
     // the glow's ring fade-in (0.9s after a reply), which would otherwise cut the fade short
-    // if the bubble is closed soon after the reply lands.
+    // if the bubble is closed soon after the reply lands. The timeout covers a slide that
+    // never runs.
     const onEnd = (e) => {
       if (e.target !== bubble) return;
       bubble.removeEventListener("transitionend", onEnd);
       bubble.remove();
     };
     bubble.addEventListener("transitionend", onEnd);
+    setTimeout(() => bubble.remove(), 450);
   }
 
   // Glow spin. The CSS animation rests at 6s per rotation (.chat-glow-spin in styles/index.css).
@@ -345,8 +363,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Waits for the spin to actually be running first (its ready promise). This changes the speed
   // every frame, and in Chromium each change made while a just-started animation is still
-  // pending restarts its wait, so a spin started right before this (the chat bar intro, the
-  // skills panel opening) could stay frozen at 0 through the whole slowdown.
+  // pending restarts its wait, so a spin started right before this (the chat bar intro)
+  // could stay frozen at 0 through the whole slowdown.
   function settleGlow(bubble) {
     const anim = getGlowSpin(bubble);
     if (!anim) return;
@@ -397,10 +415,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Function to add AI message bubble
-  function addAIBubble(message, isLoading = false) {
-    if (!overlayContainer) return null; // return null if no container
-    overlayContainer.innerHTML = "";
-    setHeroChatActive(true);
+  // container: where the bubble goes, the hero's chat by default, or the "Ask AI Raffy"
+  // layer under the navbar (askContainer), which has no frosted layer
+  function addAIBubble(message, isLoading = false, container = overlayContainer) {
+    if (!container) return null; // return null if no container
+    container.innerHTML = "";
+    if (container === overlayContainer) setHeroChatActive(true);
 
     const bubble = document.createElement("div");
     bubble.className = "chat-overlay" + (isLoading ? " loading" : "");
@@ -446,7 +466,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (fromKeyboard) userInput.focus();
     });
 
-    overlayContainer.appendChild(bubble);
+    container.appendChild(bubble);
 
     if (isLoading) {
       const spinAnim = getGlowSpin(bubble);
@@ -484,7 +504,6 @@ document.addEventListener("DOMContentLoaded", function () {
     textElem.appendChild(header);
     textElem.appendChild(document.createTextNode(message));
   }
-
   // Swap the loading dots for the reply: the whole bubble, text included, fades up as one.
   // The glow keeps going, with its ring fading in and its speed easing down (settleGlow).
   function revealReply(bubble, message) {
@@ -542,12 +561,26 @@ document.addEventListener("DOMContentLoaded", function () {
     hideBubble(bubble);
   }
 
+  // Only one chat shows at a time: an "Ask AI Raffy" question (askAI) closes the hero's chat,
+  // stopping a reply that's still loading or fading out one that's showing. The stopped
+  // message stays in the input, but focus stays put rather than jumping back to the hero.
+  function closeHeroChat() {
+    if (pendingRequest) {
+      pendingRequest.handedOff = true;
+      stopRequest();
+    }
+    const reply = overlayContainer.querySelector(".chat-overlay:not(.hide)");
+    if (reply) hideBubble(reply);
+  }
+
   // Send message
   async function sendMessage() {
     if (pendingRequest) return;
 
     const message = userInput.value.trim();
     if (!message) return;
+
+    closeAskChat(); // one chat at a time
 
     // The input locks while the reply loads; the send button stays live as the stop button
     userInput.disabled = true;
@@ -595,6 +628,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     finally {
+      const handedOff = pendingRequest.handedOff; // stopped by an "Ask AI Raffy" question
       pendingRequest = null;
       setSendButtonMode(false);
       userInput.disabled = false;
@@ -602,7 +636,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!stopped) userInput.value = "";
       // Focus stays in the input (moving it to the reply's × on arrival was tried and dropped
       // as distracting). Esc closes the reply, and Tab reaches its ×.
-      userInput.focus();
+      if (!handedOff) userInput.focus();
     }
 
   }
@@ -822,8 +856,9 @@ document.addEventListener("DOMContentLoaded", function () {
     skillsDialog.classList.remove("show");
     skillsScrim.classList.remove("show");
 
-    // Close once the panel has faded down. transitionend also bubbles up from the glow's ring,
-    // so only react to the panel's own; the timeout covers a transition that never runs.
+    // Close once the panel has slid down (its parts fade alongside). transitionend also
+    // bubbles up from those parts, so only react to the panel's own; the timeout covers a
+    // transition that never runs.
     let done = false;
     const finish = () => {
       if (done) return;
@@ -839,7 +874,7 @@ document.addEventListener("DOMContentLoaded", function () {
       skillsReturnFocus = null;
     };
     const onEnd = (e) => {
-      if (e.target === skillsPanel && e.propertyName === "opacity") finish();
+      if (e.target === skillsPanel && e.propertyName === "transform") finish();
     };
     skillsPanel.addEventListener("transitionend", onEnd);
     setTimeout(finish, 500);
@@ -891,10 +926,109 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     if (skillsDialog.open) return; // that Esc closes the skills modal instead
+    // An "Ask AI Raffy" reply first: it floats over everything (one still loading can't be
+    // stopped, see askAI)
+    const asked = askContainer.querySelector(".chat-overlay.show:not(.loading):not(.hide)");
+    if (asked) {
+      hideBubble(asked);
+      return;
+    }
     const reply = overlayContainer.querySelector(".chat-overlay.show:not(.loading):not(.hide)");
     if (!reply) return;
     hideBubble(reply);
     userInput.focus();
+  });
+
+  // "Ask AI Raffy" buttons (under the Skills and Projects links). Each sends its question
+  // (data-question) to AI Raffy without leaving the section: the loading dots and the reply
+  // fade in just under the navbar, with no frosted layer. Separate from the hero's chat: its
+  // own request. No stop button while a reply loads (like asking Siri): the question was
+  // asked on purpose, and the page can be scrolled and used meanwhile. The reply's × closes it.
+  // Only one chat shows at a time, though: another question replaces it, even mid-load, and
+  // sending from the hero's chat closes it (closeAskChat).
+  const askContainer = document.createElement("div");
+  askContainer.className = "ask-ai-chat";
+  document.body.appendChild(askContainer);
+  const navWrapper = document.querySelector(".home-border-wrapper");
+  let askPending = null; // the AbortController of the reply while it loads
+
+  function closeAskChat() {
+    if (askPending) {
+      askPending.abort();
+      askPending = null;
+    }
+    const asked = askContainer.querySelector(".chat-overlay:not(.hide)");
+    if (asked) hideBubble(asked);
+  }
+
+  // Sits 12px under the navbar, whose height changes with the screen size, and as wide as
+  // the hero's chat bubbles (the chat bar's width). Measured again whenever either changes
+  // size, so a bubble that's open while the window resizes or a phone rotates keeps fitting
+  // the screen.
+  function placeAskContainer() {
+    if (navWrapper) askContainer.style.top = `${navWrapper.getBoundingClientRect().bottom + 12}px`;
+    askContainer.style.width = `${overlayContainer.getBoundingClientRect().width}px`;
+  }
+  const askPlacer = new ResizeObserver(placeAskContainer);
+  askPlacer.observe(overlayContainer);
+  if (navWrapper) askPlacer.observe(navWrapper);
+
+  async function askAI(question) {
+    // One chat at a time: drop a previous question's reply that's still loading (its bubble
+    // is replaced below) and close the hero's chat
+    if (askPending) askPending.abort();
+    closeHeroChat();
+
+    placeAskContainer();
+
+    // Unlock audio playback now, while still inside the click
+    unlockReplySound();
+
+    const bubble = addAIBubble("", true, askContainer);
+    const controller = new AbortController();
+    askPending = controller;
+
+    try {
+      const response = await fetch("https://raffyorbe-github-io.onrender.com/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: question }),
+        signal: controller.signal,
+      });
+
+      const data = await response.json();
+      const aiMessage = data.choices?.[0]?.message?.content || "Sorry, something went wrong. 😅";
+
+      revealReply(bubble, aiMessage);
+      playReplySound();
+    }
+
+    catch (error) {
+      if (error.name === "AbortError") return; // replaced by another chat: nothing to show
+      revealReply(bubble, "Error connecting to the server. 😵");
+      playReplySound();
+      console.error(error);
+    }
+
+    finally {
+      if (askPending === controller) askPending = null;
+    }
+  }
+
+  document.querySelectorAll(".ask-ai").forEach((wrap) => {
+    const btn = wrap.querySelector("button");
+    const askGlow = wrap.querySelector(".chat-bar-glow");
+    const askCore = wrap.querySelector(".chat-bar-core");
+
+    btn.addEventListener("click", () => askAI(btn.dataset.question));
+
+    // The chat bar's intro glow, sized for the button (8px peak spread, the bar's is 12px),
+    // replayed on each hover and on keyboard focus
+    const playGlow = () => playIntroGlow(askGlow, askCore, 8);
+    btn.addEventListener("mouseenter", playGlow);
+    btn.addEventListener("focus", () => {
+      if (btn.matches(":focus-visible")) playGlow();
+    });
   });
 
   userInput.addEventListener("keydown", (e) => {
@@ -919,6 +1053,34 @@ document.addEventListener("DOMContentLoaded", function () {
   //   }, 3000);
   // });
 
+  // Hero T-rex: the pixel T-rex on the chat bar is wary of the hero light (it does look like a
+  // meteor). When someone catches the light and drags it close, it panics: it turns its back
+  // on the light and runs in place, then calms down a moment after and faces left again. The
+  // hero light's draw loop below feeds it the light's position each frame, so it reacts only
+  // while the light is running (never under reduced motion). Watching the light pass (turning toward it, looking up) was tried and dropped.
+  const dino = document.querySelector(".chat-dino");
+  let dinoSeesLight = () => {};
+  if (dino) {
+    const PANIC_RANGE = 200; // px from the T-rex at which a caught light sets off a panic
+    const PANIC_HOLD = 900;  // ms it keeps panicking after the light is let go or pulled away
+    let calmTimer = null;
+
+    // x, y: the light's head in client px; lit: whether it's showing; caught: held by a cursor
+    // or finger. Does nothing (not even a layout read) unless the light is caught.
+    dinoSeesLight = (x, y, lit, caught) => {
+      if (!lit || !caught) return;
+      const r = dino.getBoundingClientRect();
+      const dx = x - (r.left + r.width / 2);
+      if (Math.hypot(dx, y - (r.top + r.height / 2)) >= PANIC_RANGE) return;
+      dino.classList.add("is-panicking");
+      // Runs away from the light: faces right when it's on the left. Right above it (within a
+      // few px either way) it keeps the way it's facing, so it doesn't flicker.
+      if (Math.abs(dx) > 8) dino.classList.toggle("faces-right", dx < 0);
+      clearTimeout(calmTimer);
+      calmTimer = setTimeout(() => dino.classList.remove("is-panicking", "faces-right"), PANIC_HOLD);
+    };
+  }
+
   // Hero light trail: a glowing streak that follows the cursor across the black hero, white at
   // the head and cooling through the chat glow's colors as it fades. Points are drawn as
   // pre-rendered soft dots with additive blending, and the loop stops once the trail has
@@ -933,8 +1095,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Whether a press at a point would catch the light (set by the hero light below). The hero
   // glitch skips those presses: a catch's cue is the character wave, not a glitch.
   let pressCatchesLight = () => false;
-  const glowCell = document.querySelector(".hello-cell");
-  const glowCanvas = glowCell && glowCell.querySelector(".hello-glow");
+  const glowCell = document.querySelector(".home-cell");
+  const glowCanvas = glowCell && glowCell.querySelector(".home-glow");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (glowCanvas && !reduceMotion) {
@@ -975,6 +1137,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // The drift moves fast and draws a slimmer streak with a smaller halo, so on a phone it
     // reads as sweeping lines of light rather than a floating circle
     const DRIFT_SPEED = 3;
+    // Where along its path the drift starts, picked at random on every launch. The path is a
+    // function of time, and the page clock restarts at 0 on every load, so without this the
+    // light traced the same path every visit.
+    let driftPhase = Math.random() * 1000;
     const headRadius = touchOnly ? 55 : HEAD_RADIUS;
     const haloRadius = touchOnly ? 260 : HALO_RADIUS;
     // Each dot's strength (0.12 suited the original 90px desktop streak; the slimmer streaks
@@ -1028,6 +1194,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!chatBar) return;
       const at = chatBarCenter();
       points = []; // no streak back to wherever the trail last was
+      driftPhase = Math.random() * 1000; // a fresh path every launch
       release = { x: at.x, y: at.y, t: now, launch: true };
     }
 
@@ -1135,7 +1302,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (k === 1) recall = null;
         return pos;
       }
-      const t = (now / 1000) * DRIFT_SPEED;
+      const t = (now / 1000) * DRIFT_SPEED + driftPhase;
       const x = cssW * (0.5 + 0.36 * Math.sin(t * 0.53) + 0.08 * Math.sin(t * 1.37 + 2));
       const y = cssH * (0.45 + 0.26 * Math.sin(t * 0.71 + 1) + 0.06 * Math.sin(t * 1.73));
       if (!release) return { x, y };
@@ -1180,6 +1347,11 @@ document.addEventListener("DOMContentLoaded", function () {
       if (head && headAlpha > 0.01) {
         ctx.globalAlpha = haloAlpha * headAlpha;
         ctx.drawImage(haloDot, head.x - haloRadius, head.y - haloRadius, haloRadius * 2, haloRadius * 2);
+      }
+      // The T-rex panics at a caught light dragged close (see the hero T-rex above)
+      if (head && grabbing) {
+        const r = glowCanvas.getBoundingClientRect();
+        dinoSeesLight(r.left + head.x, r.top + head.y, headAlpha > 0.3, grabbing);
       }
 
       // The streak, oldest first so the bright head lands on top
@@ -1336,7 +1508,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // tears apart and drops out. Each press picks a random sprite (things Raffy likes) and a
   // random color, never the same as the last one. Drawn on its own canvas, only while a glitch
   // is playing. Off during a chat, and under prefers-reduced-motion.
-  const glitchCanvas = document.querySelector(".hello-glitch");
+  const glitchCanvas = document.querySelector(".home-glitch");
   if (glitchCanvas && glowCell && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const gctx = glitchCanvas.getContext("2d");
     const GLITCH_LIFE = 1300;   // ms from first flicker to gone
@@ -1712,7 +1884,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // IBM Plex Mono on a character grid. Drawn on its own full-resolution canvas, between the
   // glitch and the light, only while a wave is running. Off during a chat, and under
   // prefers-reduced-motion.
-  const waveCanvas = document.querySelector(".hello-ripple");
+  const waveCanvas = document.querySelector(".home-ripple");
   if (waveCanvas && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const wctx = waveCanvas.getContext("2d");
     const CELL = 16;            // px between characters on the grid

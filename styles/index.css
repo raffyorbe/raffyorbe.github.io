@@ -62,7 +62,7 @@ body {
    brightened and saturated, so the rim picks up the color of the page under it.
    It sits on the wrapper, not the navbar, because an element with backdrop-filter can't
    see the page through a child's backdrop-filter. inset matches the wrapper's padding. */
-.hello-border-wrapper::before {
+.home-border-wrapper::before {
   content: '';
   position: absolute;
   inset: 4px;
@@ -120,16 +120,16 @@ body {
   color: #ffffff;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  font-weight: 500;
+  font-weight: 400;
 }
 
-/* Hello Section */
-/* .hello {
+/* Home Section */
+/* .home {
   background-color: #f2f4f8;
   text-align: center;
 } */
 
-.hello-border-wrapper {
+.home-border-wrapper {
   position: fixed;
   top: 16px;
   left: 50%;
@@ -145,7 +145,7 @@ body {
   min-width: 320px;
 }
 
-.hello-cell {
+.home-cell {
   background-color: #000000;
   color: #ffffff;
   position: relative;
@@ -166,18 +166,18 @@ body {
 }
 
 /* Cursor light trail canvas, and the click/tap pixel-art glitch drawn over it: both under
-   .hello-overlay (z-index 20), so they light the background only. The trail draws additively
+   .home-overlay (z-index 20), so they light the background only. The trail draws additively
    on black, so it needs no blend mode. */
 /* The hero is a play area (the light, the glitch), not text to select: presses, drags and
    long presses there don't highlight anything or open the callout. The chat input and the
    reply bubble stay selectable, so typing works and a reply can still be copied. */
-.hello-cell {
+.home-cell {
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
 }
 
-.hello-cell input,
+.home-cell input,
 #chat-overlay-container {
   user-select: text;
   -webkit-user-select: text;
@@ -186,7 +186,7 @@ body {
 
 /* Grabbing the hero light with a mouse (scripts/index.js): a grab cursor over its head, and a
    grabbing cursor everywhere (no text selection) while it's held */
-.hello-cell.hero-grabbable {
+.home-cell.hero-grabbable {
   cursor: grab;
 }
 
@@ -198,13 +198,13 @@ html.hero-grabbing * {
 }
 
 /* The hero's play area, bottom to top: the pixel-art glitch, the character wave from catching
-   the light, then the light itself. All three sit under .hello-overlay (z-index 20), so the
+   the light, then the light itself. All three sit under .home-overlay (z-index 20), so the
    content (nav, text, chat bar, buttons) stays above everything. The light is screen-blended,
    so it brightens the effects under it instead of covering them; over the black hero it looks
    the same as before. */
-.hello-glow,
-.hello-ripple,
-.hello-glitch {
+.home-glow,
+.home-ripple,
+.home-glitch {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -214,16 +214,16 @@ html.hero-grabbing * {
   display: block;
 }
 
-.hello-ripple {
+.home-ripple {
   z-index: 1;
 }
 
-.hello-glow {
+.home-glow {
   z-index: 2;
   mix-blend-mode: screen;
 }
 
-.hello-video {
+.home-video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -233,7 +233,7 @@ html.hero-grabbing * {
   display: block;
 }
 
-.hello-overlay {
+.home-overlay {
   /* background-color: rgba(15, 98, 254, 0.1); */
   /* Fades the bottom of the hero into the black of the next section. It sits over the light
      trail, so the trail dims toward the bottom too. */
@@ -253,17 +253,17 @@ html.hero-grabbing * {
 }
 
 /* Chat-active layer: a flat black 50% overlay with a frosted blur, sitting on top of
-   .hello-overlay's fade to black. It's a sibling of the content
+   .home-overlay's fade to black. It's a sibling of the content
    rather than an ancestor, so the backdrop-filter never touches the chat bubble or its
    blurred glow.
 
    It sits above the hero's memoji, headline and subheadline, which get frosted. Only the
    chat bar, chat bubble, AI disclaimer and scroll arrow are lifted above it (z-index 2,
-   see below). The floating navbar is outside #hello, so it stays above everything.
+   see below). The floating navbar is outside #home, so it stays above everything.
 
    Fades by transitioning the background alpha and the blur radius themselves instead of
    the element's opacity, since opacity on a backdrop-filter element is unreliable in Safari. */
-.hello-overlay::before {
+.home-overlay::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -279,30 +279,30 @@ html.hero-grabbing * {
 }
 
 /* Set by scripts/index.js while an AI chat bubble (loading or with a reply) is showing */
-.hello-overlay.chat-active::before {
+.home-overlay.chat-active::before {
   background-color: rgba(0, 0, 0, 0.5);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
 }
 
 /* Chat bar (its wrapper holds the chat bubble) and AI disclaimer stay above the frosted layer */
-.hello-overlay .chat-glass,
-.hello-overlay .disclaimer {
+.home-overlay .chat-glass,
+.home-overlay .disclaimer {
   position: relative;
   z-index: 2;
 }
 
 /* Scroll-down arrow is navigation, so it also stays above the frost. It's already
    position: absolute, so only the z-index is needed (position: relative would move it). */
-.hello-overlay .hero-stats {
+.home-overlay .hero-stats {
   z-index: 2;
 }
 
-/* .hello-overlay p{
+/* .home-overlay p{
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 } */
 
-.hello-emoji{
+.home-emoji{
   /* font-size: 56px; */
   width: 88px;
   height: 88px;
@@ -355,7 +355,7 @@ html.hero-grabbing * {
 }
 
 /* Reflective rim, same as the navbar's. z-index 0 keeps it above the glass layer (-1) but
-   under .hello-chat-border-wrapper (1), so the chat bubble, which overlaps the glass's top
+   under .home-chat-border-wrapper (1), so the chat bubble, which overlaps the glass's top
    edge, is never drawn over by the rim. */
 .chat-glass::after {
   content: '';
@@ -378,6 +378,97 @@ html.hero-grabbing * {
     linear-gradient(#000 0 0);
   -webkit-mask-composite: source-in, xor;
   pointer-events: none;
+}
+
+/* Pixel T-rex standing on the bar's top edge, centered over the send button (the button's
+   center sits 35px in from .chat-glass's right edge). Faces left, toward the typed text.
+   It breathes (the body dips 1px over its legs), blinks now and then, and fades out while a
+   chat bubble is showing. (Moving it left onto the bar's flat top was tried and dropped.) */
+.chat-dino {
+  position: absolute;
+  bottom: 100%;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  z-index: 1;
+  fill: #b465fc;
+  shape-rendering: crispEdges;
+  transform: scaleX(-1);
+  filter: drop-shadow(0 0 4px rgba(208, 137, 255, 0.45));
+  pointer-events: none;
+  transition: opacity 0.35s ease; /* same timing as the frosted layer */
+}
+
+.home-overlay.chat-active .chat-dino {
+  opacity: 0;
+}
+
+/* Panicking (scripts/index.js sets it while a caught hero light is dragged close): it turns
+   its back on the light (faces-right) and runs in place, hopping. Watching the light pass
+   (turning toward it, looking up) was tried and dropped. */
+.chat-dino.faces-right {
+  transform: none;
+}
+
+.chat-dino-run-a,
+.chat-dino-run-b,
+.chat-dino.is-panicking .chat-dino-legs {
+  display: none;
+}
+
+.chat-dino.is-panicking .chat-dino-run-a,
+.chat-dino.is-panicking .chat-dino-run-b {
+  display: inline;
+  animation: chat-dino-run 0.16s steps(1, end) infinite;
+}
+
+.chat-dino.is-panicking .chat-dino-run-b {
+  animation-delay: -0.08s;
+}
+
+.chat-dino.is-panicking .chat-dino-body {
+  animation: none;
+}
+
+.chat-dino.is-panicking .chat-dino-sprite {
+  animation: chat-dino-hop 0.16s steps(1, end) infinite;
+}
+
+@keyframes chat-dino-run {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes chat-dino-hop {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+
+.chat-dino-body {
+  animation: chat-dino-breathe 1.2s steps(1, end) infinite;
+}
+
+.chat-dino-lid {
+  opacity: 0;
+  animation: chat-dino-blink 4s steps(1, end) infinite;
+}
+
+@keyframes chat-dino-breathe {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(1px); }
+}
+
+@keyframes chat-dino-blink {
+  0% { opacity: 0; }
+  92% { opacity: 1; }
+  96% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-dino-body,
+  .chat-dino-lid {
+    animation: none;
+  }
 }
 
 @keyframes glow {
@@ -408,7 +499,7 @@ html.hero-grabbing * {
   text-shadow: none;
 } */
 
-#hello {
+#home {
   position: relative;
   background:#161616;
   padding-top: 0px;
@@ -487,7 +578,7 @@ html.hero-grabbing * {
 }
 
 /* Content sections are black, like the hero and footer */
-.section:not(#hello) {
+.section:not(#home) {
   background-color: #000000;
 }
 
@@ -508,6 +599,7 @@ h2.ai-welcome{
 
 #chat{
   scroll-margin-top: 240px;
+  font-family: 'Pixelify Sans', sans-serif;
 }
 
 #profile{
@@ -532,11 +624,11 @@ h2.ai-welcome{
   scroll-margin-top: 60px;
 }
 
+/* Plain text, lined up with the title (it was a square outlined box; an outlined pill was
+   tried) */
 p.tag{
   display:inline-block;
   align-self:first baseline;
-  border: 2px solid #ffffff;
-  padding: 2px;
   font-size: 12px;
   /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); */
 }
@@ -778,19 +870,51 @@ color: #ffffff;
 }
 
 /* XP Cards */
+/* No card, just text: a large icon, a bold title under it, then a short pitch that names the
+   skills (like IBM's feature columns). (They were solid #262626 cards with pills;
+   a soft gradient, glass edges, 24px corners and a nutrition-label style were tried.) */
 .xp1-card,
 .xp2-card,
 .xp3-card {
   position: relative;
-  border: none;
-  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); */
-  border-radius: 8px;
   display: flex;
-  justify-content: space-between;
-  min-height: 300px;
-  overflow: hidden;
-  background: #262626; /* base color */
-  -webkit-mask-image: -webkit-radial-gradient(white, black); /*Overflow fix for Safari in macOS 26.4*/
+}
+
+/* Glows like a placeholder letter at its brightest (glow-letter): a white core with the chat
+   glow's orange and purple light around it, in em so it scales with the icon (narrower than
+   the letters' 0.25 / 0.625 / 1.125em, which at 64px spread too far). The glow breathes:
+   it swells and its warm orange gives way to purple and the deep violet, then settles back.
+   Each icon is offset in the cycle so the three don't pulse in unison. */
+.skill-icon {
+  display: block;
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 32px;
+  text-shadow: 0 0 0.1em #ffffff, 0 0 0.3em #ff9d52, 0 0 0.6em #d089ff;
+  animation: skill-icon-glow 4s ease-in-out infinite;
+}
+
+.xp2-card .skill-icon {
+  animation-delay: -1.33s;
+}
+
+.xp3-card .skill-icon {
+  animation-delay: -2.67s;
+}
+
+@keyframes skill-icon-glow {
+  0%, 100% {
+    text-shadow: 0 0 0.1em #ffffff, 0 0 0.3em #ff9d52, 0 0 0.6em #d089ff;
+  }
+  50% {
+    text-shadow: 0 0 0.14em #ffffff, 0 0 0.4em #d089ff, 0 0 0.8em #6a1fd0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-icon {
+    animation: none;
+  }
 }
 
 /* Fix for shadow disappearing after webkit fix
@@ -805,23 +929,6 @@ color: #ffffff;
 .xp3-card > * {
   position: relative;
   z-index: 1;
-}
-
-.skills-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.skill-pill {
-  background: #383838;
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 14px;
 }
 
 
@@ -921,12 +1028,38 @@ color: #ffffff;
 .xp3-card .card-content {
   position: relative;
   z-index: 2;
-  padding: 20px;
+  padding: 0 0 20px; /* the old card's bottom padding, for room under each group */
   color: #ffffff;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+}
+
+/* Phones: centered, one group under another */
+@media (width < 576px) {
+  .xp1-card .card-content,
+  .xp2-card .card-content,
+  .xp3-card .card-content,
+  .xp1-card .card-content > h2,
+  .xp2-card .card-content > h2,
+  .xp3-card .card-content > h2 {
+    text-align: center;
+  }
+}
+
+.xp1-card .card-content > h2,
+.xp2-card .card-content > h2,
+.xp3-card .card-content > h2 {
+  margin: 0 0 4px;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.xp1-card .card-content > p,
+.xp2-card .card-content > p,
+.xp3-card .card-content > p {
+  margin: 0;
+  font-size: 1rem; /* the site's paragraphs are 14px here */
+  font-weight: 300;
+  color: #ffffff;
 }
 
 .card-footer {
@@ -953,7 +1086,7 @@ color: #ffffff;
 }
 
 /* Hover effects */
-/* .hello-cell:hover {
+/* .home-cell:hover {
   transform: scale(1.03);
   transition: transform 0.3s ease;
   will-change: transform, box-shadow;
@@ -1053,7 +1186,7 @@ color: #ffffff;
 
 /* Chat bubble */
 /* Input bar wrapper: anchor point for bubble */
-.hello-chat-border-wrapper {
+.home-chat-border-wrapper {
   position: relative; /* important: overlay is absolute relative to this */
   z-index: 1; /* above .chat-glass's glass layer and rim, so the chat bubble is on top */
   /* Shared with #chat-overlay-container below, which insets the reply bubble by the same
@@ -1067,7 +1200,7 @@ color: #ffffff;
   max-width: 640px;
 }
 
-/* .hello-chat-border-wrapper:focus-within {
+/* .home-chat-border-wrapper:focus-within {
   box-shadow: 0 0 0 2px #0f62fe;
 } */
 
@@ -1098,13 +1231,14 @@ color: #ffffff;
   align-items: center;
   justify-content: space-between;
   text-align: left;
-  opacity: 0;
   transform: translateY(12px);
-  /* Just the show/hide slide, which is all `all` ever animated here. Deliberately not
+  /* Only the slide is on the bubble. The fade is on its parts (see "Show bubble" below): an
+     opacity below 1 on the bubble makes its glass blur only what's inside the bubble, so at
+     the end of a fade the glass jumped to seeing the page. Deliberately not
      width/height/padding: the loading pill swaps to the full-width reply instantly when it
      lands, and transitioning those would turn that into a half-animated stretch (width would
      animate while height can't, since it goes to `auto`). */
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: transform 0.35s ease;
   font-size: 0.85rem;
   box-sizing: border-box;
   max-width: 100%;
@@ -1253,42 +1387,169 @@ color: #ffffff;
 }
 
 
-/* The bubble's own solid background, painted above the glow so the interior stays opaque */
-.chat-overlay::after {
+/* The bubble's panel: liquid glass, the same treatment as the navbar and chat bar
+   (.chat-glass::before), painted above the glow. (It was a solid gray gradient, 38 to 57.) */
+.chat-overlay::after,
+.skills-modal::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   z-index: -1;
-  background: linear-gradient(to bottom, rgb(38, 38, 38) 0%, rgb(57, 57, 57) 100%);
+  /* Fades by easing its tint, blur and edges in and out (see "Show bubble" below) */
+  background-color: rgba(58, 58, 58, 0);
+  backdrop-filter: blur(0px) saturate(100%);
+  -webkit-backdrop-filter: blur(0px) saturate(100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0),
+    inset 0 1px 0 rgba(255, 255, 255, 0),
+    inset 0 -1px 0 rgba(255, 255, 255, 0);
+  transition:
+    background-color 0.35s ease,
+    backdrop-filter 0.35s ease,
+    -webkit-backdrop-filter 0.35s ease,
+    box-shadow 0.35s ease;
+  pointer-events: none;
 }
 
-/* Show bubble (floating up) */
-.chat-overlay.show {
+/* The glass at full strength. The tint is the chat bar's color (white 0.06 over
+   rgba(30, 30, 30, 0.45), flattened into one color so it can transition), at 0.6 opacity
+   (the bar's works out to 0.483). (A darker rgba(24, 24, 24, 0.62), 0.5 and 0.65 were tried.) */
+.chat-overlay.show:not(.hide)::after,
+.skills-dialog.show .skills-modal::after {
+  background-color: rgba(58, 58, 58, 0.6);
+  backdrop-filter: blur(4px) saturate(180%);
+  -webkit-backdrop-filter: blur(4px) saturate(180%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* With a see-through panel the glow's filled shape washed the whole interior in color, so it's
+   cut to a ring: its outer 10px (2px outside the bubble, 8px under the glass edge, enough to
+   clear the 34px corners), with the center left clear like the navbar's glass. (A thinner
+   4px ring with a rounded cutout was tried: too dim.) */
+.chat-overlay > .chat-glow .chat-glow-clip,
+.skills-modal > .chat-glow .chat-glow-clip {
+  padding: 10px;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+}
+
+/* Its reflective rim, the same as the navbar's (.home-border-wrapper::before): a 1px ring
+   that shows what's behind it, brightened and saturated. A sibling of the glass layer, not
+   inside it, so its backdrop-filter still sees through. */
+.chat-overlay::before,
+.skills-modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 1px;
+  border-radius: inherit;
+  backdrop-filter: blur(0px) brightness(1) saturate(1);
+  -webkit-backdrop-filter: blur(0px) brightness(1) saturate(1);
+  transition: backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease;
+  mask:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.25), #000 20%, #000 80%, rgba(0, 0, 0, 0.25)) intersect,
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.25), #000 20%, #000 80%, rgba(0, 0, 0, 0.25)),
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: source-in, xor;
+  pointer-events: none;
+}
+
+.chat-overlay.show:not(.hide)::before,
+.skills-dialog.show .skills-modal::before {
+  backdrop-filter: blur(2px) brightness(1.4) saturate(2);
+  -webkit-backdrop-filter: blur(2px) brightness(1.4) saturate(2);
+}
+
+/* Show bubble (floating up). The bubble slides; its glow, text and × fade, and its glass eases
+   in (above). The bubble itself never goes below full opacity, which would make the glass
+   blur only what's inside the bubble until the fade ended, then jump to seeing the page. */
+.chat-overlay > .chat-glow,
+.chat-overlay > .chat-text,
+.chat-overlay > .chat-close,
+.skills-modal > .chat-glow,
+.skills-modal > .skills-body,
+.skills-modal > .chat-close {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.chat-overlay.show:not(.hide) > .chat-glow,
+.chat-overlay.show:not(.hide) > .chat-text,
+.chat-overlay.show:not(.hide) > .chat-close,
+.skills-dialog.show .skills-modal > .chat-glow,
+.skills-dialog.show .skills-modal > .skills-body,
+.skills-dialog.show .skills-modal > .chat-close {
   opacity: 1;
+}
+
+.chat-overlay.show {
   transform: translateY(0);  
 }
 
 .chat-overlay.hide {  
-  opacity: 0;
   transform: translateY(12px);
 }
 
-@keyframes fadeUpNew {
+/* When a reply lands, the whole bubble (glow, glass and text together) fades up as one, in the
+   same parts as above. (Fading up just the .chat-text inside the already-visible bubble was
+   the earlier version.) */
+@keyframes slideUpNew {
   from {
-    opacity: 0;
     transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 
-/* When a reply lands, the whole bubble (glow, background and text together) fades up as one.
-   (Fading up just the .chat-text inside the already-visible bubble was the earlier version.) */
+@keyframes fadeInNew {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes glassInNew {
+  from {
+    background-color: rgba(58, 58, 58, 0);
+    backdrop-filter: blur(0px) saturate(100%);
+    -webkit-backdrop-filter: blur(0px) saturate(100%);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0),
+      inset 0 1px 0 rgba(255, 255, 255, 0),
+      inset 0 -1px 0 rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes rimInNew {
+  from {
+    backdrop-filter: blur(0px) brightness(1) saturate(1);
+    -webkit-backdrop-filter: blur(0px) brightness(1) saturate(1);
+  }
+}
+
 .chat-overlay.reply-in {
-  animation: fadeUpNew 0.35s ease;
+  animation: slideUpNew 0.35s ease;
+}
+
+.chat-overlay.reply-in > .chat-glow,
+.chat-overlay.reply-in > .chat-text,
+.chat-overlay.reply-in > .chat-close {
+  animation: fadeInNew 0.35s ease;
+}
+
+.chat-overlay.reply-in::after {
+  animation: glassInNew 0.35s ease;
+}
+
+.chat-overlay.reply-in::before {
+  animation: rimInNew 0.35s ease;
 }
 
 /* AI response avatar + name header */
@@ -1359,9 +1620,25 @@ color: #ffffff;
   animation-delay: 0.4s;
 }
 
+/* Each blink glows like a placeholder letter typing in (glow-letter below): white-hot with the
+   chat glow's orange and purple light at its peak, cooling through peach as it dims. Light in
+   px to match the letters' em values at 16px (and the input cursor's). The peak stays at 40%. */
 @keyframes blink {
-  0%, 80%, 100% { opacity: 0.3; }
-  40% { opacity: 1; }
+  0%, 80%, 100% {
+    opacity: 0.3;
+    background-color: #ffffff;
+    box-shadow: 0 0 4px rgba(255, 217, 168, 0), 0 0 8px rgba(208, 137, 255, 0), 0 0 16px rgba(106, 31, 208, 0);
+  }
+  40% {
+    opacity: 1;
+    background-color: #ffffff;
+    box-shadow: 0 0 4px #ffffff, 0 0 10px #ff9d52, 0 0 18px #d089ff;
+  }
+  60% {
+    opacity: 0.65;
+    background-color: #ffd9a8;
+    box-shadow: 0 0 2px rgba(255, 217, 168, 0.6), 0 0 8px rgba(208, 137, 255, 0.7), 0 0 16px rgba(106, 31, 208, 0.6);
+  }
 }
 
 /*  Chat Input Bar  */
@@ -1551,7 +1828,7 @@ color: #ffffff;
   display: none;
 }
 
-/* The full color ring shows from the first frame: the reply bubble's and skills modal's
+/* The full color ring shows from the first frame: the reply bubble's
    settled ring (blue, orange, cream, white, light blue, deep blue, all the way around).
    Unlike a reply, it skips the arc's transparent gap filling in: on the black hero the gap
    was pure black, and sweeping past at the intro's fast starting spin it read as a stutter. */
@@ -1584,6 +1861,87 @@ color: #ffffff;
   display: none;
 }
 
+/* "Ask AI Raffy" under the Skills and Projects links: the chat bar's intro glow (.chat-bar-glow
+   and .chat-bar-core, played on hover by playIntroGlow in scripts/index.js), sized for the
+   button. The
+   colored shape reaches 3px past the button (the bar's reaches 6px past its input) with a
+   5px blur (7px on the bar), and the crisp line sits 1px outside it (--chat-wrap-pad 0). */
+.ask-ai {
+  --chat-wrap-pad: 0px;
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  margin-top: 16px;
+}
+
+.ask-ai .chat-bar-glow {
+  inset: -27px;
+  filter: blur(5px);
+}
+
+/* Above the glow, and solid (the page's black) so the glow shows only around it */
+.ask-ai .btn-secondary {
+  position: relative;
+  z-index: 1;
+  background-color: #000000;
+}
+
+.ask-ai .btn-secondary:hover,
+.ask-ai .btn-secondary:focus-visible {
+  background-color: #ffffff;
+}
+
+/* Where an "Ask AI Raffy" reply appears: just under the navbar, over the page, with no frosted
+   layer. Its top and width (the hero chat bubbles') are set when a question is sent; this
+   width is the fallback. */
+.ask-ai-chat {
+  position: fixed;
+  left: 50%;
+  translate: -50% 0;
+  width: min(640px, calc(100% - 32px));
+  z-index: 99998; /* under the navbar (99999) */
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* The "Ask AI Raffy" bubbles slide the opposite way to the hero's, since they hang from the
+   navbar: they come down into place and go back up (the hero's rise and sink, 12px, 8px on
+   phones). The fade is the same. */
+.ask-ai-chat .chat-overlay,
+.ask-ai-chat .chat-overlay.hide {
+  transform: translateY(-12px);
+}
+
+.ask-ai-chat .chat-overlay.show:not(.hide) {
+  transform: translateY(0);
+}
+
+@keyframes slideDownNew {
+  from {
+    transform: translateY(-10px);
+  }
+}
+
+.ask-ai-chat .chat-overlay.reply-in {
+  animation: slideDownNew 0.35s ease;
+}
+
+@media (width < 576px) {
+  .ask-ai-chat .chat-overlay,
+  .ask-ai-chat .chat-overlay.hide {
+    transform: translateY(-8px);
+  }
+}
+
+/* A long reply scrolls inside the bubble instead of running off the screen. Replies only: a
+   scrolling box clips what spills past it, which cut the loading dots' glow into a dark
+   rectangle. */
+.ask-ai-chat .chat-overlay:not(.loading) .chat-text {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
 /* Footer */
 footer {
   background-color: #000000;
@@ -1612,7 +1970,7 @@ footer {
    showModal()). The dialog itself is a transparent
    full-screen layer that dims the page and centers the panel; the panel (.skills-modal) is
    framed like the chat bubble: the same .chat-glow markup and classes behind it, the same
-   background gradient and the same ×. Its glow plays the reply bubble's opening (swell,
+   liquid glass panel and the same ×. Its glow plays the reply bubble's opening (swell,
    ring fading in, spin easing down; see openSkills in scripts/index.js), then keeps
    spinning like the bubble's. */
 html.skills-open {
@@ -1649,7 +2007,7 @@ html.skills-open {
 }
 
 /* The dim and blur behind the modal: the hero's chat-active frost
-   (.hello-overlay.chat-active::before), over the whole visible page, navbar included. It's
+   (.home-overlay.chat-active::before), over the whole visible page, navbar included. It's
    positioned in the page (absolute) and placed over the visible area, plus a margin, when the
    modal opens (see openSkills), not fixed (see .skills-dialog). Fades the same way as the
    hero's: the background alpha and blur radius transition, not opacity (unreliable on
@@ -1686,24 +2044,14 @@ html.skills-open {
   width: min(960px, 100%);
   max-height: 100%;
   border-radius: 32px;
-  opacity: 0;
+  /* Slides like the bubble; its glass, glow, content and × fade in with the bubble's rules
+     (.chat-overlay::after and the ones after it), never the panel's own opacity */
   transform: translateY(12px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: transform 0.35s ease;
 }
 
 .skills-dialog.show .skills-modal {
-  opacity: 1;
   transform: translateY(0);
-}
-
-/* The bubble's solid background (same as .chat-overlay::after), above the glow */
-.skills-modal::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  z-index: -1;
-  background: linear-gradient(to bottom, rgb(38, 38, 38) 0%, rgb(57, 57, 57) 100%);
 }
 
 /* The bubble's spinner is 150% of its width, enough for a wide, short bubble. The panel is
@@ -1713,10 +2061,9 @@ html.skills-open {
    its width and height (cqw/cqh). A flat 300% of the width was tried first: on a wide panel
    that's a ~2,500px blurred layer, which iPad and landscape iPhone Safari leaked out of the
    clip as blurred bands above and below the panel. The mask is the same Safari overflow-clip
-   fix as the XP cards. */
+   fix as the XP cards; the glow ring's mask (with the bubble's) now does that job. */
 .skills-modal .chat-glow-clip {
   container-type: size;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .skills-modal .chat-glow-spin {
@@ -1820,9 +2167,11 @@ html.skills-open {
   z-index: 1; /* above the bridges */
   padding: 40px 8px 24px;
   border-radius: 20px;
-  background: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.12);
+  /* Glass tiles on the glass panel: a soft white tint, lighter at the top, with the panel's
+     thin bright edge (they were solid black with a hard 6px white offset shadow) */
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
   text-align: center;
 }
 
@@ -1858,19 +2207,21 @@ html.skills-open {
 }
 
 /* Each bridge fills its gap column and slopes from high on the outer pillar to low on the
-   center one */
+   center one. Filled with the chat glow's colors, purple at the outer pillars to orange at
+   the center one (they were a flat white 0.16). */
 .m-bridge {
   grid-row: 1 / 3;
-  background: rgba(255, 255, 255, 0.16);
 }
 
 .m-bridge-left {
   grid-column: 2;
+  background: linear-gradient(to right, rgba(208, 137, 255, 0.4), rgba(255, 157, 82, 0.4));
   clip-path: polygon(0 4%, 100% 50%, 100% 92%, 0 44%);
 }
 
 .m-bridge-right {
   grid-column: 4;
+  background: linear-gradient(to left, rgba(208, 137, 255, 0.4), rgba(255, 157, 82, 0.4));
   clip-path: polygon(0 50%, 100% 4%, 100% 44%, 0 92%);
 }
 
@@ -1951,7 +2302,6 @@ html.skills-open {
   .m-pillar {
     padding: 28px 4px 16px;
     border-radius: 14px;
-    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.12);
   }
 
   .m-pillar-center {
@@ -1991,23 +2341,23 @@ html.skills-open {
     font-size: 0.8rem; /* reduced font size on mobile */
   }
 
-  .hello-border-wrapper::before {
+  .home-border-wrapper::before {
     inset: 3px; /* matches the wrapper's mobile padding */
   }
 
-  .hello-border-wrapper {
+  .home-border-wrapper {
     padding: 3px; 
     width: 95vw;  
     max-width: none; 
     min-width: unset; 
   }
 
-  /* .hello-cell{
+  /* .home-cell{
     border-top-left-radius: 36px;
     border-top-right-radius: 36px;
   } */
 
-  .hello-overlay {
+  .home-overlay {
     padding: 12px 12px;
   }
 
@@ -2048,10 +2398,7 @@ html.skills-open {
   .project-card.bg-image3,
   .project-card.bg-image4,
   .project-card.bg-image5,
-  .project-card.bg-image6,
-  .xp1-card,
-  .xp2-card,
-  .xp3-card {
+  .project-card.bg-image6 {
     height: 100%;
     min-height: 240px;
   }
@@ -2062,7 +2409,7 @@ html.skills-open {
     font-size: 40px;
   }
 
-  .hello-chat-border-wrapper {
+  .home-chat-border-wrapper {
     position: relative;
     --chat-wrap-pad: 3px;
     padding: var(--chat-wrap-pad);
@@ -2087,6 +2434,11 @@ html.skills-open {
 
   #send-btn {
     padding: 0.2rem 0.45rem;
+  }
+
+  /* Re-centered over the smaller send button */
+  .chat-dino {
+    right: 11px;
   }
 
   .typing .dot {
@@ -2157,7 +2509,7 @@ html.skills-open {
 
 @media (576px <= width < 768px){
   
-  .hello-overlay {
+  .home-overlay {
     padding: 8px 8px;
   }
 
@@ -2177,10 +2529,7 @@ html.skills-open {
   .project-card.bg-image3,
   .project-card.bg-image4,
   .project-card.bg-image5,
-  .project-card.bg-image6,
-  .xp1-card,
-  .xp2-card,
-  .xp3-card {
+  .project-card.bg-image6 {
     height: 100%;
     min-height: 240px;
   }
@@ -2214,10 +2563,7 @@ html.skills-open {
   .project-card.bg-image3,
   .project-card.bg-image4,
   .project-card.bg-image5,
-  .project-card.bg-image6,
-  .xp1-card,
-  .xp2-card,
-  .xp3-card {
+  .project-card.bg-image6 {
     height: 100%;
     min-height: 240px;
   }
@@ -2250,7 +2596,7 @@ html.skills-open {
 
 @media (height <= 500px) {
    
-  .hello-cell {
+  .home-cell {
     height: auto;
     min-height: 160vh;
   }
@@ -2296,10 +2642,7 @@ html.skills-open {
   .project-card.bg-image3,
   .project-card.bg-image4,
   .project-card.bg-image5,
-  .project-card.bg-image6,
-  .xp1-card,
-  .xp2-card,
-  .xp3-card {
+  .project-card.bg-image6 {
    height: 100%;
    min-height: 240px;
   }

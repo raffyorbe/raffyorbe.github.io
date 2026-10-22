@@ -17,19 +17,19 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
   <!-- Font Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300..600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300..600&family=Pixelify+Sans:wght@400..600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
 
   <!-- Custom Styles. The ?v= stamp (also on scripts/index.js below) makes browsers fetch fresh
        files after a deploy instead of a cached copy (GitHub Pages caches for 10 minutes). Bump
        both stamps whenever the CSS or JS changes. -->
-  <link rel="stylesheet" href="styles/index.css?v=2026-10-20aw" />
+  <link rel="stylesheet" href="styles/index.css?v=2026-10-22b" />
 </head>
 
 <header>
   <!-- Nav Bar -->
-  <div class="hello-border-wrapper">
+  <div class="home-border-wrapper">
     <nav class="floating-navbar d-flex justify-content-between">
-      <a class="nav-link link" href="#hello">✦ Hello</a>
+      <a class="nav-link link" href="#home">✦ Home</a>
       <a class="nav-link link" href="#profile" data-targets="profile,mission">✳︎ Skills</a>
       <a class="nav-link link" href="#projects" data-targets="projects,companies">❖ Projects</a>
       <a class="nav-link link" href="#contact" data-targets="contact,notes">✤ Contact</a>
@@ -38,20 +38,20 @@
 </header>
 
 <body>
-  <!-- Hello Section -->
-  <section class="section" id="hello">
+  <!-- Home Section -->
+  <section class="section" id="home">
 
-    <div class="hello-cell">
+    <div class="home-cell">
       <!-- The hero light: drifts, and can be caught and drawn with. Drawn by scripts/index.js -->
-      <canvas class="hello-glow" aria-hidden="true"></canvas>
+      <canvas class="home-glow" aria-hidden="true"></canvas>
       <!-- Glitched pixel art from a click or tap on the hero. Drawn by scripts/index.js -->
-      <canvas class="hello-glitch" aria-hidden="true"></canvas>
+      <canvas class="home-glitch" aria-hidden="true"></canvas>
       <!-- Wave of characters from catching the light. Drawn by scripts/index.js -->
-      <canvas class="hello-ripple" aria-hidden="true"></canvas>
-      <!-- <video autoplay muted loop playsinline preload="auto" class="hello-video">
+      <canvas class="home-ripple" aria-hidden="true"></canvas>
+      <!-- <video autoplay muted loop playsinline preload="auto" class="home-video">
         <source src="images/heroclip.mp4" type="video/mp4">
       </video> -->
-      <div class="hello-overlay">
+      <div class="home-overlay">
 
         <div class="row justify-content-center">
           <div class="col">
@@ -59,7 +59,21 @@
             <p class="mb-4 mobile-p">Design Technologist and Product Guy</p>
             <!-- Input layer -->
             <div class="container chat-glass">
-                  <div class="hello-chat-border-wrapper">
+                  <!-- Pixel T-rex standing on the bar above the send button. Its legs run while it
+                       panics at a caught hero light (see .chat-dino and the hero T-rex in
+                       scripts/index.js). -->
+                  <svg class="chat-dino" viewBox="0 0 20 20" aria-hidden="true">
+                    <g class="chat-dino-sprite">
+                      <g class="chat-dino-body">
+                        <path d="M10 0h8v1h-8zM9 1h10v1h-10zM9 2h2v1h-2zM12 2h7v1h-7zM9 3h10v1h-10zM9 4h10v1h-10zM9 5h5v1h-5zM9 6h8v1h-8zM0 7h1v1h-1zM8 7h5v1h-5zM0 8h1v1h-1zM7 8h6v1h-6zM0 9h2v1h-2zM6 9h8v1h-8zM0 10h3v1h-3zM5 10h9v1h-9zM15 10h2v1h-2zM0 11h13v1h-13zM16 11h1v1h-1zM1 12h12v1h-12zM2 13h11v1h-11zM3 14h9v1h-9zM4 15h7v1h-7z" />
+                        <rect class="chat-dino-lid" x="11" y="2" width="1" height="1" />
+                      </g>
+                      <path class="chat-dino-legs" d="M5 16h3v1h-3zM9 16h2v1h-2zM5 17h2v1h-2zM10 17h1v1h-1zM5 18h1v1h-1zM10 18h1v1h-1zM5 19h2v1h-2zM10 19h2v1h-2z" />
+                      <path class="chat-dino-run-a" d="M5 16h3v1h-3zM9 16h2v1h-2zM5 17h1v1h-1zM10 17h2v1h-2zM5 18h1v1h-1zM5 19h2v1h-2z" />
+                      <path class="chat-dino-run-b" d="M5 16h3v1h-3zM9 16h2v1h-2zM6 17h2v1h-2zM10 17h1v1h-1zM10 18h1v1h-1zM10 19h2v1h-2z" />
+                    </g>
+                  </svg>
+                  <div class="home-chat-border-wrapper">
                     <!-- Intro glow: the chat bubble's glow, played once behind the input (see .chat-bar-glow) -->
                     <div class="chat-glow chat-bar-glow" aria-hidden="true"><div class="chat-glow-clip"><div class="chat-glow-spin"><div class="chat-glow-arc"></div><div class="chat-glow-color"></div></div></div></div>
                     <!-- The intro glow's crisp 1px line at the input's edge: an unblurred copy of the glow -->
@@ -124,21 +138,24 @@
                 <path d="M12 16v-4M12 8h.01" />
               </svg> View Talent Model</button>
           </div>
+          <!-- Asks AI Raffy for an overview of the skills; the reply fades in under the navbar. It
+               plays the chat bar's intro glow, sized for the button, on hover. -->
+          <div class="link-centered">
+            <div class="ask-ai">
+              <div class="chat-glow chat-bar-glow" aria-hidden="true"><div class="chat-glow-clip"><div class="chat-glow-spin"><div class="chat-glow-arc"></div><div class="chat-glow-color"></div></div></div></div>
+              <div class="chat-bar-core" aria-hidden="true"><div class="chat-glow-spin"><div class="chat-glow-arc"></div><div class="chat-glow-color"></div></div></div>
+              <button type="button" class="btn btn-secondary btn-md" data-question="Give me an overview of your skills">✦ Ask about skills</button>
+            </div>
+          </div>
         </div>
         <div class="col-md-6 col-lg-3">
           <div class="xp-card-shadow">
             <div class="xp1-card">
               <div class="card-content">
-                <h2>✾ Products</h2>
+                <span class="skill-icon" aria-hidden="true">✾</span>
+                <h2>Products</h2>
                 <!-- <h2 style="color: #ffffff">Design</h2> -->
-                <p>I create for humans</p>
-                <ul class="skills-list">
-                <li class="skill-pill">Product Design</li>
-                <li class="skill-pill">Figma</li>
-                <li class="skill-pill">User Research</li>
-                <li class="skill-pill">Design Systems</li>
-                <li class="skill-pill">Interaction Design</li>
-              </ul>
+                <p>I create for humans through product design, user research and interaction design, designed in Figma and brought to life in Claude Code.</p>
               </div>
             </div>
           </div>
@@ -147,17 +164,10 @@
           <div class="xp-card-shadow">
             <div class="xp2-card">
               <div class="card-content">
-                <h2>✼ Systems</h2>
+                <span class="skill-icon" aria-hidden="true">✼</span>
+                <h2>Systems</h2>
                 <!-- <h2 style="color: #ffffff">Integration</h2> -->
-                 <p>I make sure it works</p>
-                 <ul class="skills-list">
-                  <li class="skill-pill">IT Admin</li>
-                  <li class="skill-pill">API Integration</li>
-                  <li class="skill-pill">Automation</li>
-                  <li class="skill-pill">AI Agents</li>
-                  <li class="skill-pill">Systems Consolidation</li>
-                </ul>
-                </ul>
+                <p>I make sure it works, from IT admin and API integration to automation, AI agents, design systems and systems consolidation.</p>
               </div>
             </div>
           </div>
@@ -166,16 +176,10 @@
           <div class="xp-card-shadow">
             <div class="xp3-card">
               <div class="card-content">
-                <h2>❉ Data</h2>
+                <span class="skill-icon" aria-hidden="true">❉</span>
+                <h2>Data</h2>
                 <!-- <h2 style="color: #ffffff">Analytics</h2> -->
-                <p>I make it make sense</p>
-                <ul class="skills-list">
-                  <li class="skill-pill">Documentation</li>
-                  <li class="skill-pill">Tableau</li>
-                  <li class="skill-pill">Data Analysis</li>
-                  <li class="skill-pill">Data Pipelines</li>
-                  <li class="skill-pill">Data Storytelling</li>
-                </ul>
+                <p>I make it make sense with data pipelines, data analysis and documentation, turned into actionable insights in Tableau and custom dashboards.</p>
               </div>
             </div>
           </div>
@@ -220,6 +224,14 @@
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M7 17l9.2-9.2M17 17V7H7" />
               </svg></a>
+          </div>
+          <!-- Asks AI Raffy for an overview of the projects (see the Skills one above) -->
+          <div class="link-centered">
+            <div class="ask-ai">
+              <div class="chat-glow chat-bar-glow" aria-hidden="true"><div class="chat-glow-clip"><div class="chat-glow-spin"><div class="chat-glow-arc"></div><div class="chat-glow-color"></div></div></div></div>
+              <div class="chat-bar-core" aria-hidden="true"><div class="chat-glow-spin"><div class="chat-glow-arc"></div><div class="chat-glow-color"></div></div></div>
+              <button type="button" class="btn btn-secondary btn-md" data-question="Give me an overview of the projects on this site">✦ Ask about projects</button>
+            </div>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
@@ -454,9 +466,10 @@
     </div>
   </dialog>
 
+
   <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="scripts/index.js?v=2026-10-20aw"></script>
+  <script src="scripts/index.js?v=2026-10-22b"></script>
 </body>
 
 </html>
