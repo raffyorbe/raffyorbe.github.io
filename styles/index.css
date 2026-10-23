@@ -1573,20 +1573,117 @@ color: #ffffff;
   color: #ffffff;
 }
 
-/* Close button inside bubble */
+/* Action buttons under a reply (replyActions in scripts/index.js), links and copy buttons:
+   translucent white pills a shade lighter than the bubble's glass, with no border or rim.
+   (A darker fill, rgba(20, 20, 20, 0.35 / 0.55 / 0.7), was the first version.) */
+.chat-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.chat-action {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 400; /* the site's buttons' weight (500 was tried) */
+  line-height: 1.2;
+  text-decoration: none;
+  border: none; /* the copy buttons are <button>s */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.chat-action:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+/* Pressed: lighter again, a color change only like the site's Bootstrap buttons, so a tap shows
+   on phones, where there's no hover (iOS Safari needs the touchstart listener in
+   scripts/index.js to apply :active). (A press-in to 0.96 scale was tried.) */
+.chat-action:active,
+.chat-close:active {
+  background-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Copy buttons: the label and "Copied" share one grid cell, so the button is sized by the
+   longer one and keeps its shape while they crossfade */
+.chat-action-copy {
+  display: inline-grid;
+  justify-items: center;
+}
+
+.chat-action-copy > span {
+  grid-area: 1 / 1;
+  transition: opacity 0.2s ease;
+}
+
+.chat-action-copy > .chat-action-copied,
+.chat-action-copy.is-copied > span:first-child {
+  opacity: 0;
+}
+
+.chat-action-copy.is-copied > .chat-action-copied {
+  opacity: 1;
+}
+
+.chat-action:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+}
+
+/* Close button inside bubble and the talent model: a 24px circle with the reply action
+   buttons' fill (.chat-action), a shade lighter than the glass, no border */
 .chat-close {
-  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
   border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   font-size: 1.1rem;
   font-weight: 300;
-  /* Even padding so the focus ring is centered on the ×; the margins keep the × exactly
-     where it was (was margin-left 12px, padding-left 8px) */
-  margin-left: 16px;
-  margin-right: -4px;
-  padding: 0 4px;
-  border-radius: 4px;
+  line-height: 1;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.chat-close:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+/* In the bubble's top-right corner, centered on the ✦ Raffy Orbe header and as far in from the
+   right as from the top, so it sits evenly in the rounded corner like the talent model's ×
+   and the text below runs the bubble's full width. --chat-close-center is the header's
+   middle: the bubble's 16px padding plus half the ✦ (Bootstrap's h3 size). (It sat beside
+   the text, centered on the bubble's height; then 16px in, tight against the right edge.) */
+.chat-overlay > .chat-close {
+  --chat-close-center: calc(16px + (1.3rem + 0.6vw) / 2);
+  position: absolute;
+  top: calc(var(--chat-close-center) - 12px);
+  right: calc(var(--chat-close-center) - 12px);
+  margin: 0;
+}
+
+@media (min-width: 1200px) {
+  .chat-overlay > .chat-close {
+    --chat-close-center: calc(16px + 1.75rem / 2);
+  }
+}
+
+.chat-overlay > .chat-text {
+  flex: 1;
+  min-width: 0;
 }
 
 /* Keyboard focus: the same white ring as the site's other links and buttons */
@@ -1890,6 +1987,13 @@ color: #ffffff;
   background-color: #ffffff;
 }
 
+/* Pressed: stays solid. The site's .btn:active makes the background inherit (see "Buttons"),
+   which here is transparent, so a click during the glow showed the spinning colors through
+   the button instead of only around its edge. Black, like the other buttons' pressed look. */
+.ask-ai .btn-secondary:active {
+  background-color: #000000 !important;
+}
+
 /* Where an "Ask AI Raffy" reply appears: just under the navbar, over the page, with no frosted
    layer. Its top and width (the hero chat bubbles') are set when a question is sent; this
    width is the fallback. */
@@ -2078,11 +2182,10 @@ html.skills-open {
 .skills-close {
   position: absolute;
   top: 20px;
-  right: 24px;
+  right: 20px;
   z-index: 1;
   margin: 0;
   font-size: 1.5rem;
-  line-height: 1;
 }
 
 /* Scrolls inside the panel when the viewport is short, so the glow (outside it) isn't clipped */
@@ -2266,7 +2369,7 @@ html.skills-open {
 @media (width < 576px) {
   .skills-close {
     top: 14px;
-    right: 18px;
+    right: 14px;
   }
 
   .skills-body {

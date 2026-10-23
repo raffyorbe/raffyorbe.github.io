@@ -503,6 +503,151 @@ document.addEventListener("DOMContentLoaded", function () {
 
     textElem.appendChild(header);
     textElem.appendChild(document.createTextNode(message));
+
+    const actions = replyActions(message);
+    if (actions.length) {
+      const row = document.createElement("div");
+      row.className = "chat-actions";
+      // Where the copy buttons tell screen readers "Copied" (outside the buttons, so it
+      // doesn't become part of their names)
+      const status = document.createElement("span");
+      status.className = "visually-hidden";
+      status.setAttribute("role", "status");
+      actions.forEach(({ label, href, copy }) => {
+        if (copy) {
+          row.appendChild(copyButton(label, copy, status));
+          return;
+        }
+        const link = document.createElement("a");
+        link.className = "chat-action";
+        link.href = href;
+        link.textContent = label;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        row.appendChild(link);
+      });
+      row.appendChild(status);
+      textElem.appendChild(row);
+    }
+  }
+
+  // iOS Safari only shows :active (the reply actions' and ×'s pressed state) on a page that
+  // listens for touchstart
+  document.addEventListener("touchstart", () => {}, { passive: true });
+
+  // A reply action that copies contact details to the clipboard. Its label crossfades to
+  // "Copied" for a moment, then back. Both labels sit in the same spot (.chat-action-copy in
+  // styles/index.css), so the button keeps the longer label's size throughout. Screen readers
+  // keep the button's name ("Copy number") and hear "Copied" from a hidden status message.
+  const COPIED_LABEL_MS = 1600;
+
+  function copyButton(label, value, status) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "chat-action chat-action-copy";
+
+    const idle = document.createElement("span");
+    idle.textContent = label;
+    const done = document.createElement("span");
+    done.className = "chat-action-copied";
+    done.textContent = "Copied";
+    done.setAttribute("aria-hidden", "true");
+    btn.append(idle, done);
+
+    let resetTimer = null;
+    const setCopied = (copied) => {
+      btn.classList.toggle("is-copied", copied);
+      status.textContent = copied ? "Copied" : "";
+    };
+    btn.addEventListener("click", async () => {
+      if (!(await copyText(value))) return;
+      setCopied(true);
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => setCopied(false), COPIED_LABEL_MS);
+    });
+    return btn;
+  }
+
+  // The Clipboard API needs a secure page (https or localhost); on a LAN address while testing
+  // on a phone, fall back to the older copy command.
+  async function copyText(value) {
+    try {
+      await navigator.clipboard.writeText(value);
+      return true;
+    } catch {
+      const field = document.createElement("textarea");
+      field.value = value;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.select();
+      const ok = document.execCommand("copy");
+      field.remove();
+      return ok;
+    }
+  }
+
+  // Up to two buttons under a reply, picked from what the reply talks about. Only actions that
+  // do something (open a project or LinkedIn, copy an email or a phone number), never a scroll
+  // within the page, and only when the reply points the reader there: a project the reply is
+  // about (one or two of them, not an overview naming several), contact details it gives, or
+  // LinkedIn when it brings it up. Links come from the page itself (the project cards and the
+  // Contact section), so a button always matches the card. In order of first mention in the
+  // reply.
+  const MAX_REPLY_ACTIONS = 2;
+  const MAX_PROJECTS_FOR_ACTIONS = 2; // an overview names more than this: no project buttons
+
+  // Button labels and the short names a reply might use, by project card title. Never a
+  // bare "Globe" (the company), "Xbox" or "Twitch": those come up outside the studies.
+  const PROJECT_ACTIONS = {
+    "Manrattan": { label: "See Manrattan" },
+    "Globe Design Study": { label: "See Globe Study", aliases: ["Globe study"] },
+    "NYU Jobs Portal Prototype": { label: "See NYU Portal", aliases: ["NYU Jobs Portal", "NYU Jobs", "NYU portal", "jobs portal"] },
+    "Xbox Design Study": { label: "See Xbox Study", aliases: ["Xbox study"] },
+    "Twitch Design Study": { label: "See Twitch Study", aliases: ["Twitch study"] },
+    "My Job Board": { label: "See Job Board", aliases: ["job board"] },
+  };
+
+  // A phone number as AI Raffy writes it: always "+1 (XXX) XXX-XXXX" (its reference file allows
+  // only Raffy's number, in exactly this format). Matching the format keeps year ranges
+  // ("2019-2023") from getting a button without putting the number in the page's code.
+  // (Any long run of digits, then the number itself stored here, were tried.)
+  const PHONE_FORMAT = /\+1 \(\d{3}\) \d{3}-\d{4}/;
+
+  function replyActions(message) {
+    if (!message) return [];
+    const text = message.toLowerCase();
+    const found = []; // { at, label, href } or { at, label, copy }
+
+    // Projects, by card title or a short name for it
+    const projects = [];
+    document.querySelectorAll(".project-card .card-link").forEach((link) => {
+      const title = link.textContent.trim();
+      const { label = `See ${title}`, aliases = [] } = PROJECT_ACTIONS[title] || {};
+      const names = [title, ...aliases].map((n) => n.toLowerCase());
+      const at = Math.min(...names.map((n) => text.indexOf(n)).filter((i) => i >= 0));
+      if (Number.isFinite(at)) projects.push({ at, label, href: link.href });
+    });
+    if (projects.length <= MAX_PROJECTS_FOR_ACTIONS) found.push(...projects);
+
+    // Contact details the reply gives: the email address (the Contact section's) and the
+    // phone number (PHONE_FORMAT) are copied, and a LinkedIn mention opens LinkedIn.
+    // (Write email, a mailto:, was the first email action.)
+    const contact = document.querySelector("#contact");
+    const mail = contact?.querySelector('a[href^="mailto:"]');
+    if (mail) {
+      const address = mail.href.replace(/^mailto:/, "");
+      const at = text.indexOf(address.toLowerCase());
+      if (at >= 0) found.push({ at, label: "Copy email", copy: address });
+    }
+    const phone = message.match(PHONE_FORMAT);
+    if (phone) found.push({ at: phone.index, label: "Copy number", copy: phone[0] });
+    const linkedin = contact?.querySelector('a[href*="linkedin.com"]');
+    const linkedinAt = text.indexOf("linkedin");
+    if (linkedin && linkedinAt >= 0) found.push({ at: linkedinAt, label: "Connect on LinkedIn", href: linkedin.href });
+
+    return found.sort((a, b) => a.at - b.at).slice(0, MAX_REPLY_ACTIONS);
   }
   // Swap the loading dots for the reply: the whole bubble, text included, fades up as one.
   // The glow keeps going, with its ring fading in and its speed easing down (settleGlow).
