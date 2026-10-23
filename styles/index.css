@@ -599,7 +599,7 @@ h2.ai-welcome{
 
 #chat{
   scroll-margin-top: 240px;
-  font-family: 'Pixelify Sans', sans-serif;
+  font-family: 'Google Sans Flex', sans-serif;
 }
 
 #profile{
@@ -1552,7 +1552,7 @@ color: #ffffff;
   animation: rimInNew 0.35s ease;
 }
 
-/* AI response avatar + name header */
+/* AI response header: a ✦ (it was the memoji) and the name */
 .chat-header {
   display: flex;
   align-items: center;
@@ -1560,12 +1560,11 @@ color: #ffffff;
   margin-bottom: 12px;
 }
 
-.chat-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
+/* An h3 at the site's h3 size */
+.chat-mark {
+  margin: 0;
+  line-height: 1;
+  color: #ffffff;
 }
 
 .chat-name {

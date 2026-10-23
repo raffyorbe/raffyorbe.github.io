@@ -482,23 +482,23 @@ document.addEventListener("DOMContentLoaded", function () {
     return bubble;
   }
 
-  // Render the "Raffy Orbe" avatar/name header followed by the message text
+  // Render the ✦ "Raffy Orbe" header followed by the message text (the ✦ was the memoji)
   function setAIMessageContent(textElem, message) {
     textElem.innerHTML = "";
 
     const header = document.createElement("div");
     header.className = "chat-header";
 
-    const avatar = document.createElement("img");
-    avatar.src = "images/memojibadge.png";
-    avatar.alt = "";
-    avatar.className = "chat-avatar";
+    const mark = document.createElement("h3");
+    mark.className = "chat-mark";
+    mark.setAttribute("aria-hidden", "true");
+    mark.textContent = "✦";
 
     const name = document.createElement("span");
     name.className = "chat-name";
     name.textContent = "Raffy Orbe";
 
-    header.appendChild(avatar);
+    header.appendChild(mark);
     header.appendChild(name);
 
     textElem.appendChild(header);
@@ -646,18 +646,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const placeholderEl = document.getElementById("placeholder");
 
   const placeholders = [
+    "Hello, world!",
     "Ask me anything",
-    "Try catching the light", // the hero light: catch it (glitching) and draw with it
-    "Ask me how I design experiences",
-    "Ask me how I integrate systems",
-    "Ask me how I develop frontends",
-    "Ask me about my skills",
+    "Ask me how I design and build",
     "Ask me about my work's impact",
-    "Ask me how I collaborate",
-    "Ask me about my work habits",
     "Ask me about my projects",
-    "Ask me about my learning style",
-    "Ask me what managers say about me"
+    "Ask me how I collaborate",
+    "Ask me what managers say about me",
+    "Have you tried catching the light?" // the hero light: catch it and draw with it
   ];
 
   // Each line types out: one span per letter, each flashing in with the chat glow's colors and
@@ -1401,7 +1397,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // a link, button, the chat bar or a bubble) grabs it, and it follows the cursor or finger,
     // drawing, until it's let go or leaves the hero; then it glides back into the drift. The
     // catch sets off a wave of characters (the hero wave below) instead of a glitch. Anywhere
-    // else, a press glitches, and a finger scrolls the page as usual.
+    // else, a press glitches (while the hero glitch is on), and a finger scrolls the page as usual.
     let grabbing = false;
     let grabTouch = null;     // the finger holding the light, by touch identifier
     const CATCH = 0.9;        // the catch reaches 0.9x the head's radius: aim for the bright core
@@ -1508,6 +1504,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // tears apart and drops out. Each press picks a random sprite (things Raffy likes) and a
   // random color, never the same as the last one. Drawn on its own canvas, only while a glitch
   // is playing. Off during a chat, and under prefers-reduced-motion.
+  // Disabled for now: its canvas (.home-glitch) is commented out in index.html, so this block
+  // is skipped. Uncomment the canvas to bring the glitch back.
   const glitchCanvas = document.querySelector(".home-glitch");
   if (glitchCanvas && glowCell && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const gctx = glitchCanvas.getContext("2d");
@@ -1881,6 +1879,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // toward the viewer (larger, nudged up and outward) and the surface settles behind it.
   // Characters flicker through new ones as it rolls. Colored by distance from the catch: it
   // bursts white and cream and cools into lilac, purple and violet as it spreads and fades.
+  // Every character glows: the white and cream burst with a placeholder letter's light
+  // (glow-letter in styles/index.css), the purples with a softer violet light.
   // IBM Plex Mono on a character grid. Drawn on its own full-resolution canvas, between the
   // glitch and the light, only while a wave is running. Off during a chat, and under
   // prefers-reduced-motion.
@@ -1900,8 +1900,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const LIFT_SCALE = 0.6;     // how much it enlarges them (+60% at the peak)
     const CHAR_FLICKER = 70;    // ms each character holds before changing
     const CHARS = "01<>/\\{}[]()#*+=-~:;!?%&$@ABCDEFGHJKLMNPRSTUVXYZ";
-    // By distance from the catch (px): white and cream at the burst, then the purples outward
-    const WAVE_SHADES = [[40, "#ffffff"], [95, "#ffd9a8"], [175, "#d089ff"], [270, "#6a1fd0"], [Infinity, "#5a2fd0"]];
+    // By distance from the catch (px): white and cream at the burst, then the purples outward.
+    // Each shade's glow is a list of [blur in em, color], like a text-shadow: the white is a
+    // placeholder letter as it flashes in (glow-letter at 0-12%), the cream as it cools (45%).
+    const WAVE_SHADES = [
+      [40, "#ffffff", [[0.25, "#ffffff"], [0.625, "#ff9d52"], [1.125, "#d089ff"]]],
+      [95, "#ffd9a8", [[0.125, "rgba(255, 217, 168, 0.6)"], [0.5, "rgba(208, 137, 255, 0.7)"], [1, "rgba(106, 31, 208, 0.6)"]]],
+      [175, "#d089ff", [[0.5, "rgba(208, 137, 255, 0.7)"], [1, "rgba(106, 31, 208, 0.6)"]]],
+      [270, "#6a1fd0", [[0.5, "rgba(140, 70, 255, 0.8)"], [0.9, "rgba(106, 31, 208, 0.5)"]]],
+      [Infinity, "#5a2fd0", [[0.5, "rgba(120, 80, 255, 0.7)"], [0.9, "rgba(90, 47, 208, 0.45)"]]]
+    ];
     const FONT = `400 ${FONT_PX}px "IBM Plex Mono", monospace`;
 
     let waves = [];             // { x, y, t, seed } in CSS px relative to the canvas
@@ -1926,7 +1934,6 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("resize", () => {
       if (waves.length) sizeWave();
     });
-    if (document.fonts && document.fonts.load) document.fonts.load(FONT); // ready before the first catch
 
     document.addEventListener("herochatchange", (e) => {
       waveChat = e.detail.active;
@@ -1939,8 +1946,42 @@ document.addEventListener("DOMContentLoaded", function () {
       return (h ^ (h >>> 16)) >>> 0;
     }
     function shadeAt(d) {
-      for (const [upTo, color] of WAVE_SHADES) if (d < upTo) return color;
-      return WAVE_SHADES[WAVE_SHADES.length - 1][1];
+      for (let i = 0; i < WAVE_SHADES.length - 1; i++) if (d < WAVE_SHADES[i][0]) return i;
+      return WAVE_SHADES.length - 1;
+    }
+
+    // A character's glow (its shadows alone, no character), baked once per character and shade
+    // at 1 px per CSS px and scaled up to draw: a blur doesn't need the resolution. Drawing
+    // canvas shadows for every character every frame would drop frames. Each shadow is cast
+    // from a character drawn off the sprite, so only the light lands on it.
+    const GLOW_SPRITES = new Map();
+    const GLOW_PASSES = 3;
+    function glowSprite(ch, shade) {
+      const key = ch + shade;
+      let g = GLOW_SPRITES.get(key);
+      if (g) return g;
+      const layers = WAVE_SHADES[shade][2];
+      const pad = Math.ceil(Math.max(...layers.map(([em]) => em)) * FONT_PX * 1.5);
+      const side = FONT_PX + pad * 2;
+      g = document.createElement("canvas");
+      g.width = g.height = side;
+      const gc = g.getContext("2d");
+      gc.font = FONT;
+      gc.textAlign = "center";
+      gc.textBaseline = "middle";
+      // Each shadow is cast GLOW_PASSES times: a single one from a character this small is
+      // barely there
+      for (const [em, color] of layers) {
+        gc.shadowColor = color;
+        gc.shadowBlur = em * FONT_PX;
+        gc.shadowOffsetX = side * 2;
+        for (let i = 0; i < GLOW_PASSES; i++) gc.fillText(ch, side / 2 - side * 2, side / 2);
+      }
+      GLOW_SPRITES.set(key, g);
+      return g;
+    }
+    if (document.fonts && document.fonts.load) {
+      document.fonts.load(FONT).then(() => GLOW_SPRITES.clear()); // drop any baked in a fallback font
     }
 
     function drawWaves(now) {
@@ -1951,6 +1992,9 @@ document.addEventListener("DOMContentLoaded", function () {
       wctx.textBaseline = "middle";
 
       waves = waves.filter((w) => now - w.t < WAVE_LIFE);
+      // Characters are gathered first, then drawn in two passes: every glow, then every
+      // character over them, so a neighbor's glow doesn't tint a character
+      const marks = [];
       for (const w of waves) {
         const age = Math.max(0, now - w.t);
         const front = (age / 1000) * WAVE_SPEED; // the leading edge's radius
@@ -1982,14 +2026,26 @@ document.addEventListener("DOMContentLoaded", function () {
             // reuse rendered glyphs instead of rasterizing every character at a new size each
             // frame (which dropped frames)
             const size = 1 + (Math.round(lift * 4) / 4) * LIFT_SCALE;
-            wctx.setTransform(wdpr * size, 0, 0, wdpr * size,
-              Math.round(wdpr * (cx + dx * push)), Math.round(wdpr * (cy + dy * push - lift * RISE_PX)));
-            wctx.globalAlpha = alpha;
-            wctx.fillStyle = shadeAt(d);
-            wctx.fillText(CHARS[(h >>> 7) % CHARS.length], 0, 0);
+            marks.push({
+              x: Math.round(wdpr * (cx + dx * push)), y: Math.round(wdpr * (cy + dy * push - lift * RISE_PX)),
+              size, alpha, shade: shadeAt(d), ch: CHARS[(h >>> 7) % CHARS.length]
+            });
           }
         }
       }
+      for (const m of marks) {
+        const g = glowSprite(m.ch, m.shade);
+        const side = g.width * wdpr * m.size;
+        wctx.globalAlpha = m.alpha;
+        wctx.drawImage(g, m.x - side / 2, m.y - side / 2, side, side);
+      }
+      for (const m of marks) {
+        wctx.setTransform(wdpr * m.size, 0, 0, wdpr * m.size, m.x, m.y);
+        wctx.globalAlpha = m.alpha;
+        wctx.fillStyle = WAVE_SHADES[m.shade][1];
+        wctx.fillText(m.ch, 0, 0);
+      }
+      wctx.setTransform(1, 0, 0, 1, 0, 0);
       wctx.globalAlpha = 1;
 
       if (waves.length) {

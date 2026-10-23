@@ -17,19 +17,19 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
   <!-- Font Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300..600&family=Pixelify+Sans:wght@400..600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300..600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
 
   <!-- Custom Styles. The ?v= stamp (also on scripts/index.js below) makes browsers fetch fresh
        files after a deploy instead of a cached copy (GitHub Pages caches for 10 minutes). Bump
        both stamps whenever the CSS or JS changes. -->
-  <link rel="stylesheet" href="styles/index.css?v=2026-10-22b" />
+  <link rel="stylesheet" href="styles/index.css?v=2026-10-23d" />
 </head>
 
 <header>
   <!-- Nav Bar -->
   <div class="home-border-wrapper">
     <nav class="floating-navbar d-flex justify-content-between">
-      <a class="nav-link link" href="#home">✦ Home</a>
+      <a class="nav-link link" href="#home">✮ Home</a>
       <a class="nav-link link" href="#profile" data-targets="profile,mission">✳︎ Skills</a>
       <a class="nav-link link" href="#projects" data-targets="projects,companies">❖ Projects</a>
       <a class="nav-link link" href="#contact" data-targets="contact,notes">✤ Contact</a>
@@ -44,8 +44,9 @@
     <div class="home-cell">
       <!-- The hero light: drifts, and can be caught and drawn with. Drawn by scripts/index.js -->
       <canvas class="home-glow" aria-hidden="true"></canvas>
-      <!-- Glitched pixel art from a click or tap on the hero. Drawn by scripts/index.js -->
-      <canvas class="home-glitch" aria-hidden="true"></canvas>
+      <!-- Glitched pixel art from a click or tap on the hero. Drawn by scripts/index.js.
+           Disabled for now: without this canvas the hero glitch doesn't run. Uncomment to bring it back.
+      <canvas class="home-glitch" aria-hidden="true"></canvas> -->
       <!-- Wave of characters from catching the light. Drawn by scripts/index.js -->
       <canvas class="home-ripple" aria-hidden="true"></canvas>
       <!-- <video autoplay muted loop playsinline preload="auto" class="home-video">
@@ -469,7 +470,7 @@
 
   <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="scripts/index.js?v=2026-10-22b"></script>
+  <script src="scripts/index.js?v=2026-10-23d"></script>
 </body>
 
 </html>
