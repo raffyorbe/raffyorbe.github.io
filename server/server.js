@@ -10,7 +10,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.GEMINI_API_KEY,
+  baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
 });
 
 // Load markdown reference once at startup
@@ -34,7 +35,7 @@ app.post('/api/chat', async (req, res) => {
     console.log("Received message:", message);
 
     const completion = await client.chat.completions.create({
-      model: 'gpt-6-luna',
+      model: 'gemini-3.8-flash',
       messages: [
         { role: 'system', content: referenceText },
         { role: 'user', content: message },
