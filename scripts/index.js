@@ -754,7 +754,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       const data = await response.json();
-      const aiMessage = data.choices?.[0]?.message?.content || "Sorry, something went wrong. 😅";
+      const aiMessage = data.choices?.[0]?.message?.content || "I'm having trouble answering right now. Try again in a bit.";
 
       revealReply(bubble, aiMessage);
       playReplySound();
@@ -765,7 +765,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Stopped by the user: no reply, no error message, no sound
         stopped = true;
       } else {
-        revealReply(bubble, "Error connecting to the server. 😵");
+        revealReply(bubble, "I can't connect to the server right now. Try again in a bit.");
         playReplySound();
 
         console.error(error);
@@ -1138,7 +1138,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       const data = await response.json();
-      const aiMessage = data.choices?.[0]?.message?.content || "Sorry, something went wrong. 😅";
+      const aiMessage = data.choices?.[0]?.message?.content || "I'm having trouble answering right now. Try again in a bit.";
 
       revealReply(bubble, aiMessage);
       playReplySound();
@@ -1146,7 +1146,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     catch (error) {
       if (error.name === "AbortError") return; // replaced by another chat: nothing to show
-      revealReply(bubble, "Error connecting to the server. 😵");
+      revealReply(bubble, "I can't connect to the server right now. Try again in a bit.");
       playReplySound();
       console.error(error);
     }
