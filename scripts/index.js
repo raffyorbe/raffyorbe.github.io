@@ -613,7 +613,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // only Raffy's number, in exactly this format). Matching the format keeps year ranges
   // ("2019-2023") from getting a button without putting the number in the page's code.
   // (Any long run of digits, then the number itself stored here, were tried.)
-  const PHONE_FORMAT = /\+1 \(\d{3}\) \d{3}-\d{4}/;
+  //const PHONE_FORMAT = /\+1 \(\d{3}\) \d{3}-\d{4}/;
+
+  // A reply that talks about booking a call or meeting gets a button to the calendar link.
+  const BOOKING_URL = "https://calendar.app.google/d1XBb6AurgZmydEG9";
+  const BOOKING_INTENT = /\b(book(ing)?|schedule|scheduling)\b.{0,20}\b(call|meeting|time|chat)\b|\b(call|meeting|chat)\b.{0,20}\b(with raffy|with me)\b|\bcalendar\b|\bintro call\b/i;
 
   function replyActions(message) {
     if (!message) return [];
@@ -641,8 +645,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const at = text.indexOf(address.toLowerCase());
       if (at >= 0) found.push({ at, label: "Copy email", copy: address });
     }
-    const phone = message.match(PHONE_FORMAT);
-    if (phone) found.push({ at: phone.index, label: "Copy number", copy: phone[0] });
+    // const phone = message.match(PHONE_FORMAT);
+    // if (phone) found.push({ at: phone.index, label: "Copy number", copy: phone[0] });
+
+    const bookingAt = message.search(BOOKING_INTENT);
+    if (bookingAt >= 0) found.push({ at: bookingAt, label: "Book a call", href: BOOKING_URL });
+
     const linkedin = contact?.querySelector('a[href*="linkedin.com"]');
     const linkedinAt = text.indexOf("linkedin");
     if (linkedin && linkedinAt >= 0) found.push({ at: linkedinAt, label: "Connect on LinkedIn", href: linkedin.href });
