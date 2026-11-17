@@ -619,6 +619,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const BOOKING_URL = "https://calendar.app.google/d1XBb6AurgZmydEG9";
   const BOOKING_INTENT = /\b(book(ing)?|schedule|scheduling)\b.{0,20}\b(call|meeting|time|chat)\b|\b(call|meeting|chat)\b.{0,20}\b(with raffy|with me)\b|\bcalendar\b|\bintro call\b/i;
 
+  //Email
+  const CONTACT_EMAIL = "rao@raffyorbe.com";
+
   function replyActions(message) {
     if (!message) return [];
     const text = message.toLowerCase();
@@ -639,12 +642,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // phone number (PHONE_FORMAT) are copied, and a LinkedIn mention opens LinkedIn.
     // (Write email, a mailto:, was the first email action.)
     const contact = document.querySelector("#contact");
-    const mail = contact?.querySelector('a[href^="mailto:"]');
-    if (mail) {
-      const address = mail.href.replace(/^mailto:/, "");
-      const at = text.indexOf(address.toLowerCase());
-      if (at >= 0) found.push({ at, label: "Copy email", copy: address });
-    }
+    const emailAt = text.indexOf(CONTACT_EMAIL.toLowerCase());
+    if (emailAt >= 0) found.push({ at: emailAt, label: "Copy email", copy: CONTACT_EMAIL });
     // const phone = message.match(PHONE_FORMAT);
     // if (phone) found.push({ at: phone.index, label: "Copy number", copy: phone[0] });
 
@@ -657,6 +656,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return found.sort((a, b) => a.at - b.at).slice(0, MAX_REPLY_ACTIONS);
   }
+
   // Swap the loading dots for the reply: the whole bubble, text included, fades up as one.
   // The glow keeps going, with its ring fading in and its speed easing down (settleGlow).
   function revealReply(bubble, message) {
